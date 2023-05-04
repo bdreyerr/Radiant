@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var authStateManager = AuthStatusManager()
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        
+        ZStack {
+            WelcomeView()
+            if (!authStateManager.isLoggedIn) {
+                RegisterView(authStateManager: authStateManager)
+            }
         }
-        .padding()
+        
     }
 }
 
