@@ -12,17 +12,16 @@
  - Fix the debug messages that popup when the keyboard opens
  - Make it so the text fields move up when the keyboard opens
  
- - Create a Register Controller which extracts all of the non UI related logic into a testable modulated controller class
  - Add a unit test which tests this Register controller logic
- 
- - Setup the signup with Apple functionality and views
-
  
  
  */
 
 
 import SwiftUI
+import CryptoKit
+import FirebaseAuth
+import AuthenticationServices
 
 struct RegisterView: View {
     
@@ -59,9 +58,22 @@ struct RegisterView: View {
                     
                     
                     // Register with Apple button
-                    ActionButtonView(text: "Sign in with Apple", symbolName: "apple.logo", action: {
-                        print("Sign in with Apple button pressed")
-                    })
+                    SignInWithAppleButton(
+                        onRequest: { request in
+                            let nonce = authStateManager.randomNonceString()
+                            authStateManager.currentNonce = nonce
+                            request.requestedScopes = [.fullName, .email]
+                            request.nonce = authStateManager.sha256(nonce)
+                        },
+                        onCompletion: { result in
+                            authStateManager.appleSignInButtonOnCompletion(result: result)
+                        }
+                    ).frame(width: 350, height: 60)
+                        .cornerRadius(50)
+                        .background(Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 50)
+                                .stroke(Color.white, lineWidth: 2))
                 }.padding(.bottom, 75)
             }
         }

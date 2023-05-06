@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A56F3D62A05C3FF0057A6D6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */; };
 		1A8C6C182A0202F200676E5F /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */; };
 		1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C192A02122800676E5F /* RegisterView.swift */; };
 		1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */; };
@@ -24,11 +25,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		1A8C6C192A02122800676E5F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterWithEmailView.swift; sourceTree = "<group>"; };
 		1A8C6C1E2A02E2A800676E5F /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
 		1A92F9B32A0411BE000C2AE3 /* AuthStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatusManager.swift; sourceTree = "<group>"; };
+		1A92F9B52A056A3A000C2AE3 /* Radiant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Radiant.entitlements; sourceTree = "<group>"; };
+		1A92F9B82A05732D000C2AE3 /* AuthStatusManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatusManagerTests.swift; sourceTree = "<group>"; };
+		1A92F9BB2A0573D3000C2AE3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		1A92F9E32A0578FE000C2AE3 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		1AC990432A01703B00851A14 /* Radiant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Radiant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC990462A01703B00851A14 /* RadiantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantApp.swift; sourceTree = "<group>"; };
 		1AC990482A01703B00851A14 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,11 +67,30 @@
 			path = ModuleViews;
 			sourceTree = "<group>";
 		};
+		1A92F9BA2A0573D3000C2AE3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1A92F9BB2A0573D3000C2AE3 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1A92F9E22A0578FE000C2AE3 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				1A92F9B82A05732D000C2AE3 /* AuthStatusManagerTests.swift */,
+				1A92F9E32A0578FE000C2AE3 /* UnitTests.swift */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		1AC9903A2A01703B00851A14 = {
 			isa = PBXGroup;
 			children = (
 				1AC990452A01703B00851A14 /* Radiant */,
+				1A92F9E22A0578FE000C2AE3 /* UnitTests */,
 				1AC990442A01703B00851A14 /* Products */,
+				1A92F9BA2A0573D3000C2AE3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +105,7 @@
 		1AC990452A01703B00851A14 /* Radiant */ = {
 			isa = PBXGroup;
 			children = (
+				1A92F9B52A056A3A000C2AE3 /* Radiant.entitlements */,
 				1AC990642A017FDB00851A14 /* Info.plist */,
 				1AC9905D2A01776D00851A14 /* Controllers */,
 				1AC9905C2A01776500851A14 /* Views */,
@@ -89,6 +115,7 @@
 				1AC990622A017BFB00851A14 /* GoogleService-Info.plist */,
 				1AC9904C2A01703C00851A14 /* Preview Content */,
 				1AC990682A018B1000851A14 /* Constants.swift */,
+				1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */,
 			);
 			path = Radiant;
 			sourceTree = "<group>";
@@ -222,6 +249,7 @@
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,
 				1AC9905F2A01794F00851A14 /* WelcomeView.swift in Sources */,
+				1A56F3D62A05C3FF0057A6D6 /* UserDefaults.swift in Sources */,
 				1A8C6C1F2A02E2A800676E5F /* ActionButtonView.swift in Sources */,
 				1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */,
 				1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */,
@@ -350,6 +378,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Radiant/Radiant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Radiant/Preview Content\"";
@@ -382,6 +411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Radiant/Radiant.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Radiant/Preview Content\"";

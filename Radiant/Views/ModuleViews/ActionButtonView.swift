@@ -17,18 +17,18 @@ struct ActionButtonView: View {
         if let text, let symbolName, let action {
             Button(action: action) {
                 // Action icon
-                Image(systemName: symbolName).foregroundColor(.white).font(.system(size: 25))
+                Image(systemName: symbolName).foregroundColor(.black).font(.system(size: 25))
                 
                 // Action text
                 Text(text).font(.system(size: 25))
                     .fontWeight(.light)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding()
                 
             }.frame(width: 350)
                 .cornerRadius(50)
-                .background(Color.clear)
+                .background(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 50)
                         .stroke(Color.white, lineWidth: 2))
