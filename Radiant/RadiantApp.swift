@@ -14,6 +14,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        let db = Firestore.firestore()
+        print("Database: \(db)")
         
         // print the login status of the user
         if let loginStatus = UserDefaults.standard.object(forKey: loginStatusKey) as? Bool {

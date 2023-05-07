@@ -10,6 +10,7 @@ import CryptoKit
 import Foundation
 import FirebaseCore
 import FirebaseAuth
+import FirebaseFirestore
 
 
 class AuthStatusManager: ObservableObject {
@@ -29,6 +30,9 @@ class AuthStatusManager: ObservableObject {
     
     // Unhashed nonce. (used for Apple sign in)
     @Published var currentNonce:String?
+    
+    // Firestore
+    let db = Firestore.firestore()
     
     
     // Log the user in with email and password
@@ -81,6 +85,17 @@ class AuthStatusManager: ObservableObject {
             // Set user defaults to keep the user logged in
             UserDefaults.standard.set(self.email, forKey: emailKey)
             UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
+            
+            // Create the user profile in Firestore
+            let userProf = UserProfile(email: self.email, displayName: self.email, birthday: nil, weight: nil, height: nil, goals: nil)
+            let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
+            do {
+                try collectionRef.document(user.uid).setData(from: userProf)
+                print("User stored with new user reference: \(user.uid)")
+            } catch {
+                print("Error saving user to firestore: \(error.localizedDescription)")
+            }
+            
         }
     }
     
@@ -111,15 +126,41 @@ class AuthStatusManager: ObservableObject {
                         print(error?.localizedDescription as Any)
                         return
                     }
+                    
+                    guard let user = authResult?.user else {
+                        print("No user")
+                        return
+                    }
+                    
                     print("signed in with apple")
+                    print("\(String(describing: user.uid))")
+                    // Careful about saving the email into UserDefaults because the user may choose to hide email address from the app with sign in
+                    if let email = user.email {
+                        self.email = email
+                        UserDefaults.standard.set(self.email, forKey: emailKey)
+                    }
+                    self.isLoggedIn = true
+                    self.isRegisterPopupShowing = false
+
+                    // Set user defaults
+                    UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
+                    
+                    // Create the user profile in Firestore
+                    let userProf = UserProfile(email: self.email, displayName: self.email, birthday: nil, weight: nil, height: nil, goals: nil)
+                    let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
+                    do {
+                        try collectionRef.document(user.uid).setData(from: userProf)
+                        print("Apple sign in user stored with new user reference: \(user.uid)")
+                    } catch {
+                        print("Error saving user to firestore: \(error.localizedDescription)")
+                    }
+                    
                 }
                 
-                print("\(String(describing: Auth.auth().currentUser?.uid))")
-                self.isLoggedIn = true
-                self.isRegisterPopupShowing = false
-                // Don't save the email into UserDefaults because they user may choose to hide email address from the app with sign in
-                // UserDefaults.standard.set(self.email, forKey: emailKey)
-                UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
+                
+                
+                
+                
                 
             default:
                 break

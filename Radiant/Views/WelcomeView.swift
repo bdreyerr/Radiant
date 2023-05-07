@@ -17,19 +17,7 @@ struct WelcomeView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text("Welcome, you've been logged in to the app")
-                Button(action: {
-                    authStateManager.logOut()
-                }) {
-                    Text("Log Out")
-                }
-                
-                if let user = Auth.auth().currentUser {
-                    Text("The current user is: \(user.email ?? "default email")")
-                } else {
-                    Text("The current user is nil af")
-                }
-                
+                BottomNavBar(authStateManager: authStateManager)
             }
         }
         
