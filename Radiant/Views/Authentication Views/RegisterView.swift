@@ -25,7 +25,7 @@ import AuthenticationServices
 
 struct RegisterView: View {
     
-    @ObservedObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var authStateManager: AuthStatusManager
     
     var body: some View {
         NavigationView() {
@@ -41,7 +41,7 @@ struct RegisterView: View {
                     ActionButtonView(text: "Register with email", symbolName: "envelope.fill", action: {
                         authStateManager.isRegisterPopupShowing = true
                     }).sheet(isPresented: $authStateManager.isRegisterPopupShowing) {
-                        RegisterWithEmailView(authStateManager: authStateManager)
+                        RegisterWithEmailView()
                     }
                     
                     // Already a member prompt
@@ -52,7 +52,7 @@ struct RegisterView: View {
                         }) {
                             Text("Login").foregroundColor(.cyan).underline()
                         }.sheet(isPresented: $authStateManager.isLoginPopupShowing) {
-                            LoginWithEmailView(authStateManager: authStateManager)
+                            LoginWithEmailView()
                         }
                     }.padding(.all, 8.0)
                     
@@ -82,6 +82,6 @@ struct RegisterView: View {
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView(authStateManager: AuthStatusManager())
+        RegisterView()
     }
 }

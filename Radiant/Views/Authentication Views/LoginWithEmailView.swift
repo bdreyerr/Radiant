@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginWithEmailView: View {
     
-    @ObservedObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var authStateManager: AuthStatusManager
     
     
     var body: some View {
@@ -74,6 +74,6 @@ struct LoginWithEmailView: View {
 
 struct LoginWithEmailView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginWithEmailView(authStateManager: AuthStatusManager())
+        LoginWithEmailView()
     }
 }

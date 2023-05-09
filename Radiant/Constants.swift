@@ -16,8 +16,8 @@ struct Constants {
     static let loginSegue = "LoginToChat"
     
     struct FStore {
-        static let collectionName = "messages"
-        static let senderField = "sender"
+        static let usersCollectionName = "users"
+        static let userField = "user"
         static let bodyField = "body"
         static let dateField = "date"
     }
@@ -26,5 +26,10 @@ struct Constants {
         static let appleSignInServiceID = "com.bendreyer.radiant-applesigninid"
         static let appleSignInPrivateKeyName = "RadiantAppleSignInKey"
         static let appleSignInPrivateKeyID = "J4A348M8W5"
+    }
+    
+    struct UserDefaults {
+        static let emailKey = "emailKey"
+        static let userLoggedInKey = "userLoggedInKey"
     }
 }

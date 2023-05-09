@@ -20,6 +20,10 @@
 		1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A92F9B32A0411BE000C2AE3 /* AuthStatusManager.swift */; };
 		1A98C4532A083AC800BB3203 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1A98C4522A083AC800BB3203 /* FirebaseFirestoreSwift */; };
 		1A98C4562A08459600BB3203 /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C4552A08459600BB3203 /* MapMainView.swift */; };
+		1A98C45B2A0AB86C00BB3203 /* Raleway-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A98C45A2A0AB86B00BB3203 /* Raleway-VariableFont_wght.ttf */; };
+		1A98C45D2A0ABA0900BB3203 /* NotoSansTC-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */; };
+		1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */; };
+		1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */; };
 		1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990462A01703B00851A14 /* RadiantApp.swift */; };
 		1AC990492A01703B00851A14 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990482A01703B00851A14 /* ContentView.swift */; };
 		1AC9904B2A01703C00851A14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AC9904A2A01703C00851A14 /* Assets.xcassets */; };
@@ -48,6 +52,10 @@
 		1A92F9BB2A0573D3000C2AE3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1A92F9E32A0578FE000C2AE3 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		1A98C4552A08459600BB3203 /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
+		1A98C45A2A0AB86B00BB3203 /* Raleway-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-VariableFont_wght.ttf"; path = "../../../../../Downloads/Montserrat,Raleway/Raleway/Raleway-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansTC-Thin.otf"; path = "../../../../../Downloads/Noto_Sans_TC/NotoSansTC-Thin.otf"; sourceTree = "<group>"; };
+		1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatusManager.swift; sourceTree = "<group>"; };
+		1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		1AC990432A01703B00851A14 /* Radiant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Radiant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC990462A01703B00851A14 /* RadiantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantApp.swift; sourceTree = "<group>"; };
 		1AC990482A01703B00851A14 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				1A56F3DB2A06D5C80057A6D6 /* ProfileMainView.swift */,
+				1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */,
 			);
 			path = ProfileViews;
 			sourceTree = "<group>";
@@ -138,6 +147,15 @@
 			path = MapViews;
 			sourceTree = "<group>";
 		};
+		1A98C4592A0AB7CE00BB3203 /* Project_Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */,
+				1A98C45A2A0AB86B00BB3203 /* Raleway-VariableFont_wght.ttf */,
+			);
+			path = Project_Fonts;
+			sourceTree = "<group>";
+		};
 		1AC9903A2A01703B00851A14 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +177,7 @@
 		1AC990452A01703B00851A14 /* Radiant */ = {
 			isa = PBXGroup;
 			children = (
+				1A98C4592A0AB7CE00BB3203 /* Project_Fonts */,
 				1A92F9B52A056A3A000C2AE3 /* Radiant.entitlements */,
 				1AC990642A017FDB00851A14 /* Info.plist */,
 				1AC9905D2A01776D00851A14 /* Controllers */,
@@ -210,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				1A92F9B32A0411BE000C2AE3 /* AuthStatusManager.swift */,
+				1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -291,7 +311,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A98C45D2A0ABA0900BB3203 /* NotoSansTC-Thin.otf in Resources */,
 				1AC9904E2A01703C00851A14 /* Preview Assets.xcassets in Resources */,
+				1A98C45B2A0AB86C00BB3203 /* Raleway-VariableFont_wght.ttf in Resources */,
 				1AC9904B2A01703C00851A14 /* Assets.xcassets in Resources */,
 				1AC990632A017BFB00851A14 /* GoogleService-Info.plist in Resources */,
 			);
@@ -309,6 +331,7 @@
 				1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */,
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
+				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,
@@ -318,6 +341,7 @@
 				1A56F3D62A05C3FF0057A6D6 /* UserDefaults.swift in Sources */,
 				1A8C6C1F2A02E2A800676E5F /* ActionButtonView.swift in Sources */,
 				1A56F3DC2A06D5C80057A6D6 /* ProfileMainView.swift in Sources */,
+				1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */,
 				1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */,
 				1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */,
 			);

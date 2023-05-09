@@ -11,21 +11,20 @@ import FirebaseCore
 
 struct WelcomeView: View {
     
-    @ObservedObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var authStateManager: AuthStatusManager
     
     
     var body: some View {
         ZStack {
             VStack {
-                BottomNavBar(authStateManager: authStateManager)
+                BottomNavBar()
             }
         }
-        
     }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(authStateManager: AuthStatusManager())
+        WelcomeView()
     }
 }

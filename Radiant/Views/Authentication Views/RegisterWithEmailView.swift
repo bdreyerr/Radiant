@@ -11,7 +11,7 @@ import FirebaseAuth
 
 struct RegisterWithEmailView: View {
     
-    @ObservedObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var authStateManager: AuthStatusManager
     
     var body: some View {
         
@@ -77,6 +77,6 @@ struct RegisterWithEmailView: View {
 
 struct RegisterWithEmailView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterWithEmailView(authStateManager: AuthStatusManager())
+        RegisterWithEmailView()
     }
 }

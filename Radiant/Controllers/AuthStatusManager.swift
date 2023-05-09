@@ -33,6 +33,7 @@ class AuthStatusManager: ObservableObject {
     
     // Firestore
     let db = Firestore.firestore()
+    @Published var userProfile: UserProfile?
     
     
     // Log the user in with email and password
@@ -60,6 +61,14 @@ class AuthStatusManager: ObservableObject {
             strongSelf.isLoginPopupShowing = false
             UserDefaults.standard.set(strongSelf.email, forKey: emailKey)
             UserDefaults.standard.set(strongSelf.isLoggedIn, forKey: loginStatusKey)
+            
+            // Retrieved the user profile from Firestore and store it in this class' userProfile var
+            if let userID = Auth.auth().currentUser?.uid {
+                strongSelf.retrieveUserProfile(userID: userID)
+            } else {
+                print("The current user could not be retrieved")
+//                authStateManager.logOut()
+            }
         }
     }
     
@@ -96,6 +105,13 @@ class AuthStatusManager: ObservableObject {
                 print("Error saving user to firestore: \(error.localizedDescription)")
             }
             
+            // Retrieve the user profile from Firestore and store it in this class' userProfile var
+            if let userID = Auth.auth().currentUser?.uid {
+                self.retrieveUserProfile(userID: userID)
+            } else {
+                print("The current user could not be retrieved")
+//                authStateManager.logOut()
+            }
         }
     }
     
@@ -155,19 +171,36 @@ class AuthStatusManager: ObservableObject {
                         print("Error saving user to firestore: \(error.localizedDescription)")
                     }
                     
+                    // Retrieved the user profile from Firestore and store it in this class' userProfile var
+                    if let userID = Auth.auth().currentUser?.uid {
+                        self.retrieveUserProfile(userID: userID)
+                    } else {
+                        print("The current user could not be retrieved")
+        //                authStateManager.logOut()
+                    }
                 }
-                
-                
-                
-                
-                
-                
             default:
                 break
-                
             }
         default:
             break
+        }
+    }
+    
+    func retrieveUserProfile(userID: String) {
+        let docRef = db.collection(Constants.FStore.usersCollectionName).document(userID)
+        
+        docRef.getDocument(as: UserProfile.self) { result in
+            switch result {
+            case .success(let userProf):
+                // A UserProfile value was successfully initalized from the DocumentSnapshot
+                self.userProfile = userProf
+                print("Successfully retrieved the user profile stored in Firestore. Access it with authStatusManager.userProfile")
+                
+            case .failure(let error):
+                // A UserProfile value could not be initialized from the DocumentSnapshot
+                print("Failure retrieving the user profile from firestore: \(error.localizedDescription)")
+            }
         }
     }
     

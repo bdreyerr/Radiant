@@ -13,10 +13,10 @@ import FirebaseFirestoreSwift
 
 struct UserProfile: Codable {
     @DocumentID var id: String?
-    let email: String?
-    let displayName: String?
-    let birthday: Date?
-    let weight: Int?
-    let height: Double?
-    let goals: [String]? // Figure out how to store this based on preset goals I define for the user
+    var email: String?
+    var displayName: String?
+    var birthday: Date?
+    var weight: Int?
+    var height: Double?
+    var goals: [String]? // Figure out how to store this based on preset goals I define for the user
 }
