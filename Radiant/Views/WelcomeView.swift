@@ -12,7 +12,7 @@ import FirebaseCore
 struct WelcomeView: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
-    
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     
     var body: some View {
         ZStack {
@@ -26,5 +26,7 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()
+            .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
     }
 }

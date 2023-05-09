@@ -13,6 +13,7 @@ import AuthenticationServices
 struct ContentView: View {
     
     @StateObject var authStateManager = AuthStatusManager()
+    @StateObject var profileStateManager = ProfileStatusManager()
     
     var body: some View {
         
@@ -36,10 +37,10 @@ struct ContentView: View {
                         .onAppear {
                             if let userID = Auth.auth().currentUser?.uid {
                                 // This function is async, and code below it will not function properly if relying on authStateManager.userProfile
-                                authStateManager.retrieveUserProfile(userID: userID)
+                                profileStateManager.retrieveUserProfile(userID: userID)
                             } else {
                                 print("The current user could not be retrieved")
-                //                authStateManager.logOut()
+                                authStateManager.logOut()
                             }
                         }
                 }
@@ -47,7 +48,9 @@ struct ContentView: View {
                 // Show the register / login screen either if the loginStatus is nil
                 RegisterView()
             }
-        }.environmentObject(authStateManager)
+        }
+        .environmentObject(authStateManager)
+        .environmentObject(profileStateManager)
     }
 }
 

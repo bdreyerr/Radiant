@@ -12,6 +12,7 @@ import FirebaseCore
 struct BottomNavBar: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     
     var body: some View {
         ZStack {
@@ -75,5 +76,7 @@ struct BottomNavBar: View {
 struct BottomNavBar_Previews: PreviewProvider {
     static var previews: some View {
         BottomNavBar()
+            .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
     }
 }

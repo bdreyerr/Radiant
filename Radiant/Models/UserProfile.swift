@@ -15,6 +15,7 @@ struct UserProfile: Codable {
     @DocumentID var id: String?
     var email: String?
     var displayName: String?
+    var anonDisplayName: String?
     var birthday: Date?
     var weight: Int?
     var height: Double?

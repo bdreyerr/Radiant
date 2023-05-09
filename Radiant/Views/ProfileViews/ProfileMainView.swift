@@ -10,8 +10,7 @@ import SwiftUI
 struct ProfileMainView: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
-    
-//    @ObservedObject var profileStateManager = ProfileStatusManager()
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     
     var body: some View {
         
@@ -42,13 +41,17 @@ struct ProfileMainView: View {
 //                        .frame(width: 40, height: 40)
 //                        .foregroundColor(.white)
                     Button(action: {
-//                        profileStateManager.isProfileSettingsPopupShowing = true
+                        profileStateManager.isProfileSettingsPopupShowing = true
                     }) {
                         Image(systemName: "gearshape")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .foregroundColor(.white)
+                    }.sheet(isPresented: $profileStateManager.isProfileSettingsPopupShowing) {
+                        ProfileSettingsView()
                     }
+                    
+                    
 //                    .sheet(isPresented: $profileStateManager.isProfileSettingsPopupShowing) {
 ////                        RegisterWithEmailView(authStateManager: authStateManager)
 //                        // ProfileSettingsView(authStateManager: authStateManager, profileStateManager: profileStateManager)
@@ -63,10 +66,17 @@ struct ProfileMainView: View {
                         .clipShape(Circle())
                         .padding(.trailing, 30)
                     
-                    if let displayName = authStateManager.userProfile?.displayName {
-                        Text(displayName)
-                            .padding(.trailing, 30)
-                            .foregroundColor(.white)
+                    if let displayName = profileStateManager.userProfile?.displayName {
+                        if profileStateManager.isForumAnon == true {
+                            let anonDisplayName = profileStateManager.userProfile?.anonDisplayName
+                            Text(anonDisplayName!)
+                                .padding(.trailing, 30)
+                                .foregroundColor(.white)
+                        } else {
+                            Text(displayName)
+                                .padding(.trailing, 30)
+                                .foregroundColor(.white)
+                        }
                     } else {
                         Text("Display name here")
                             .padding(.trailing, 30)
@@ -88,7 +98,7 @@ struct ProfileMainView: View {
                         .foregroundColor(.white)
                         .bold()
                         .padding(.bottom, 10)
-                    if let email = authStateManager.userProfile?.email {
+                    if let email = profileStateManager.userProfile?.email {
                         Text(email)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -119,7 +129,7 @@ struct ProfileMainView: View {
                             .foregroundColor(.white)
                             .bold()
                         
-                        if let birthday = authStateManager.userProfile?.birthday {
+                        if let birthday = profileStateManager.userProfile?.birthday {
                             Text(birthday, style: .date)
                                 .foregroundColor(.white)
                         } else {
@@ -137,7 +147,7 @@ struct ProfileMainView: View {
                             .foregroundColor(.white)
                             .bold()
                         
-                        if let weight = authStateManager.userProfile?.weight {
+                        if let weight = profileStateManager.userProfile?.weight {
                             Text("\(weight)kg")
                                 .foregroundColor(.white)
                         } else {
@@ -154,7 +164,7 @@ struct ProfileMainView: View {
                             .foregroundColor(.white)
                             .bold()
                         
-                        if let height = authStateManager.userProfile?.height {
+                        if let height = profileStateManager.userProfile?.height {
                             Text("\(height)m")
                                 .foregroundColor(.white)
                         } else {
@@ -221,5 +231,7 @@ struct ProfileMainView: View {
 struct ProfileMainView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileMainView()
+            .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
     }
 }
