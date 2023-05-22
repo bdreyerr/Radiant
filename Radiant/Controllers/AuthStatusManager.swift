@@ -186,24 +186,32 @@ class AuthStatusManager: ObservableObject {
             break
         }
     }
-    
-//    func retrieveUserProfile(userID: String) {
-//        let docRef = db.collection(Constants.FStore.usersCollectionName).document(userID)
-//
-//        docRef.getDocument(as: UserProfile.self) { result in
-//            switch result {
-//            case .success(let userProf):
-//                // A UserProfile value was successfully initalized from the DocumentSnapshot
-//                self.userProfile = userProf
-//                print("Successfully retrieved the user profile stored in Firestore. Access it with authStatusManager.userProfile")
-//
-//            case .failure(let error):
-//                // A UserProfile value could not be initialized from the DocumentSnapshot
-//                print("Failure retrieving the user profile from firestore: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
+
+    // Update a user's email address stored in the auth table (as long as they didn't sign in with apple)
+        // We don't need to pass in a the newEmail as a argument, because the changing email is tied to the text field on the edit email popup
+    func updateAuthEmail(newEmail: String) -> String? {
+        var returnError: String?
+        if let user = Auth.auth().currentUser {
+            user.updateEmail(to: newEmail) { error in
+                if let e = error {
+                    // TEMPORARY FIX: WHEN THE USER IS REQUIRED TO REAUTHENTICATE BY FIREBASE, SIMPLY JUST LOG THEM OUT. IN THE FUTURE, WE NEED TO ASK FOR THEIR LOGIN CREDENTIALS AGAIN AND REAUTHENTICATE BEFORE THEY CAN CHANGE THEIR EMAIL
+                    print("There was an error updating the user's email: \(e.localizedDescription)")
+                    returnError = e.localizedDescription
+                    
+//                    self.logOut()
+                } else {
+                    print("Successfully updated user email in the auth table, no error.")
+                    self.email = newEmail
+                    print("Email updated on authStateManager: \(self.email)")
+                }
+            }
+        }
+        if returnError != nil {
+            return returnError
+        } else {
+            return nil
+        }
+    }
     
     func logOut() {
         let firebaseAuth = Auth.auth()

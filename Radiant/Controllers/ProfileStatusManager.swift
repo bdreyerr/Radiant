@@ -57,6 +57,26 @@ class ProfileStatusManager: ObservableObject {
         }
     }
     
+    func updateUserProfileEmail(newEmail: String) -> String? {
+        var errorText: String?
+        
+        if let user = userProfile {
+            // We can assume if the user exists they have an ID
+            let docRef = db.collection(Constants.FStore.usersCollectionName).document(user.id!)
+            
+            // Before we set the new emails, make sure they are valid email addresses
+            userProfile?.email = newEmail
+            userProfile?.displayName = newEmail
+            do {
+                try docRef.setData(from: userProfile)
+            }
+            catch {
+                errorText = error.localizedDescription
+            }
+        }
+        return errorText
+    }
+    
     
     func generateAnonUsernameForForum(numWords: Int = 150) {
         let words = ["apple", "banana", "cat", "dog", "elephant", "fish", "goat", "horse", "iguana", "jellyfish",
@@ -69,5 +89,16 @@ class ProfileStatusManager: ObservableObject {
         
         print(word1 + "_" + word2 + String(number))
         userProfile?.anonDisplayName = word1 + "_" + word2 + String(number)
+    }
+    
+    func isValidEmailAddress(emailAddressString: String) -> Bool {
+        // Regular expression to validate email addresses
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        // Create a regular expression object
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        
+        // Return true if the email address is valid
+        return emailTest.evaluate(with: emailAddressString)
     }
 }

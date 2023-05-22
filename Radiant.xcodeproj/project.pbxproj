@@ -24,6 +24,7 @@
 		1A98C45D2A0ABA0900BB3203 /* NotoSansTC-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */; };
 		1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */; };
 		1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */; };
+		1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */; };
 		1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990462A01703B00851A14 /* RadiantApp.swift */; };
 		1AC990492A01703B00851A14 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990482A01703B00851A14 /* ContentView.swift */; };
 		1AC9904B2A01703C00851A14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AC9904A2A01703C00851A14 /* Assets.xcassets */; };
@@ -56,6 +57,7 @@
 		1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansTC-Thin.otf"; path = "../../../../../Downloads/Noto_Sans_TC/NotoSansTC-Thin.otf"; sourceTree = "<group>"; };
 		1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatusManager.swift; sourceTree = "<group>"; };
 		1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
+		1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumDetailedView.swift; sourceTree = "<group>"; };
 		1AC990432A01703B00851A14 /* Radiant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Radiant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC990462A01703B00851A14 /* RadiantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantApp.swift; sourceTree = "<group>"; };
 		1AC990482A01703B00851A14 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */,
+				1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */,
 			);
 			path = ForumViews;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
 				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
+				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,
