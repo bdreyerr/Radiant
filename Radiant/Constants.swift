@@ -20,6 +20,17 @@ struct Constants {
         static let userField = "user"
         static let bodyField = "body"
         static let dateField = "date"
+        
+        // Forum collection names
+        static let forumCollectionNameGeneral = "forumGeneral"
+        static let forumCollectionNameDepression = "forumDepression"
+        static let forumCollectionNameStressAnxiety = "forumStressAnxiety"
+        static let forumCollectionNameRelationships = "forumRelationships"
+        static let forumCollectionNameRecovery = "forumRecovery"
+        static let forumCollectionNameAddiction = "forumAddiction"
+        static let forumCollectionNameSobriety = "forumSobriety"
+        static let forumCollectionNamePersonalStories = "forumPersonalStories"
+        static let forumCollectionNameAdvice = "forumAdvice"
     }
     
     struct AppleIDs {

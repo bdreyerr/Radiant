@@ -10,6 +10,7 @@ import SwiftUI
 struct ForumMainView: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
+    @StateObject var forumManager = ForumManager()
     
     var body: some View {
         
@@ -85,6 +86,16 @@ struct ForumMainView: View {
                             NavigationLink(destination: ForumDetailedView(title: "Sobriety")) {
                                 ListItem(icon: "aqi.medium", title: "Sobriety", description: "This is the description of each category. Testing to see, god damn it.")
                             }
+                            
+                            // Personal Stories
+                            NavigationLink(destination: ForumDetailedView(title: "Personal Stories")) {
+                                ListItem(icon: "quote.bubble", title: "Personal Stories", description: "This is the description of each category. Testing to see, god damn it.")
+                            }
+                            
+                            // Advice
+                            NavigationLink(destination: ForumDetailedView(title: "Advice")) {
+                                ListItem(icon: "person.crop.rectangle.stack", title: "Advice", description: "This is the description of each category. Testing to see, god damn it.")
+                            }
                         }
 //                        .frame(alignment: .leading)
 //                        .padding(.trailing, 100)
@@ -98,6 +109,7 @@ struct ForumMainView: View {
             }
         }
         .foregroundColor(Color(uiColor: .white))
+        .environmentObject(forumManager)
     }
 }
 

@@ -12,6 +12,8 @@ struct ForumDetailedView: View {
     let title: String?
     
     @EnvironmentObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    @EnvironmentObject var forumManager: ForumManager
     
     var postContents = ["The dog was chasing a cat across the street.", "The man was eating a sandwich and drinking a glass of water.", "The boy was playing baseball with his friends in the park.", "The girl was playing soccer with her team on the field.,", "The sun was shining brightly in the sky, and the birds were singing."]
     
@@ -27,23 +29,47 @@ struct ForumDetailedView: View {
             // Post List
             
             VStack {
+                // Icons
+                HStack {
+                    // Create Post
+                    Button(action: {
+                        print("User clicked the create post button")
+                        // Set forumManager vars
+                        if let user = profileStateManager.userProfile {
+                            forumManager.authorID = user.id!
+                        }
+                        forumManager.category = title ?? "General"
+                        forumManager.content = postContents[Int.random(in: 0...4)]
+                        
+                        // Save the post to firebase
+                        forumManager.publishPost()
+                    }) {
+                        Image(systemName: "square.and.pencil")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    }
+                }
+                .padding(.leading, 300)
+                .padding(.top, 1)
+                
                 Text(title ?? "Category Title")
                     .font(.system(size: 24))
                     .padding(.bottom, 20)
                 
                 ScrollView {
                     VStack(alignment: .leading) {
-                        Post(userPhoto: "", username: "kingletdown", datePosted: "", postContent: postContents[0], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "foreskin", datePosted: "", postContent: postContents[1], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "twentynine", datePosted: "", postContent: postContents[2], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "poopybutt", datePosted: "", postContent: postContents[3], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "okayokay", datePosted: "", postContent: postContents[4], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "gordi", datePosted: "", postContent: postContents[0], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "shmorti", datePosted: "", postContent: postContents[1], likecount: 0, commentCount: 0)
-                        Post(userPhoto: "", username: "florti", datePosted: "", postContent: postContents[2], likecount: 0, commentCount: 0)
+                        Post(userPhoto: "", username: "kingletdown", datePosted: "", postContent: postContents[0])
+                        Post(userPhoto: "", username: "foreskin", datePosted: "", postContent: postContents[1])
+                        Post(userPhoto: "", username: "twentynine", datePosted: "", postContent: postContents[2])
+                        Post(userPhoto: "", username: "poopybutt", datePosted: "", postContent: postContents[3])
+                        Post(userPhoto: "", username: "okayokay", datePosted: "", postContent: postContents[4])
+                        Post(userPhoto: "", username: "gordi", datePosted: "", postContent: postContents[0])
+                        Post(userPhoto: "", username: "shmorti", datePosted: "", postContent: postContents[1])
+                        Post(userPhoto: "", username: "florti", datePosted: "", postContent: postContents[2])
                     }
                     .padding(.trailing, 30)
                     .padding(.leading, 20)
+                    .padding(.bottom, 1)
                 }
                 
             }.padding(.top, 80)
@@ -57,6 +83,8 @@ struct ForumDetailedView_Previews: PreviewProvider {
         
         ForumDetailedView(title: "Title")
             .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
+            .environmentObject(ForumManager())
     }
 }
 
@@ -66,8 +94,9 @@ struct Post: View {
     let username: String
     let datePosted: String
     let postContent: String
-    let likecount: Int
-    let commentCount: Int
+    
+    @State private var likeCount = 5
+    @State private var commentCount = 4
     
     var body: some View {
         // Post
@@ -76,7 +105,7 @@ struct Post: View {
                 // User profile picture
                 Image("default_prof_pic")
                     .resizable()
-                    .frame(width: 50, height: 50)
+                    .frame(width: 40, height: 40)
                     .clipShape(Circle())
                     .padding(.trailing, 10)
                 VStack(alignment: .leading) {
@@ -101,24 +130,34 @@ struct Post: View {
                     print("User liked the post")
                 }) {
                     Image(systemName: "heart")
-                        .fixedSize(horizontal: true, vertical: true)
+                        .resizable()
+                        .frame(width: 18, height: 18)
+                    
+                    Text("\(likeCount)")
                 }
                 // Comment
                 Button(action: {
                     print("User commented on the post")
                 }) {
                     Image(systemName: "text.bubble")
-                        .fixedSize(horizontal: true, vertical: true)
+                        .resizable()
+                        .frame(width: 18, height: 18)
+                    
+                    Text("\(commentCount)")
                 }
                 // Report
                 Button(action: {
                     print("User commented on the post")
                 }) {
                     Image(systemName: "exclamationmark.circle")
-                        .fixedSize(horizontal: true, vertical: true)
+                        .resizable()
+                        .frame(width: 18, height: 18)
                 }
             }
         }
         .padding(.bottom, 10)
+        
+        Divider()
+            .background(Color.white)
     }
 }
