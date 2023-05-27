@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct ForumDetailedView: View {
     
@@ -14,6 +16,10 @@ struct ForumDetailedView: View {
     @EnvironmentObject var authStateManager: AuthStatusManager
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
+    
+    @State var posts: [ForumPost] = []
+    
+    let db = Firestore.firestore()
     
     var postContents = ["The dog was chasing a cat across the street.", "The man was eating a sandwich and drinking a glass of water.", "The boy was playing baseball with his friends in the park.", "The girl was playing soccer with her team on the field.,", "The sun was shining brightly in the sky, and the birds were singing."]
     
@@ -33,16 +39,11 @@ struct ForumDetailedView: View {
                 HStack {
                     // Create Post
                     Button(action: {
-                        print("User clicked the create post button")
-                        // Set forumManager vars
+                        // Save the post to firebase if the current signed in user exists
                         if let user = profileStateManager.userProfile {
-                            forumManager.authorID = user.id!
+                            forumManager.publishPost(authorID: user.id!, category: title ?? "General", content: postContents[Int.random(in: 0...4)])
+                            retrievePosts()
                         }
-                        forumManager.category = title ?? "General"
-                        forumManager.content = postContents[Int.random(in: 0...4)]
-                        
-                        // Save the post to firebase
-                        forumManager.publishPost()
                     }) {
                         Image(systemName: "square.and.pencil")
                             .resizable()
@@ -58,14 +59,12 @@ struct ForumDetailedView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading) {
-                        Post(userPhoto: "", username: "kingletdown", datePosted: "", postContent: postContents[0])
-                        Post(userPhoto: "", username: "foreskin", datePosted: "", postContent: postContents[1])
-                        Post(userPhoto: "", username: "twentynine", datePosted: "", postContent: postContents[2])
-                        Post(userPhoto: "", username: "poopybutt", datePosted: "", postContent: postContents[3])
-                        Post(userPhoto: "", username: "okayokay", datePosted: "", postContent: postContents[4])
-                        Post(userPhoto: "", username: "gordi", datePosted: "", postContent: postContents[0])
-                        Post(userPhoto: "", username: "shmorti", datePosted: "", postContent: postContents[1])
-                        Post(userPhoto: "", username: "florti", datePosted: "", postContent: postContents[2])
+                        // look up the username with their id
+                        
+                        ForEach(posts) { post in
+                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1)
+                        }
+                        
                     }
                     .padding(.trailing, 30)
                     .padding(.leading, 20)
@@ -75,6 +74,34 @@ struct ForumDetailedView: View {
             }.padding(.top, 80)
         }
         .foregroundColor(Color(uiColor: .white))
+        .onAppear {
+            retrievePosts()
+        }
+    }
+    
+    
+    func retrievePosts(/*postCategory: String*/) {
+        self.posts = []
+        let collectionName = forumManager.getFstoreForumCategoryCollectionName(category: self.title ?? "General")
+        
+        let collectionRef = self.db.collection(collectionName)
+        
+        collectionRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error retrieving posts: \(err.localizedDescription)")
+            } else if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    let post = ForumPost(
+                        id: document.documentID,
+                        authorID: document.data()["authorID"] as? String,
+                        category: document.data()["category"] as? String,
+                        date: document.data()["date"] as? Date,
+                        content: document.data()["content"] as? String,
+                        likeCount: document.data()["likeCount"] as? Int)
+                    posts.append(post)
+                }
+            }
+        }
     }
 }
 
@@ -90,72 +117,97 @@ struct ForumDetailedView_Previews: PreviewProvider {
 
 
 struct Post: View {
+    let postID: String
+    let category: String
     let userPhoto: String
     let username: String
-    let datePosted: String
+    let datePosted: Date
     let postContent: String
+    @State var likeCount: Int
+    @State var commentCount: Int
     
-    @State private var likeCount = 5
-    @State private var commentCount = 4
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    @EnvironmentObject var forumManager: ForumManager
+    
+    var postContents = ["The dog was chasing a cat across the street.", "The man was eating a sandwich and drinking a glass of water.", "The boy was playing baseball with his friends in the park.", "The girl was playing soccer with her team on the field.,", "The sun was shining brightly in the sky, and the birds were singing."]
+    
+    
+    
     
     var body: some View {
         // Post
-        VStack(alignment: .leading) {
-            HStack(alignment: .center) {
-                // User profile picture
-                Image("default_prof_pic")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .padding(.trailing, 10)
-                VStack(alignment: .leading) {
-                    // username
-                    Text(username)
-                        .font(.system(size: 14))
-                        .bold()
-                    // date posted
-                    Text("5/18/12 2:12pm")
-                        .font(.system(size: 14))
-                }
-                
-            }
-            // post content
-            Text(postContent)
-                .padding(.bottom, 5)
-                .font(.system(size: 12))
-            // interact buttons
-            HStack {
-                // Like post
-                Button(action: {
-                    print("User liked the post")
-                }) {
-                    Image(systemName: "heart")
+        
+        Button(action: {
+            forumManager.isPostDetailedPopupShowing = true
+        }) {
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    // User profile picture
+                    Image("default_prof_pic")
                         .resizable()
-                        .frame(width: 18, height: 18)
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .padding(.trailing, 10)
+                    VStack(alignment: .leading) {
+                        // username
+                        Text(username)
+                            .font(.system(size: 14))
+                            .bold()
+                        // date posted
+                        Text(datePosted.description)
+                            .font(.system(size: 14))
+                    }
                     
-                    Text("\(likeCount)")
                 }
-                // Comment
-                Button(action: {
-                    print("User commented on the post")
-                }) {
-                    Image(systemName: "text.bubble")
-                        .resizable()
-                        .frame(width: 18, height: 18)
-                    
-                    Text("\(commentCount)")
-                }
-                // Report
-                Button(action: {
-                    print("User commented on the post")
-                }) {
-                    Image(systemName: "exclamationmark.circle")
-                        .resizable()
-                        .frame(width: 18, height: 18)
+                // post content
+                Text(postContent)
+                    .padding(.bottom, 5)
+                    .font(.system(size: 12))
+                // interact buttons
+                HStack {
+                    // Like post
+                    Button(action: {
+                        print("User liked the post")
+                    }) {
+                        Image(systemName: "heart")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                        
+                        Text("\(likeCount)")
+                    }
+                    // Comment
+                    Button(action: {
+                        if let user = profileStateManager.userProfile {
+                            forumManager.publishComment(authorID: user.id!, category: self.category, postID: self.postID, content: "Default content of a comment")
+                        }
+                    }) {
+                        Image(systemName: "text.bubble")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                        
+                        Text("\(commentCount)")
+                    }
+                    // Report
+                    Button(action: {
+                        print("User commented on the post")
+                        // Save the post to firebase if the current signed in user exists
+                        if let user = profileStateManager.userProfile {
+                            //                        forumManager.publishComment(authorID: user.id!, content: postContents[Int.random(in: 0...4)])
+                            forumManager.publishComment(authorID: user.id!, category: category, postID: postID, content: "Test2")
+                            //                        print("firebase should have been send, user exists")
+                        }
+                    }) {
+                        Image(systemName: "exclamationmark.circle")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                    }
                 }
             }
+            .padding(.bottom, 10)
         }
-        .padding(.bottom, 10)
+        .sheet(isPresented: $forumManager.isPostDetailedPopupShowing) {
+            ForumSinglePostView(post: self)
+        }
         
         Divider()
             .background(Color.white)

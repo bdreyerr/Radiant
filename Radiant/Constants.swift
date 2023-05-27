@@ -31,6 +31,17 @@ struct Constants {
         static let forumCollectionNameSobriety = "forumSobriety"
         static let forumCollectionNamePersonalStories = "forumPersonalStories"
         static let forumCollectionNameAdvice = "forumAdvice"
+        
+        // Forum comments collection names
+        static let commentsCollectionNameGeneral = "commentsGeneral"
+        static let commentsCollectionNameDepression = "commentsDepression"
+        static let commentsCollectionNameStressAnxiety = "commentsStressAnxiety"
+        static let commentsCollectionNameRelationships = "commentsRelationships"
+        static let commentsCollectionNameRecovery = "commentsRecovery"
+        static let commentsCollectionNameAddiction = "commentsAddiction"
+        static let commentsCollectionNameSobriety = "commentsSobriety"
+        static let commentsCollectionNamePersonalStories = "commentPersonalStories"
+        static let commentsCollectionNameAdvice = "commentsAdvice"
     }
     
     struct AppleIDs {

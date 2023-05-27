@@ -30,3 +30,4 @@ struct WelcomeView_Previews: PreviewProvider {
             .environmentObject(ProfileStatusManager())
     }
 }
+

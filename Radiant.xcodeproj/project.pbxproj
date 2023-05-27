@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A195C8F2A229D4A00749695 /* ForumSinglePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */; };
 		1A56F3D62A05C3FF0057A6D6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */; };
 		1A56F3D92A06CFD50057A6D6 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3D82A06CFD50057A6D6 /* BottomNavBar.swift */; };
 		1A56F3DC2A06D5C80057A6D6 /* ProfileMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3DB2A06D5C80057A6D6 /* ProfileMainView.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumSinglePostView.swift; sourceTree = "<group>"; };
 		1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		1A56F3D82A06CFD50057A6D6 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		1A56F3DB2A06D5C80057A6D6 /* ProfileMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMainView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			children = (
 				1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */,
 				1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */,
+				1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */,
 			);
 			path = ForumViews;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 			files = (
 				1A8C6C182A0202F200676E5F /* LoginWithEmailView.swift in Sources */,
 				1AB0B8222A1D2C2B00DF1571 /* ForumPostComment.swift in Sources */,
+				1A195C8F2A229D4A00749695 /* ForumSinglePostView.swift in Sources */,
 				1AB0B8202A1D2B5300DF1571 /* ForumPost.swift in Sources */,
 				1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */,
 				1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */,
