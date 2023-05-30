@@ -29,8 +29,6 @@ struct BottomNavBar: View {
                 
                 TabView() {
                     Group {
-                        
-                        
                         HomeMainView()
                             .tabItem {
                                 Image(systemName: "house")

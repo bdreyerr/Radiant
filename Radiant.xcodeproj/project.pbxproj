@@ -14,6 +14,8 @@
 		1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */; };
 		1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */; };
 		1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3E32A08316A0057A6D6 /* UserProfile.swift */; };
+		1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */; };
+		1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */; };
 		1A8C6C182A0202F200676E5F /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */; };
 		1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C192A02122800676E5F /* RegisterView.swift */; };
 		1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */; };
@@ -48,6 +50,8 @@
 		1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
 		1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumMainView.swift; sourceTree = "<group>"; };
 		1A56F3E32A08316A0057A6D6 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCategoriesView.swift; sourceTree = "<group>"; };
+		1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantBotChatView.swift; sourceTree = "<group>"; };
 		1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		1A8C6C192A02122800676E5F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterWithEmailView.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */,
 				1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */,
 				1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */,
+				1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */,
+				1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */,
 			);
 			path = ForumViews;
 			sourceTree = "<group>";
@@ -347,10 +353,12 @@
 				1AB0B8202A1D2B5300DF1571 /* ForumPost.swift in Sources */,
 				1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */,
 				1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */,
+				1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */,
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
 				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
 				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,
+				1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,
