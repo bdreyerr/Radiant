@@ -42,6 +42,9 @@ struct Constants {
         static let commentsCollectionNameSobriety = "commentsSobriety"
         static let commentsCollectionNamePersonalStories = "commentPersonalStories"
         static let commentsCollectionNameAdvice = "commentsAdvice"
+        
+        // Message collection name
+        static let messageCollectionName = "messages"
     }
     
     struct AppleIDs {

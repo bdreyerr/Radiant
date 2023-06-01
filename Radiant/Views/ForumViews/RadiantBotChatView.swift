@@ -11,6 +11,10 @@ struct RadiantBotChatView: View {
     
     @State var text: String
     
+    @EnvironmentObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    @StateObject var chatManager = ChatManager()
+    
     var body: some View {
         ZStack {
             
@@ -46,30 +50,33 @@ struct RadiantBotChatView: View {
                 HStack {
                     TextField("Enter text", text: $text)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 40).foregroundColor(.white))
+                        .background(RoundedRectangle(cornerRadius: 40).foregroundColor(.white)).frame(maxWidth: 360, maxHeight: 40)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 40).stroke(Color.black, lineWidth: 2)
-                        )
-                        .overlay(
-                            Button(action: {
-                                print("User sent a message")
-                                self.text = ""
-                            }) {
-                                Image(systemName: "paperplane")
-                                    .resizable()
-                                    .frame(maxWidth: 30, maxHeight: 30, alignment: .trailing)
-                                    .padding(.leading, 280)
-                                    .foregroundColor(.blue)
-                            }
-                            
+                            RoundedRectangle(cornerRadius: 40).stroke(Color.black, lineWidth: 2).frame(width: 360, height: 40)
                         )
                         .foregroundColor(.black)
-                        .frame(width: 360)
-                        .padding(.bottom, 100)
+//                        .padding(.bottom, 100)
+                        .padding(.leading, 70)
+                    
+                    Button(action: {
+                        if let user = profileStateManager.userProfile {
+                            chatManager.sendMessage(userID: user.id!, content: self.text)
+                        }
+                        self.text = ""
+                    }) {
+                        Image(systemName: "paperplane")
+                            .resizable()
+                            .frame(maxWidth: 30, maxHeight: 30, alignment: .trailing)
+                            .padding(.leading, 0)
+                            .foregroundColor(.blue)
+                            .padding(.trailing, 40)
+                    }
                 }
+                .padding(.bottom, 100)
             }
         }
         .background(Color.clear)
+        .environmentObject(chatManager)
     }
 }
 
