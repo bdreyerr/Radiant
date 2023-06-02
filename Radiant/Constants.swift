@@ -10,10 +10,6 @@ import Foundation
 
 struct Constants {
     static let appName = "Radiant"
-    static let cellIdentifier = "ReusableCell"
-    static let cellNibName = "MessageCell"
-    static let registerSegue = "RegisterToChat"
-    static let loginSegue = "LoginToChat"
     
     struct FStore {
         static let usersCollectionName = "users"
