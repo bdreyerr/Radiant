@@ -109,6 +109,3 @@ class ChatManager: ObservableObject {
     }
     
 }
-
-
-// hi
