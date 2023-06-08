@@ -47,11 +47,6 @@ struct RadiantBotChatView: View {
                         .foregroundColor(.white)
                 }
                 
-                
-                
-                
-                
-                
                 // This is the scroll view.
                 ScrollView {
                     
@@ -78,14 +73,9 @@ struct RadiantBotChatView: View {
                 HStack {
                     TextField("Enter text", text: $text)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 40).foregroundColor(.white)).frame(maxWidth: 360, maxHeight: 40)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 40).stroke(Color.black, lineWidth: 2).frame(width: 360, height: 40)
-//                        )
+                        .background(RoundedRectangle(cornerRadius: 40).foregroundColor(.white)).frame(minWidth: 320, maxWidth: 400, maxHeight: 40)
                         .foregroundColor(.black)
-//                        .padding(.bottom, 100)
-                    
-                        .padding(.leading, 70)
+                        .padding(.leading, 35)
                     
                     Button(action: {
                         if let user = profileStateManager.userProfile {
@@ -102,7 +92,7 @@ struct RadiantBotChatView: View {
                             .padding(.trailing, 40)
                     }
                 }
-                .padding(.bottom, 100)
+                .padding(.bottom, 180)
             }
         }
         .background(Color.clear)
@@ -174,7 +164,7 @@ struct MessageFromYou : View {
                 .padding(.trailing, 10)
             
         }
-        .padding(.trailing, 10)
+        .padding(.trailing, 30)
         
     }
 }
@@ -205,7 +195,7 @@ struct MessageFromBot : View {
             .cornerRadius(16)
             .padding(.leading, 0)
         }
-        .padding(.leading, 10)
+        .padding(.leading, 30)
         
     }
 }

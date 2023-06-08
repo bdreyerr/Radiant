@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A195C8F2A229D4A00749695 /* ForumSinglePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */; };
+		1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */; };
 		1A56F3D62A05C3FF0057A6D6 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */; };
 		1A56F3D92A06CFD50057A6D6 /* BottomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3D82A06CFD50057A6D6 /* BottomNavBar.swift */; };
 		1A56F3DC2A06D5C80057A6D6 /* ProfileMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3DB2A06D5C80057A6D6 /* ProfileMainView.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumSinglePostView.swift; sourceTree = "<group>"; };
+		1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreatePostView.swift; sourceTree = "<group>"; };
 		1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		1A56F3D82A06CFD50057A6D6 /* BottomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavBar.swift; sourceTree = "<group>"; };
 		1A56F3DB2A06D5C80057A6D6 /* ProfileMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMainView.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */,
 				1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */,
 				1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */,
+				1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */,
 			);
 			path = ForumViews;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
 				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,
 				1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */,
+				1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,

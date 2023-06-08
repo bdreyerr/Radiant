@@ -39,15 +39,17 @@ struct ForumDetailedView: View {
                 HStack {
                     // Create Post
                     Button(action: {
-                        // Save the post to firebase if the current signed in user exists
-                        if let user = profileStateManager.userProfile {
-                            forumManager.publishPost(authorID: user.id!, category: title ?? "General", content: postContents[Int.random(in: 0...4)])
-                            retrievePosts()
-                        }
+                        forumManager.isCreatePostPopupShowing = true
                     }) {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                             .frame(width: 20, height: 20)
+                    }
+                    .sheet(isPresented: $forumManager.isCreatePostPopupShowing) {
+                        ForumCreatePostView(title: title)
+                            .onDisappear(perform: {
+                                retrievePosts()
+                            })
                     }
                 }
                 .padding(.leading, 300)

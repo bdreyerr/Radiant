@@ -20,6 +20,7 @@ class ForumManager: ObservableObject {
 //    var posts: [ForumPost] = []
     
     @Published var isPostDetailedPopupShowing: Bool = false
+    @Published var isCreatePostPopupShowing: Bool = false
     
     // Firestore
     let db = Firestore.firestore()
@@ -81,6 +82,7 @@ class ForumManager: ObservableObject {
         do {
             try ref = db.collection(collectionName).addDocument(from: post)
             print("Adding document was successful, documentID: \(ref!.documentID)")
+            isCreatePostPopupShowing = false
         } catch {
             print("error adding post to collection")
         }
