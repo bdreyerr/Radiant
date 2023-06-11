@@ -20,8 +20,7 @@ struct ForumDetailedView: View {
     @State var posts: [ForumPost] = []
     
     let db = Firestore.firestore()
-    
-    var postContents = ["The dog was chasing a cat across the street.", "The man was eating a sandwich and drinking a glass of water.", "The boy was playing baseball with his friends in the park.", "The girl was playing soccer with her team on the field.,", "The sun was shining brightly in the sky, and the birds were singing."]
+
     
     var body: some View {
         
@@ -130,11 +129,7 @@ struct Post: View {
     
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
-    
-    var postContents = ["The dog was chasing a cat across the street.", "The man was eating a sandwich and drinking a glass of water.", "The boy was playing baseball with his friends in the park.", "The girl was playing soccer with her team on the field.,", "The sun was shining brightly in the sky, and the birds were singing."]
-    
-    
-    
+
     
     var body: some View {
         // Post
@@ -179,9 +174,7 @@ struct Post: View {
                     }
                     // Comment
                     Button(action: {
-                        if let user = profileStateManager.userProfile {
-                            forumManager.publishComment(authorID: user.id!, category: self.category, postID: self.postID, content: "Default content of a comment")
-                        }
+                        forumManager.isCreateCommentPopupShowing = true
                     }) {
                         Image(systemName: "text.bubble")
                             .resizable()
@@ -189,15 +182,12 @@ struct Post: View {
                         
                         Text("\(commentCount)")
                     }
+                    .sheet(isPresented: $forumManager.isCreateCommentPopupShowing) {
+                        ForumCreateCommentView(title: self.category, post: self)
+                    }
                     // Report
                     Button(action: {
-                        print("User commented on the post")
-                        // Save the post to firebase if the current signed in user exists
-                        if let user = profileStateManager.userProfile {
-                            //                        forumManager.publishComment(authorID: user.id!, content: postContents[Int.random(in: 0...4)])
-                            forumManager.publishComment(authorID: user.id!, category: category, postID: postID, content: "Test2")
-                            //                        print("firebase should have been send, user exists")
-                        }
+                        print("User wanted to report the post")
                     }) {
                         Image(systemName: "exclamationmark.circle")
                             .resizable()

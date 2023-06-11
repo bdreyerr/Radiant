@@ -69,12 +69,12 @@ struct ForumCreatePostView: View {
                     
                 }
                 
-                Rectangle()
-                    .frame(width: 400, height: 200)
-                    .background(Color.gray)
-                    .foregroundColor(.gray)
-                    .overlay(TextField("Enter text here", text: $text).foregroundColor(.white)
-                        .padding(.all, 8))
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.blue, lineWidth: 4)
+                    .frame(maxWidth: 350, maxHeight: 100)
+                    .overlay(
+                        TextField("Enter post here", text: $text)
+                    )
                 
             }
             .offset(y: -200)

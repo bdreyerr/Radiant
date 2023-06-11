@@ -29,57 +29,69 @@ struct ForumSinglePostView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                
-                // Close popup Button
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundColor(.white)
-                    .font(.system(size: 30))
-                    .offset(x: 170, y: -300)
-                    .onTapGesture {
-                        // Dismiss the register with email popup on tap
-                        forumManager.isPostDetailedPopupShowing = false
-                    }
-                
-                VStack {
-                    HStack {
-                        // Author profile picture
-                        Image("default_prof_pic")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            .padding(.trailing, 10)
+                if let post = post {
+                    
+                    VStack(alignment: .leading) {
                         
-                        VStack(alignment: .leading) {
+                        
+                        HStack(alignment: .top) {
+                            // Author profile picture
+                            // TODO: Add storage for profile pictures and a lookup function based on userID
+                            Image("default_prof_pic")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                                .padding(.trailing, 10)
                             
-                            // Author Name
-                            Text("username")
+                            VStack(alignment: .leading) {
+                                
+                                // Author Name
+                                Text(post.username)
+                                
+                                // Date posted
+                                Text("\(post.datePosted)")
+                            }
                             
-                            // Date posted
-                            Text("May 26th 2023, 4:54pm")
                         }
                         
-                    }
-                    
-                    // Post content
-                    Text("This is the content of the post. It shouldn't exceed the size of the HStack above it.")
-                        .padding(.leading, 20)
-                        .padding(.trailing, 20)
-                    
-                    // TODO: Make this same width as the HStack
-                    Divider()
-                        .background(Color.white)
-                    
-                    // List of comments
-                    VStack {
-//                        Comment()
-//                        Comment()
+                        // Post content
+                        Text(post.postContent)
                         
-                        ForEach(comments) { comment in
-                            Comment()
+                        // TODO: Make this same width as the HStack
+                        Divider()
+                            .background(Color.white)
+                        
+                        Button(action: {
+                            forumManager.isPostDetailedPopupShowing = false
+                            forumManager.isCreateCommentPopupShowing = true
+                        }) {
+                            Image(systemName: "square.and.pencil")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding(.trailing, 10)
+                                .padding(.leading, 340)
+                        }
+                        .sheet(isPresented: $forumManager.isCreateCommentPopupShowing) {
+                            ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
+                        }
+                        
+                        
+                        // List of comments
+                        VStack {
+                            ScrollView{
+                                ForEach(comments) { comment in
+                                    Comment(authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentContent: comment.content!, likeCount: comment.likeCount!)
+                                }
+                            }
+                           
                         }
                     }
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
+//                    .offset(y: -150)
+                    .padding(.top, 150)
                 }
-            }.offset(y: 160)
+            }
         }
         .foregroundColor(Color(uiColor: .white))
         .onAppear {
@@ -125,11 +137,17 @@ struct ForumSinglePostView_Previews: PreviewProvider {
 
 
 struct Comment: View {
+    
+    let authorID: String
+    let username: String
+    let datePosted: Date
+    let commentContent: String
+    let likeCount: Int
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack {
                 // Author profile picture
-                Image("default_prof_pic")
+                Image("Selection Mix II")
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
@@ -137,13 +155,41 @@ struct Comment: View {
                 
                 VStack(alignment: .leading) {
                     // Author Name
-                    Text("username")
+                    Text(self.username)
+                        .font(.system(size: 14))
                     
                     // Date posted
-                    Text("May 26th 2023, 4:54pm")
+                    Text("\(self.datePosted)")
+                        .font(.system(size: 14))
                 }
             }
-            Text("This is the comment content.")
+            Text(self.commentContent)
+                .font(.system(size: 14))
+            
+            HStack {
+                // Like comment
+                Button(action: {
+                    print("User liked the comment")
+                }) {
+                    Image(systemName: "heart")
+                        .resizable()
+                        .frame(width: 14, height: 14)
+                    
+                    Text("\(likeCount)")
+                        .font(.system(size: 12))
+                }
+                
+                // Report
+                Button(action: {
+                    print("User wanted to report the comment")
+                }) {
+                    Image(systemName: "exclamationmark.circle")
+                        .resizable()
+                        .frame(width: 14, height: 14)
+                }
+            }
+            
         }
+        .padding(.leading, 10)
     }
 }

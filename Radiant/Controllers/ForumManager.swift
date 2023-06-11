@@ -21,6 +21,7 @@ class ForumManager: ObservableObject {
     
     @Published var isPostDetailedPopupShowing: Bool = false
     @Published var isCreatePostPopupShowing: Bool = false
+    @Published var isCreateCommentPopupShowing: Bool = false
     
     // Firestore
     let db = Firestore.firestore()

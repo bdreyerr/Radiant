@@ -43,6 +43,7 @@
 		1AC9905F2A01794F00851A14 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC9905E2A01794F00851A14 /* WelcomeView.swift */; };
 		1AC990632A017BFB00851A14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1AC990622A017BFB00851A14 /* GoogleService-Info.plist */; };
 		1AC990692A018B1000851A14 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990682A018B1000851A14 /* Constants.swift */; };
+		1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,7 @@
 		1AC990622A017BFB00851A14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1AC990642A017FDB00851A14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1AC990682A018B1000851A14 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreateCommentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */,
 				1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */,
 				1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */,
+				1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */,
 			);
 			path = ForumViews;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */,
 				1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */,
 				1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */,
+				1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */,
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
 				1A6585E42A29091E00B4DE6D /* Message.swift in Sources */,
