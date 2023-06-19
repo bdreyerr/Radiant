@@ -129,7 +129,7 @@ struct ForumSinglePostView: View {
 
 struct ForumSinglePostView_Previews: PreviewProvider {
     static var previews: some View {
-        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likeCount: 1, commentCount: 1))
+        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likeCount: 1, commentCount: 1, title: "General"))
             .environmentObject(ProfileStatusManager())
             .environmentObject(ForumManager())
     }

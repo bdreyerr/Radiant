@@ -23,6 +23,8 @@ class ForumManager: ObservableObject {
     @Published var isCreatePostPopupShowing: Bool = false
     @Published var isCreateCommentPopupShowing: Bool = false
     
+    @Published var isReportPostAlertShowing: Bool = false
+    
     // Firestore
     let db = Firestore.firestore()
     
@@ -74,7 +76,7 @@ class ForumManager: ObservableObject {
         print("User wanted to publish a post")
         
         // Create the Post Object and save it to the corresponding firestore collection
-        let post = ForumPost(authorID: authorID, category: category, date: Date.now, content: content, likeCount: 1)
+        let post = ForumPost(authorID: authorID, category: category, date: Date.now, content: content, likeCount: 1, reportCount: 0)
         // TODO: Add if let category = post.category to make sure the post has a corresponding cateogry to post to
         
         let collectionName = getFstoreForumCategoryCollectionName(category: category)
@@ -167,6 +169,25 @@ class ForumManager: ObservableObject {
         }
         
         return categoryName
+    }
+    
+    func reportForumPost(postID: String, reasonForReport: Int, categoryName: String) {
+//        let reasonsForReport = ["Offensive", "Harmful or Dangerous", "Off Topic or Irrelevant", "Spam or Advertisment"]
+        
+        let documentRef = db.collection(getFstoreForumCategoryCollectionName(category: categoryName)).document(postID)
+        
+        print("The post being reported: \(postID)")
+        
+        let field = "reportCount"
+        documentRef.updateData([
+            field: FieldValue.increment(Int64(1))
+        ]) { err in
+            if let err = err {
+                print("There was an error updating the reportCount \(err.localizedDescription)")
+            } else {
+                print("Report count updated successfully")
+            }
+        }
     }
     
 //    func retrievePostsfromFStore(collectionName: String) async -> [ForumPost] {

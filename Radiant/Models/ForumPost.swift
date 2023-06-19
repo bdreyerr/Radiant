@@ -16,4 +16,5 @@ struct ForumPost: Codable, Identifiable {
     var date: Date?
     var content: String?
     var likeCount: Int?
+    var reportCount: Int?
 }

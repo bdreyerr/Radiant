@@ -63,8 +63,14 @@ struct ForumDetailedView: View {
                         // look up the username with their id
                         
                         ForEach(posts) { post in
-                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1)
+                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
                         }
+                        
+//                        List(posts) { post in
+//                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
+//                        }.onAppear() {
+//                            self.retrievePosts()
+//                        }
                         
                     }
                     .padding(.trailing, 30)
@@ -127,6 +133,8 @@ struct Post: View {
     @State var likeCount: Int
     @State var commentCount: Int
     
+    let title: String?
+    
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
 
@@ -188,11 +196,30 @@ struct Post: View {
                     // Report
                     Button(action: {
                         print("User wanted to report the post")
+                        forumManager.isReportPostAlertShowing = true
                     }) {
                         Image(systemName: "exclamationmark.circle")
                             .resizable()
                             .frame(width: 18, height: 18)
+                    }.alert("Reason for report", isPresented: $forumManager.isReportPostAlertShowing) {
+                        Button("Offensive", action: {
+                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 0, categoryName: self.title!)
+                            
+                        })
+                        Button("Harmful or Dangerous", action: {
+                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 1, categoryName: self.title!)
+                        })
+                        Button("Off Topic or Irrelevant", action: {
+                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 2, categoryName: self.title!)
+                        })
+                        Button("Spam or Advertisment", action: {
+                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 3, categoryName: self.title!)
+                        })
+                        Button("Cancel", action: {
+                            forumManager.isReportPostAlertShowing = false
+                        })
                     }
+                    
                 }
             }
             .padding(.bottom, 10)
