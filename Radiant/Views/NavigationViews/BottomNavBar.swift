@@ -57,6 +57,16 @@ struct BottomNavBar: View {
                                         tabBarBackground = "Forum_BG3"
                                     }
                             }
+                        ChatMainView(text: "")
+                            .tabItem {
+                                Image(systemName: "message")
+                                    .background(Color.white)
+                                    .foregroundColor(Color.blue)
+                                    .onAppear {
+                                        tabBarBackground = "Home_BG"
+                                    }
+                            }
+                        
                         ProfileMainView()
                             .tabItem {
                                 Image(systemName: "person.fill")

@@ -137,65 +137,65 @@ struct RadiantBotChatView_Previews: PreviewProvider {
 }
 
 
-struct MessageFromYou : View {
-    let text: String?
-    var body: some View {
-        
-        HStack {
-            ZStack {
-                // Create the bubble shape
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.blue)
-                
-                // Add the text content
-                Text(text ?? "No text")
-                    .padding()
-                    .foregroundColor(.white)
-            }
-            .frame(maxWidth: 300, maxHeight: 30)
-            .background(Color.white)
-            .cornerRadius(16)
-            .padding(.leading, 60)
-            
-            Image("default_prof_pic")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
-                .padding(.trailing, 10)
-            
-        }
-        .padding(.trailing, 30)
-        
-    }
-}
-
-struct MessageFromBot : View {
-    let text: String?
-    var body: some View {
-        
-        HStack {
-            Image("RadiantBotPic")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
-                .padding(.trailing, 10)
-            
-            ZStack {
-                // Create the bubble shape
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.black.opacity(0.80))
-                
-                // Add the text content
-                Text(text ?? "No text")
-                    .padding()
-                    .foregroundColor(.white)
-            }
-            .frame(maxWidth: 160, maxHeight: 30)
-            .background(Color.white)
-            .cornerRadius(16)
-            .padding(.leading, 0)
-        }
-        .padding(.leading, 30)
-        
-    }
-}
+//struct MessageFromYou : View {
+//    let text: String?
+//    var body: some View {
+//
+//        HStack {
+//            ZStack {
+//                // Create the bubble shape
+//                RoundedRectangle(cornerRadius: 16)
+//                    .fill(Color.blue)
+//
+//                // Add the text content
+//                Text(text ?? "No text")
+//                    .padding()
+//                    .foregroundColor(.white)
+//            }
+//            .frame(maxWidth: 300, maxHeight: 30)
+//            .background(Color.white)
+//            .cornerRadius(16)
+//            .padding(.leading, 60)
+//
+//            Image("default_prof_pic")
+//                .resizable()
+//                .frame(width: 40, height: 40)
+//                .clipShape(Circle())
+//                .padding(.trailing, 10)
+//
+//        }
+//        .padding(.trailing, 30)
+//
+//    }
+//}
+//
+//struct MessageFromBot : View {
+//    let text: String?
+//    var body: some View {
+//
+//        HStack {
+//            Image("RadiantBotPic")
+//                .resizable()
+//                .frame(width: 40, height: 40)
+//                .clipShape(Circle())
+//                .padding(.trailing, 10)
+//
+//            ZStack {
+//                // Create the bubble shape
+//                RoundedRectangle(cornerRadius: 16)
+//                    .fill(Color.black.opacity(0.80))
+//
+//                // Add the text content
+//                Text(text ?? "No text")
+//                    .padding()
+//                    .foregroundColor(.white)
+//            }
+//            .frame(maxWidth: 160, maxHeight: 30)
+//            .background(Color.white)
+//            .cornerRadius(16)
+//            .padding(.leading, 0)
+//        }
+//        .padding(.leading, 30)
+//
+//    }
+//}

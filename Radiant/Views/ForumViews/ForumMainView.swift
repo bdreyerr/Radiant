@@ -28,7 +28,6 @@ struct ForumMainView: View {
                 VStack {
                     // Icons
                     HStack {
-                        
                         // Notifications
                         Image(systemName: "bell")
                             .resizable()
@@ -44,31 +43,8 @@ struct ForumMainView: View {
                     
                     
                     ZStack {
-                        Capsule()
-                            .frame(width:60,height:33)
-                            .foregroundColor(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6039008336)))
-                        ZStack{
-                            Circle()
-                                .frame(width:30, height:30)
-                                .foregroundColor(.white)
-                            Image(systemName: toggleOn ? "message.fill" : "person.2.fill")
-                                .foregroundColor(.black)
-                        }
-                        .shadow(color: .black.opacity(0.14), radius: 4, x: 0, y: 2)
-                        .offset(x:toggleOn ? 18 : -18)
-                        .padding(10)
-                        .animation(.spring(), value: toggleOn)
-                    }
-                    .onTapGesture {
-                        self.toggleOn.toggle()
-                    }
-                    
-                    if (!toggleOn) {
                         ForumCategoriesView()
-                    } else {
-                        RadiantBotChatView(text: "")
                     }
-                    
                 }
             }
         }

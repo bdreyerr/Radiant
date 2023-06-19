@@ -143,6 +143,7 @@ struct Post: View {
         // Post
         
         Button(action: {
+            print("The post ID that was clicked on: \(self.postID)")
             forumManager.isPostDetailedPopupShowing = true
         }) {
             VStack(alignment: .leading) {
