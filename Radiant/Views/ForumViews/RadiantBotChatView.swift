@@ -5,6 +5,9 @@
 //  Created by Ben Dreyer on 5/30/23.
 //
 
+
+// THIS VIEW IS DEPRECATED
+
 import SwiftUI
 import Firebase
 import FirebaseCore

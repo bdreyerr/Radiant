@@ -28,6 +28,9 @@ class ForumManager: ObservableObject {
     // Firestore
     let db = Firestore.firestore()
     
+    @Published var focusedPostID: String = ""
+    @Published var focusedPostCategoryName: String = ""
+    
     
     // This function retrieves the posts of a certain category when the user opens that category's page
     // TODO: Find a way to limit the number of posts loaded, and load more when the user scrolls down

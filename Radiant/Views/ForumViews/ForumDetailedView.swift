@@ -62,8 +62,14 @@ struct ForumDetailedView: View {
                     VStack(alignment: .leading) {
                         // look up the username with their id
                         
-                        ForEach(posts) { post in
-                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
+                        ForEach(posts, id: \.id) { post in
+                            if post.id != nil {
+                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
+                                    .id(post.id)
+                            } else {
+                                Text("Unable to retrieve post")
+                            }
+                            
                         }
                         
 //                        List(posts) { post in
@@ -124,12 +130,12 @@ struct ForumDetailedView_Previews: PreviewProvider {
 
 
 struct Post: View {
-    let postID: String
-    let category: String
-    let userPhoto: String
-    let username: String
-    let datePosted: Date
-    let postContent: String
+    var postID: String
+    var category: String
+    var userPhoto: String
+    var username: String
+    var datePosted: Date
+    var postContent: String
     @State var likeCount: Int
     @State var commentCount: Int
     
@@ -144,6 +150,8 @@ struct Post: View {
         
         Button(action: {
             print("The post ID that was clicked on: \(self.postID)")
+            forumManager.focusedPostID = self.postID
+            forumManager.focusedPostCategoryName = self.category
             forumManager.isPostDetailedPopupShowing = true
         }) {
             VStack(alignment: .leading) {
@@ -197,6 +205,7 @@ struct Post: View {
                     // Report
                     Button(action: {
                         print("User wanted to report the post")
+                        print("The post that the user wanted to report: \(self.postID)")
                         forumManager.isReportPostAlertShowing = true
                     }) {
                         Image(systemName: "exclamationmark.circle")
@@ -226,7 +235,7 @@ struct Post: View {
             .padding(.bottom, 10)
         }
         .sheet(isPresented: $forumManager.isPostDetailedPopupShowing) {
-            ForumSinglePostView(post: self)
+            ForumSinglePostView(post: Post(postID: "0", category: "0", userPhoto: "0", username: "0", datePosted: Date.now, postContent: "0", likeCount: 1, commentCount: 1, title: "1"), postID: nil, categoryName: nil)
         }
         
         Divider()

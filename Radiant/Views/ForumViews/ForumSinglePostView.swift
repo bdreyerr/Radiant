@@ -8,13 +8,19 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct ForumSinglePostView: View {
     
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
     
-    let post: Post?
+    // Todo: Rework this view taking in a view as an argument, and make it the postID.
+    //       Then use firebase to look up the info from that post
+    @State var post: Post?
+    let postID: String?
+    let categoryName: String?
+    
     @State var comments: [ForumPostComment] = []
     
     let db = Firestore.firestore()
@@ -37,7 +43,7 @@ struct ForumSinglePostView: View {
                         HStack(alignment: .top) {
                             // Author profile picture
                             // TODO: Add storage for profile pictures and a lookup function based on userID
-                            Image("default_prof_pic")
+                            Image(post.userPhoto)
                                 .resizable()
                                 .frame(width: 40, height: 40)
                                 .clipShape(Circle())
@@ -95,10 +101,46 @@ struct ForumSinglePostView: View {
         }
         .foregroundColor(Color(uiColor: .white))
         .onAppear {
+            retrievePost()
             retrieveComments()
-            print("Detailed post popped up, post id: \(self.post?.postID ?? "No post id")")
+//            print("Detailed post popped up, post id: \(self.post?.postID ?? "No post id")")
         }
     }
+    
+    func retrievePost() {
+        print("THIS IS IN SINGLE POST VIEW, THE FORUM POST ID IS: \(forumManager.focusedPostID)")
+        
+        let docRef = db.collection(forumManager.getFstoreForumCategoryCollectionName(category: forumManager.focusedPostCategoryName)).document(forumManager.focusedPostID)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                self.post?.postID = forumManager.focusedPostID
+                self.post?.category = forumManager.focusedPostCategoryName
+                self.post?.userPhoto = "default_prof_pic"
+                self.post?.username = document.data()!["authorID"] as! String
+//                self.post?.datePosted = document.data()!["date"] as! Date
+                self.post?.postContent = document.data()!["content"] as! String
+                self.post?.likeCount = document.data()!["likeCount"] as! Int
+                self.post?.commentCount = 1
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+    
+    
+//    let postID: String
+//    let category: String
+//    let userPhoto: String
+//    let username: String
+//    let datePosted: Date
+//    let postContent: String
+//    @State var likeCount: Int
+//    @State var commentCount: Int
+    
+    //                self.post = Post(postID: forumManager.focusedPostID, category: forumManager.focusedPostCategoryName, userPhoto: "default_prof_pic", username: dataDescription["authorID"], datePosted: dataDescription["date"], postContent: dataDescription["content"], likeCount: dataDescription["likeCount"], commentCount: 1, title: forumManager.focusedPostCategoryName)
     
     
     func retrieveComments() {
@@ -129,7 +171,7 @@ struct ForumSinglePostView: View {
 
 struct ForumSinglePostView_Previews: PreviewProvider {
     static var previews: some View {
-        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likeCount: 1, commentCount: 1, title: "General"))
+        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likeCount: 1, commentCount: 1, title: "General"), postID: "23", categoryName: "General")
             .environmentObject(ProfileStatusManager())
             .environmentObject(ForumManager())
     }
