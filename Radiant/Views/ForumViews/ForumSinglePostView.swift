@@ -18,6 +18,8 @@ struct ForumSinglePostView: View {
     // Todo: Rework this view taking in a view as an argument, and make it the postID.
     //       Then use firebase to look up the info from that post
     @State var post: Post?
+    @State var likeCount: Int
+    
     let postID: String?
     let categoryName: String?
     
@@ -72,13 +74,33 @@ struct ForumSinglePostView: View {
                             HStack(alignment: .center) {
                                 
                                 Button(action: {
-                                    print("user liked the post")
+                                    if let user = profileStateManager.userProfile {
+                                        
+                                            if forumManager.isFocusedPostLikedByCurrentUser{
+                                                forumManager.removeLikeFromPost(postID: post.postID, postCategory: post.category, userID: user.id!)
+                                                self.likeCount -= 1
+                                            } else {
+                                                forumManager.likePost(postID: post.postID, postCategory: post.category, userID: user.id!)
+                                                self.likeCount += 1
+                                            }
+                                            forumManager.isFocusedPostLikedByCurrentUser = !forumManager.isFocusedPostLikedByCurrentUser
+                                    }
                                 }) {
-                                    Image(systemName: "heart")
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-                                        .padding(.trailing, 10)
-    //                                    .padding(.leading, 340)
+                                    
+                                    if (forumManager.isFocusedPostLikedByCurrentUser) {
+                                        Image(systemName: "heart.fill")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                            .foregroundColor(.red)
+                                    } else {
+                                        Image(systemName: "heart")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                    }
+                                    
+                                    Text("\(self.likeCount)")
+                                    
+                                    
                                 }.padding(.trailing, 15)
                                 
                                 Button(action: {
@@ -87,14 +109,13 @@ struct ForumSinglePostView: View {
                                     Image(systemName: "arrowshape.turn.up.left")
                                         .resizable()
                                         .frame(width: 20, height: 20)
-                                        .padding(.trailing, 10)
     //                                    .padding(.leading, 340)
                                 }
                                 .sheet(isPresented: $forumManager.isCreateCommentPopupShowing, onDismiss: {
                                     self.retrieveComments()
                                 }) {
                                     ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
-                                }.padding(.trailing, 15)
+                                }.padding(.trailing, 20)
                                 
                                 
                                 Button(action: {
@@ -142,7 +163,9 @@ struct ForumSinglePostView: View {
                         VStack {
                             ScrollView{
                                 ForEach(comments) { comment in
-                                    Comment(authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentContent: comment.content!, likeCount: comment.likeCount!)
+                                    
+                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                    
                                 }
                             }
                            
@@ -174,8 +197,20 @@ struct ForumSinglePostView: View {
                 self.post?.username = document.data()!["authorID"] as! String
 //                self.post?.datePosted = document.data()!["date"] as! Date
                 self.post?.postContent = document.data()!["content"] as! String
-                self.post?.likeCount = document.data()!["likeCount"] as! Int
+                self.post?.likes = document.data()!["likes"] as! [String]
                 self.post?.commentCount = 1
+                
+                // please work idk
+                self.likeCount = self.post!.likes.count
+                
+                if let user = profileStateManager.userProfile {
+                    if ((self.post?.likes.contains(user.id!)) == true) {
+                        forumManager.isFocusedPostLikedByCurrentUser = true
+                    } else {
+                        forumManager.isFocusedPostLikedByCurrentUser = false
+                    }
+                }
+                
                 self.retrieveComments()
             } else {
                 print("Document does not exist")
@@ -194,14 +229,25 @@ struct ForumSinglePostView: View {
                 print("Error retrieving comments: \(err.localizedDescription)")
             } else if let querySnapshot = querySnapshot {
                 for document in querySnapshot.documents {
-                    let comment = ForumPostComment(
+                    var comment = ForumPostComment(
                         id: document.documentID,
                         postID: document.data()["postID"] as? String,
                         parentCommentID: document.data()["parentCommentID"] as? String,
                         authorID: document.data()["authorID"] as? String,
                         date: document.data()["date"] as? Date,
+                        commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
-                        likeCount: document.data()["likeCount"] as? Int)
+                        likes: document.data()["likes"] as? [String],
+                        isCommentLikedByCurrentUser: false)
+                    
+                    if let user = profileStateManager.userProfile {
+                        if ((comment.likes!.contains(user.id!)) == true) {
+                            comment.isCommentLikedByCurrentUser = true
+                        } else {
+                            comment.isCommentLikedByCurrentUser = false
+                        }
+                    }
+                    
                     comments.append(comment)
                 }
             }
@@ -209,22 +255,31 @@ struct ForumSinglePostView: View {
     }
 }
 
-struct ForumSinglePostView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likeCount: 1, commentCount: 1, title: "General"), postID: "23", categoryName: "General")
-            .environmentObject(ProfileStatusManager())
-            .environmentObject(ForumManager())
-    }
-}
+//struct ForumSinglePostView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likes: ["asdsad2"], commentCount: 1, title: "General"), postID: "23", categoryName: "General", profileStateManager: ProfileStatusManager(), forumManager: ForumManager(), )
+//            .environmentObject(ProfileStatusManager())
+//            .environmentObject(ForumManager())
+//    }
+//}
 
 
 struct Comment: View {
     
+    @EnvironmentObject var forumManager: ForumManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    
+    let commentID: String
     let authorID: String
     let username: String
     let datePosted: Date
+    let commentCategory: String
     let commentContent: String
-    let likeCount: Int
+    var likes: [String]
+    
+    @State var likeCount: Int
+    @State var isCommentLikedByCurrentUser: Bool
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -252,12 +307,31 @@ struct Comment: View {
                 // Like comment
                 Button(action: {
                     print("User liked the comment")
-                }) {
-                    Image(systemName: "heart")
-                        .resizable()
-                        .frame(width: 14, height: 14)
                     
-                    Text("\(likeCount)")
+                    if let user = profileStateManager.userProfile {
+                        if self.isCommentLikedByCurrentUser {
+                            forumManager.removeLikeFromComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
+                            self.likeCount -= 1
+                        } else {
+                            forumManager.likeComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
+                            self.likeCount += 1
+                        }
+                        
+                        self.isCommentLikedByCurrentUser = !self.isCommentLikedByCurrentUser
+                    }
+                    
+                }) {
+                    if self.isCommentLikedByCurrentUser {
+                        Image(systemName: "heart.fill")
+                            .resizable()
+                            .frame(width: 14, height: 14)
+                            .foregroundColor(.red)
+                    } else {
+                        Image(systemName: "heart")
+                            .resizable()
+                            .frame(width: 14, height: 14)
+                    }
+                    Text("\(self.likeCount)")
                         .font(.system(size: 12))
                 }
                 

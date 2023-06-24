@@ -63,7 +63,7 @@ struct ForumDetailedView: View {
                         // look up the username with their id
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
-                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
+                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
                                     .id(post.id)
                             } else {
                                 Text("Unable to retrieve post")
@@ -101,7 +101,7 @@ struct ForumDetailedView: View {
                         category: document.data()["category"] as? String,
                         date: document.data()["date"] as? Date,
                         content: document.data()["content"] as? String,
-                        likeCount: document.data()["likeCount"] as? Int)
+                        likes: document.data()["likes"] as? [String])
                     posts.append(post)
                 }
             }
@@ -127,7 +127,8 @@ struct Post: View {
     var username: String
     var datePosted: Date
     var postContent: String
-    @State var likeCount: Int
+    var likes: [String]
+    
     @State var commentCount: Int
     
     let title: String?
@@ -139,7 +140,7 @@ struct Post: View {
     var body: some View {
         // Post
         
-        NavigationLink(destination: ForumSinglePostView(post: Post(postID: "0", category: "0", userPhoto: "default_prof_pic", username: "0", datePosted: Date.now, postContent: "0", likeCount: 1, commentCount: 1, title: "1"), postID: nil, categoryName: nil)) {
+        NavigationLink(destination: ForumSinglePostView(post: Post(postID: "0", category: "0", userPhoto: "default_prof_pic", username: "0", datePosted: Date.now, postContent: "0", likes: [], commentCount: 1, title: "1"), likeCount: 0, postID: nil, categoryName: nil)) {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
                         // User profile picture
@@ -166,15 +167,11 @@ struct Post: View {
                     // interact buttons
                     HStack {
                         // Like post
-                        Button(action: {
-                            print("User liked the post")
-                        }) {
-                            Image(systemName: "heart")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                            
-                            Text("\(likeCount)")
-                        }
+                        Image(systemName: "heart")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                        
+                        Text("\(likes.count)")
                         
                         // Comment count (opens single post view)
                         Image(systemName: "text.bubble")

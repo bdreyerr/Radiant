@@ -15,6 +15,10 @@ struct ForumPostComment: Codable, Identifiable {
     var parentCommentID: String?
     var authorID: String?
     var date: Date?
+    var commentCategory: String?
     var content: String?
-    var likeCount: Int?
+    var likes: [String]?
+    
+    // Var will never be stored in firebase, only used when translating back from firebase -> swift
+    var isCommentLikedByCurrentUser: Bool?
 }

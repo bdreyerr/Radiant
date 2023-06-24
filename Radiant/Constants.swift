@@ -36,7 +36,7 @@ struct Constants {
         static let commentsCollectionNameRecovery = "commentsRecovery"
         static let commentsCollectionNameAddiction = "commentsAddiction"
         static let commentsCollectionNameSobriety = "commentsSobriety"
-        static let commentsCollectionNamePersonalStories = "commentPersonalStories"
+        static let commentsCollectionNamePersonalStories = "commentsPersonalStories"
         static let commentsCollectionNameAdvice = "commentsAdvice"
         
         // Message collection name

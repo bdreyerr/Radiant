@@ -29,6 +29,7 @@ class ForumManager: ObservableObject {
     
     @Published var focusedPostID: String = ""
     @Published var focusedPostCategoryName: String = ""
+    @Published var isFocusedPostLikedByCurrentUser: Bool = false
     
     
     // This function retrieves the posts of a certain category when the user opens that category's page
@@ -43,42 +44,42 @@ class ForumManager: ObservableObject {
 //        return posts
 //    }
     
-    func retrievePosts(postsInView: inout [ForumPost], category: String) {
-        let collectionName = getFstoreForumCategoryCollectionName(category: category)
-        let collectionRef = db.collection(collectionName)
-        
-        var posts: [ForumPost] = []
-        
-        postsInView = []
-        
-        collectionRef.getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Erorr retrieving forum posts from firestore: \(err.localizedDescription)")
-            } else if let querySnapshot = querySnapshot {
-                for document in querySnapshot.documents {
-                    let post = ForumPost(
-                        id: document.documentID, authorID: document.data()["authorID"] as? String,
-                            category: document.data()["category"] as? String,
-                            date: document.data()["date"] as? Date,
-                            content: document.data()["content"] as? String,
-                            likeCount: document.data()["likeCount"] as? Int)
-                    posts.append(post)
-                }
-            }
-        }
-        
-        for post in posts {
-            postsInView.append(post)
-        }
-        
-    }
+//    func retrievePosts(postsInView: inout [ForumPost], category: String) {
+//        let collectionName = getFstoreForumCategoryCollectionName(category: category)
+//        let collectionRef = db.collection(collectionName)
+//
+//        var posts: [ForumPost] = []
+//
+//        postsInView = []
+//
+//        collectionRef.getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Erorr retrieving forum posts from firestore: \(err.localizedDescription)")
+//            } else if let querySnapshot = querySnapshot {
+//                for document in querySnapshot.documents {
+//                    let post = ForumPost(
+//                        id: document.documentID, authorID: document.data()["authorID"] as? String,
+//                            category: document.data()["category"] as? String,
+//                            date: document.data()["date"] as? Date,
+//                            content: document.data()["content"] as? String,
+//                            likeCount: document.data()["likeCount"] as? Int)
+//                    posts.append(post)
+//                }
+//            }
+//        }
+//
+//        for post in posts {
+//            postsInView.append(post)
+//        }
+//
+//    }
     
     
     func publishPost(authorID: String, category: String, content: String) {
         print("User wanted to publish a post")
         
         // Create the Post Object and save it to the corresponding firestore collection
-        let post = ForumPost(authorID: authorID, category: category, date: Date.now, content: content, likeCount: 1, reportCount: 0)
+        let post = ForumPost(authorID: authorID, category: category, date: Date.now, content: content, reportCount: 0, likes: [authorID])
         // TODO: Add if let category = post.category to make sure the post has a corresponding cateogry to post to
         
         let collectionName = getFstoreForumCategoryCollectionName(category: category)
@@ -93,10 +94,45 @@ class ForumManager: ObservableObject {
         }
     }
     
+    func likePost(postID: String, postCategory: String, userID: String) {
+        
+        print("User: \(userID) wanted to like a post: \(postID)")
+        
+        let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
+        let documentRef = db.collection(collectionName).document(postID)
+        
+        documentRef.updateData([
+            "likes": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print("error liking the post: \(err.localizedDescription)")
+            } else {
+                print("user sucessfully liked the post")
+            }
+        }
+    }
+    
+    func removeLikeFromPost(postID: String, postCategory: String, userID: String) {
+        print("user wanted to remove their like from the post")
+        
+        let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
+        let documentRef = db.collection(collectionName).document(postID)
+        
+        documentRef.updateData([
+            "likes": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print("error liking the post: \(err.localizedDescription)")
+            } else {
+                print("user sucessfully liked the post")
+            }
+        }
+    }
+    
     func publishComment(authorID: String, category: String, postID: String, content: String) {
         print("User wanted to publish a comment on a post")
         
-        let comment = ForumPostComment(postID: postID, authorID: authorID, date: Date.now, content: content, likeCount: 1)
+        let comment = ForumPostComment(postID: postID, authorID: authorID, date: Date.now, commentCategory: category, content: content, likes: [authorID], isCommentLikedByCurrentUser: nil)
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: category)
         
         var ref: DocumentReference? = nil
@@ -105,6 +141,40 @@ class ForumManager: ObservableObject {
             print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
         } catch {
             print("Error adding comment to the post")
+        }
+    }
+    
+    func likeComment(commentID: String, commentCategory: String, userID: String) {
+        print("User: \(userID) wanted to like a comment: \(commentID)")
+        
+        let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
+        let documentRef = db.collection(collectionName).document(commentID)
+        
+        documentRef.updateData([
+            "likes": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print("error liking the post: \(err.localizedDescription)")
+            } else {
+                print("user sucessfully liked the post")
+            }
+        }
+    }
+    
+    func removeLikeFromComment(commentID: String, commentCategory: String, userID: String) {
+        print("user wanted to remove their like from the comment")
+        
+        let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
+        let documentRef = db.collection(collectionName).document(commentID)
+        
+        documentRef.updateData([
+            "likes": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print("error liking the post: \(err.localizedDescription)")
+            } else {
+                print("user sucessfully liked the post")
+            }
         }
     }
     

@@ -142,7 +142,7 @@ struct ForumCreateCommentView_Previews: PreviewProvider {
     @EnvironmentObject var forumManager: ForumManager
     
     static var previews: some View {
-        ForumCreateCommentView(title: "General", post: Post(postID: "123", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "Just the post content", likeCount: 1, commentCount: 1, title: "General"))
+        ForumCreateCommentView(title: "General", post: Post(postID: "123", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "Just the post content", likes: ["ac2323gf"], commentCount: 1, title: "General"))
             .environmentObject(ProfileStatusManager())
             .environmentObject(ForumManager())
     }
