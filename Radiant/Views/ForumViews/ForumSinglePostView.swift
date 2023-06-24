@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseFirestore
-import FirebaseFirestoreSwift
+//import FirebaseFirestoreSwift
 
 struct ForumSinglePostView: View {
     
@@ -63,23 +63,79 @@ struct ForumSinglePostView: View {
                         // Post content
                         Text(post.postContent)
                         
-                        // TODO: Make this same width as the HStack
-                        Divider()
-                            .background(Color.white)
+                        VStack(alignment: .center) {
+                            // TODO: Make this same width as the HStack
+                            Divider()
+                                .background(Color.white)
+                            
+                            
+                            HStack(alignment: .center) {
+                                
+                                Button(action: {
+                                    print("user liked the post")
+                                }) {
+                                    Image(systemName: "heart")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .padding(.trailing, 10)
+    //                                    .padding(.leading, 340)
+                                }.padding(.trailing, 15)
+                                
+                                Button(action: {
+                                    forumManager.isCreateCommentPopupShowing = true
+                                }) {
+                                    Image(systemName: "arrowshape.turn.up.left")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .padding(.trailing, 10)
+    //                                    .padding(.leading, 340)
+                                }
+                                .sheet(isPresented: $forumManager.isCreateCommentPopupShowing, onDismiss: {
+                                    self.retrieveComments()
+                                }) {
+                                    ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
+                                }.padding(.trailing, 15)
+                                
+                                
+                                Button(action: {
+                                    print("User wanted to report the post")
+                                    print("The post that the user wanted to report: \(self.postID ?? "1")")
+                                    forumManager.isReportPostAlertShowing = true
+                                }) {
+                                    Image(systemName: "exclamationmark.circle")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .padding(.trailing, 10)
+    //                                    .padding(.leading, 340)
+                                }
+                                .alert("Reason for report", isPresented: $forumManager.isReportPostAlertShowing) {
+                                    Button("Offensive", action: {
+                                        forumManager.reportForumPost(reasonForReport: 0)
+                                    })
+                                    Button("Harmful or Dangerous", action: {
+                                        forumManager.reportForumPost(reasonForReport: 1)
+                                    })
+                                    Button("Off Topic or Irrelevant", action: {
+                                        forumManager.reportForumPost(reasonForReport: 2)
+                                    })
+                                    Button("Spam or Advertisment", action: {
+                                        forumManager.reportForumPost(reasonForReport: 3)
+                                    })
+                                    Button("Cancel", action: {
+                                        forumManager.isReportPostAlertShowing = false
+                                    })
+                                }
+                                
+                            }
+                            
+                            
+                            
+                            
+                            Divider()
+                                .background(Color.white)
+                        }
                         
-                        Button(action: {
-                            forumManager.isPostDetailedPopupShowing = false
-                            forumManager.isCreateCommentPopupShowing = true
-                        }) {
-                            Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                                .padding(.trailing, 10)
-                                .padding(.leading, 340)
-                        }
-                        .sheet(isPresented: $forumManager.isCreateCommentPopupShowing) {
-                            ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
-                        }
+                        
                         
                         
                         // List of comments
@@ -101,21 +157,17 @@ struct ForumSinglePostView: View {
         }
         .foregroundColor(Color(uiColor: .white))
         .onAppear {
-            retrievePost()
-            retrieveComments()
-//            print("Detailed post popped up, post id: \(self.post?.postID ?? "No post id")")
+            retrievePost() // This also retrieves comments, it's nested
         }
     }
     
     func retrievePost() {
-        print("THIS IS IN SINGLE POST VIEW, THE FORUM POST ID IS: \(forumManager.focusedPostID)")
-        
         let docRef = db.collection(forumManager.getFstoreForumCategoryCollectionName(category: forumManager.focusedPostCategoryName)).document(forumManager.focusedPostID)
         
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                print("Document data: \(dataDescription)")
+//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+//                print("Document data: \(dataDescription)")
                 self.post?.postID = forumManager.focusedPostID
                 self.post?.category = forumManager.focusedPostCategoryName
                 self.post?.userPhoto = "default_prof_pic"
@@ -124,28 +176,16 @@ struct ForumSinglePostView: View {
                 self.post?.postContent = document.data()!["content"] as! String
                 self.post?.likeCount = document.data()!["likeCount"] as! Int
                 self.post?.commentCount = 1
+                self.retrieveComments()
             } else {
                 print("Document does not exist")
             }
         }
     }
     
-    
-//    let postID: String
-//    let category: String
-//    let userPhoto: String
-//    let username: String
-//    let datePosted: Date
-//    let postContent: String
-//    @State var likeCount: Int
-//    @State var commentCount: Int
-    
-    //                self.post = Post(postID: forumManager.focusedPostID, category: forumManager.focusedPostCategoryName, userPhoto: "default_prof_pic", username: dataDescription["authorID"], datePosted: dataDescription["date"], postContent: dataDescription["content"], likeCount: dataDescription["likeCount"], commentCount: 1, title: forumManager.focusedPostCategoryName)
-    
-    
     func retrieveComments() {
         self.comments = []
-        let collectionName = forumManager.getFstoreForumCommentsCategoryCollectionName(category: post?.category ?? "General")
+        let collectionName = forumManager.getFstoreForumCommentsCategoryCollectionName(category: self.post?.category ?? "General")
         
         let collectionRef = self.db.collection(collectionName).whereField("postID", isEqualTo: self.post?.postID ?? "1")
         

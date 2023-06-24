@@ -88,11 +88,17 @@ struct ForumCreateCommentView: View {
                     
                     
                     Button(action: {
-                        print("User wanted to submit a post with the following text: \(text)")
+                        print("User wanted to submit a comment with the following text: \(text)")
                         if let user = profileStateManager.userProfile {
-                            if let post = post {
-                                forumManager.publishComment(authorID: user.id!, category: title!, postID: post.postID, content: text)
-                                forumManager.isCreateCommentPopupShowing = false
+//                            if let post = post {
+//                                forumManager.publishComment(authorID: user.id!, category: title!, postID: post.postID, content: text)
+//                                forumManager.isCreateCommentPopupShowing = false
+//                            }
+                            if forumManager.focusedPostID != "" {
+                                if forumManager.focusedPostCategoryName != "" {
+                                    forumManager.publishComment(authorID: user.id!, category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
+                                    forumManager.isCreateCommentPopupShowing = false
+                                }
                             }
                         }
                     }) {

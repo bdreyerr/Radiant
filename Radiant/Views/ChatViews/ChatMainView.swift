@@ -75,8 +75,8 @@ struct ChatMainView: View {
                             }
                         }
                     }
-                    .padding(.top, 20)
-                    .padding(.bottom, 20)
+                    .padding(.top, 5)
+                    .padding(.bottom, 5)
                     .onAppear {
                         value.scrollTo(self.messages.last?.id)
                     }

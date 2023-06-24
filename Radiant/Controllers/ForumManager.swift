@@ -19,7 +19,6 @@ class ForumManager: ObservableObject {
         
 //    var posts: [ForumPost] = []
     
-    @Published var isPostDetailedPopupShowing: Bool = false
     @Published var isCreatePostPopupShowing: Bool = false
     @Published var isCreateCommentPopupShowing: Bool = false
     
@@ -174,12 +173,12 @@ class ForumManager: ObservableObject {
         return categoryName
     }
     
-    func reportForumPost(postID: String, reasonForReport: Int, categoryName: String) {
+    func reportForumPost(reasonForReport: Int) {
 //        let reasonsForReport = ["Offensive", "Harmful or Dangerous", "Off Topic or Irrelevant", "Spam or Advertisment"]
         
-        let documentRef = db.collection(getFstoreForumCategoryCollectionName(category: categoryName)).document(postID)
+        let documentRef = db.collection(getFstoreForumCategoryCollectionName(category: self.focusedPostCategoryName)).document(self.focusedPostID)
         
-        print("The post being reported: \(postID)")
+        print("The post being reported: \(self.focusedPostID)")
         
         let field = "reportCount"
         documentRef.updateData([

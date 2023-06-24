@@ -61,7 +61,6 @@ struct ForumDetailedView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         // look up the username with their id
-                        
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
                                 Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
@@ -69,15 +68,7 @@ struct ForumDetailedView: View {
                             } else {
                                 Text("Unable to retrieve post")
                             }
-                            
                         }
-                        
-//                        List(posts) { post in
-//                            Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likeCount: post.likeCount!, commentCount: 1, title: self.title)
-//                        }.onAppear() {
-//                            self.retrievePosts()
-//                        }
-                        
                     }
                     .padding(.trailing, 30)
                     .padding(.leading, 20)
@@ -148,95 +139,90 @@ struct Post: View {
     var body: some View {
         // Post
         
-        Button(action: {
-            print("The post ID that was clicked on: \(self.postID)")
-            forumManager.focusedPostID = self.postID
-            forumManager.focusedPostCategoryName = self.category
-            forumManager.isPostDetailedPopupShowing = true
-        }) {
-            VStack(alignment: .leading) {
-                HStack(alignment: .center) {
-                    // User profile picture
-                    Image("default_prof_pic")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        .padding(.trailing, 10)
-                    VStack(alignment: .leading) {
-                        // username
-                        Text(username)
-                            .font(.system(size: 14))
-                            .bold()
-                        // date posted
-                        Text(datePosted.description)
-                            .font(.system(size: 14))
-                    }
-                    
-                }
-                // post content
-                Text(postContent)
-                    .padding(.bottom, 5)
-                    .font(.system(size: 12))
-                // interact buttons
-                HStack {
-                    // Like post
-                    Button(action: {
-                        print("User liked the post")
-                    }) {
-                        Image(systemName: "heart")
+        NavigationLink(destination: ForumSinglePostView(post: Post(postID: "0", category: "0", userPhoto: "default_prof_pic", username: "0", datePosted: Date.now, postContent: "0", likeCount: 1, commentCount: 1, title: "1"), postID: nil, categoryName: nil)) {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .center) {
+                        // User profile picture
+                        Image("default_prof_pic")
                             .resizable()
-                            .frame(width: 18, height: 18)
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                            .padding(.trailing, 10)
+                        VStack(alignment: .leading) {
+                            // username
+                            Text(username)
+                                .font(.system(size: 14))
+                                .bold()
+                            // date posted
+                            Text(datePosted.description)
+                                .font(.system(size: 14))
+                        }
                         
-                        Text("\(likeCount)")
                     }
-                    // Comment
-                    Button(action: {
-                        forumManager.isCreateCommentPopupShowing = true
-                    }) {
+                    // post content
+                    Text(postContent)
+                        .padding(.bottom, 5)
+                        .font(.system(size: 12))
+                    // interact buttons
+                    HStack {
+                        // Like post
+                        Button(action: {
+                            print("User liked the post")
+                        }) {
+                            Image(systemName: "heart")
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                            
+                            Text("\(likeCount)")
+                        }
+                        
+                        // Comment count (opens single post view)
                         Image(systemName: "text.bubble")
                             .resizable()
                             .frame(width: 18, height: 18)
-                        
+
                         Text("\(commentCount)")
+                        
+                        // Report
+                        Button(action: {
+                            print("User wanted to report the post")
+                            print("The post that the user wanted to report: \(self.postID)")
+                            forumManager.focusedPostID = self.postID
+                            forumManager.focusedPostCategoryName = self.category
+                            forumManager.isReportPostAlertShowing = true
+                        }) {
+                            Image(systemName: "exclamationmark.circle")
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                        }.alert("Reason for report", isPresented: $forumManager.isReportPostAlertShowing) {
+                            Button("Offensive", action: {
+                                forumManager.reportForumPost(reasonForReport: 0)
+                                
+                            })
+                            Button("Harmful or Dangerous", action: {
+                                forumManager.reportForumPost(reasonForReport: 1)
+                            })
+                            Button("Off Topic or Irrelevant", action: {
+                                forumManager.reportForumPost(reasonForReport: 2)
+                            })
+                            Button("Spam or Advertisment", action: {
+                                forumManager.reportForumPost(reasonForReport: 3)
+                            })
+                            Button("Cancel", action: {
+                                forumManager.isReportPostAlertShowing = false
+                            })
+                        }
+                        
                     }
-                    .sheet(isPresented: $forumManager.isCreateCommentPopupShowing) {
-                        ForumCreateCommentView(title: self.category, post: self)
-                    }
-                    // Report
-                    Button(action: {
-                        print("User wanted to report the post")
-                        print("The post that the user wanted to report: \(self.postID)")
-                        forumManager.isReportPostAlertShowing = true
-                    }) {
-                        Image(systemName: "exclamationmark.circle")
-                            .resizable()
-                            .frame(width: 18, height: 18)
-                    }.alert("Reason for report", isPresented: $forumManager.isReportPostAlertShowing) {
-                        Button("Offensive", action: {
-                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 0, categoryName: self.title!)
-                            
-                        })
-                        Button("Harmful or Dangerous", action: {
-                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 1, categoryName: self.title!)
-                        })
-                        Button("Off Topic or Irrelevant", action: {
-                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 2, categoryName: self.title!)
-                        })
-                        Button("Spam or Advertisment", action: {
-                            forumManager.reportForumPost(postID: self.postID, reasonForReport: 3, categoryName: self.title!)
-                        })
-                        Button("Cancel", action: {
-                            forumManager.isReportPostAlertShowing = false
-                        })
-                    }
-                    
                 }
-            }
-            .padding(.bottom, 10)
+                .padding(.bottom, 10)
         }
-        .sheet(isPresented: $forumManager.isPostDetailedPopupShowing) {
-            ForumSinglePostView(post: Post(postID: "0", category: "0", userPhoto: "0", username: "0", datePosted: Date.now, postContent: "0", likeCount: 1, commentCount: 1, title: "1"), postID: nil, categoryName: nil)
-        }
+        .simultaneousGesture(TapGesture().onEnded{
+            print("The post ID that was clicked on: \(self.postID)")
+            forumManager.focusedPostID = self.postID
+            forumManager.focusedPostCategoryName = self.category
+        })
+
         
         Divider()
             .background(Color.white)
