@@ -50,7 +50,7 @@ struct BottomNavBar: View {
                             }
                         ForumMainView()
                             .tabItem {
-                                Image(systemName: "list.bullet")
+                                Image(systemName: "person.3.fill")
                                     .background(Color.white)
                                     .foregroundColor(Color.blue)
                                     .onAppear {
