@@ -23,6 +23,7 @@ class ForumManager: ObservableObject {
     @Published var isCreateCommentPopupShowing: Bool = false
     
     @Published var isReportPostAlertShowing: Bool = false
+    @Published var isReportCommentAlertShowing: Bool = false
     
     // Firestore
     let db = Firestore.firestore()
@@ -31,6 +32,7 @@ class ForumManager: ObservableObject {
     @Published var focusedPostCategoryName: String = ""
     @Published var isFocusedPostLikedByCurrentUser: Bool = false
     
+    @Published var focusedCommentID: String = ""
     
     // This function retrieves the posts of a certain category when the user opens that category's page
     // TODO: Find a way to limit the number of posts loaded, and load more when the user scrolls down
@@ -132,7 +134,7 @@ class ForumManager: ObservableObject {
     func publishComment(authorID: String, category: String, postID: String, content: String) {
         print("User wanted to publish a comment on a post")
         
-        let comment = ForumPostComment(postID: postID, authorID: authorID, date: Date.now, commentCategory: category, content: content, likes: [authorID], isCommentLikedByCurrentUser: nil)
+        let comment = ForumPostComment(postID: postID, authorID: authorID, date: Date.now, commentCategory: category, content: content, likes: [authorID], reportCount: 0, isCommentLikedByCurrentUser: nil)
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: category)
         
         var ref: DocumentReference? = nil
@@ -258,6 +260,22 @@ class ForumManager: ObservableObject {
                 print("There was an error updating the reportCount \(err.localizedDescription)")
             } else {
                 print("Report count updated successfully")
+            }
+        }
+    }
+    
+    func reportForumComment(reasonForreport: Int) {
+        print("comment being reported: \(self.focusedCommentID)")
+        let documentRef = db.collection(getFstoreForumCommentsCategoryCollectionName(category: self.focusedPostCategoryName)).document(self.focusedCommentID)
+        
+        let field = "reportCount"
+        documentRef.updateData([
+            field: FieldValue.increment(Int64(1))
+        ]) { err in
+            if let err = err {
+                print("There was an error updating the report count: \(err.localizedDescription)")
+            } else {
+                print("Comment report count updated successfully")
             }
         }
     }

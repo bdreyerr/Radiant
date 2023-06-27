@@ -164,11 +164,10 @@ struct ForumSinglePostView: View {
                             ScrollView{
                                 ForEach(comments) { comment in
                                     
-                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
                                     
                                 }
                             }
-                           
                         }
                     }
                     .padding(.leading, 20)
@@ -238,6 +237,7 @@ struct ForumSinglePostView: View {
                         commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
                         likes: document.data()["likes"] as? [String],
+                        reportCount: document.data()["reportCount"] as? Int,
                         isCommentLikedByCurrentUser: false)
                     
                     if let user = profileStateManager.userProfile {
@@ -276,6 +276,7 @@ struct Comment: View {
     let commentCategory: String
     let commentContent: String
     var likes: [String]
+    var reportCount: Int
     
     @State var likeCount: Int
     @State var isCommentLikedByCurrentUser: Bool
@@ -338,10 +339,30 @@ struct Comment: View {
                 // Report
                 Button(action: {
                     print("User wanted to report the comment")
+                    print("The comment that the user wanted to report: \(self.commentID)")
+                    forumManager.focusedCommentID = self.commentID
+                    forumManager.isReportCommentAlertShowing = true
                 }) {
                     Image(systemName: "exclamationmark.circle")
                         .resizable()
                         .frame(width: 14, height: 14)
+                }
+                .alert("Reason for report", isPresented: $forumManager.isReportCommentAlertShowing) {
+                    Button("Offensive", action: {
+                        forumManager.reportForumComment(reasonForreport: 0)
+                    })
+                    Button("Harmful or Dangerous", action: {
+                        forumManager.reportForumComment(reasonForreport: 1)
+                    })
+                    Button("Off Topic or Irrelevant", action: {
+                        forumManager.reportForumComment(reasonForreport: 2)
+                    })
+                    Button("Spam or Advertisment", action: {
+                        forumManager.reportForumComment(reasonForreport: 3)
+                    })
+                    Button("Cancel", action: {
+                        forumManager.isReportCommentAlertShowing = false
+                    })
                 }
             }
             
