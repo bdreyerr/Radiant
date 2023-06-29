@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct ForumMainView: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     @StateObject var forumManager = ForumManager()
     
     // Controls display of sidebar
@@ -20,17 +23,11 @@ struct ForumMainView: View {
     
     var body: some View {
         
-        SideBarStack(sidebarWidth: 280, showSidebar: $showSidebar) {
+        SideBarStack(sidebarWidth: 320, showSidebar: $showSidebar) {
             // Sidebar content here
             
             NavigationView {
                 ZStack {
-                    //                Image("Sidebar_BG")
-                    //                    .resizable()
-                    //                    .scaledToFill()
-                    //                    .edgesIgnoringSafeArea(.all)
-                    
-                    
                     VStack(alignment: .center) {
                         
                         HStack {
@@ -45,45 +42,48 @@ struct ForumMainView: View {
                         .padding(.bottom, 15)
                         
                         
-                        NavigationLink(destination: MyPosts(), label: {
-                            Rectangle()
-                                .frame(width: 220, height: 50)
-                                .foregroundColor(.blue)
-                                .cornerRadius(10)
-                                .overlay() {
-                                    Text("My Posts")
-                                        .foregroundColor(.white)
-                                }
-                        })
-                        .padding(.bottom, 15)
+                        if let user = profileStateManager.userProfile {
+                            NavigationLink(destination: MyPosts(userID: user.id), label: {
+                                Rectangle()
+                                    .frame(width: 220, height: 50)
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                    .overlay() {
+                                        Text("My Posts")
+                                            .foregroundColor(.white)
+                                    }
+                            })
+                            .padding(.bottom, 15)
+                        }
                         
-                        NavigationLink(destination: MyComments(), label: {
-                            Rectangle()
-                                .frame(width: 220, height: 50)
-                                .foregroundColor(.blue)
-                                .cornerRadius(10)
-                                .overlay() {
-                                    Text("My Comments")
-                                        .foregroundColor(.white)
-                                }
-                        })
-                        .padding(.bottom, 15)
+                        if let user = profileStateManager.userProfile {
+                            NavigationLink(destination: MyComments(userID: user.id), label: {
+                                Rectangle()
+                                    .frame(width: 220, height: 50)
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                    .overlay() {
+                                        Text("My Comments")
+                                            .foregroundColor(.white)
+                                    }
+                            })
+                            .padding(.bottom, 15)
+                        }
                         
-                        NavigationLink(destination: LikedPosts(), label: {
-                            Rectangle()
-                                .frame(width: 220, height: 50)
-                                .foregroundColor(.blue)
-                                .cornerRadius(10)
-                                .overlay() {
-                                    Text("Liked Posts")
-                                        .foregroundColor(.white)
-                                }
-                        })
-                        .padding(.bottom, 15)
+                        if let user = profileStateManager.userProfile {
+                            NavigationLink(destination: LikedPosts(userID: user.id), label: {
+                                Rectangle()
+                                    .frame(width: 220, height: 50)
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                    .overlay() {
+                                        Text("Liked Posts")
+                                            .foregroundColor(.white)
+                                    }
+                            })
+                            .padding(.bottom, 15)
+                        }
                         
-                        Toggle(isOn: $forumProfanityToggle, label: {
-                            Text("Appear anonymous on the forum")
-                        })
                         
                     }
                     .padding(.bottom, 400)
@@ -91,7 +91,8 @@ struct ForumMainView: View {
                     .padding(.trailing, 20)
                     
                 }
-            }
+            }.environmentObject(forumManager)
+            
         } content: {
             NavigationView {
                 ZStack {
@@ -135,9 +136,8 @@ struct ForumMainView: View {
             .foregroundColor(Color(uiColor: .white))
             .environmentObject(forumManager)
         }.edgesIgnoringSafeArea(.all)
-        
-        
     }
+    
 }
 
 struct ForumMainView_Previews: PreviewProvider {
@@ -148,20 +148,210 @@ struct ForumMainView_Previews: PreviewProvider {
 
 
 struct MyPosts: View {
+    @EnvironmentObject var forumManager: ForumManager
+    
+    let db = Firestore.firestore()
+    
+    let userID: String?
+    @State var posts: [ForumPost] = []
+    
     var body: some View {
-        Text("This is My Posts")
+        ScrollView {
+            VStack(alignment: .leading) {
+                // look up the username with their id
+                ForEach(posts, id: \.id) { post in
+                    if post.id != nil {
+                        Post(postID: post.id!, category: post.category!, userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                            .id(post.id)
+                    } else {
+                        Text("Unable to retrieve post")
+                    }
+                }
+            }
+            .padding(.trailing, 30)
+            .padding(.leading, 20)
+            .padding(.bottom, 1)
+        }
+        .onAppear {
+            retrieveMyPosts()
+        }
+        
+    }
+    
+    
+    func retrieveMyPosts() {
+        self.posts = []
+        print("user wanted to retrieve their posts, id: \(userID!)")
+        
+        // option 1: call every collection
+        queryCollection(collectionName: "General")
+        queryCollection(collectionName: "Depression")
+        queryCollection(collectionName: "Stress and Anxiety")
+        queryCollection(collectionName: "Relationships")
+        queryCollection(collectionName: "Recovery")
+        queryCollection(collectionName: "Addiction")
+        queryCollection(collectionName: "Sobriety")
+        queryCollection(collectionName: "Personal Stories")
+        queryCollection(collectionName: "Advice")
+        
+    }
+    
+    
+    func queryCollection(collectionName: String) {
+        let collection = forumManager.getFstoreForumCategoryCollectionName(category: collectionName)
+        
+        let collectionRef = self.db.collection(collection).whereField("authorID", isEqualTo: self.userID!)
+        
+        collectionRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error retrieving posts: \(err.localizedDescription)")
+            } else if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    let post = ForumPost(
+                        id: document.documentID,
+                        authorID: document.data()["authorID"] as? String,
+                        category: document.data()["category"] as? String,
+                        date: document.data()["date"] as? Date,
+                        content: document.data()["content"] as? String,
+                        likes: document.data()["likes"] as? [String])
+                    posts.append(post)
+                }
+            }
+        }
     }
 }
 
 struct MyComments: View {
+    @EnvironmentObject var forumManager: ForumManager
+    let db = Firestore.firestore()
+    let userID: String?
+    
+    @State var comments: [ForumPostComment] = []
+    
     var body: some View {
-        Text("This is My Comments")
+        VStack {
+            ScrollView {
+                ForEach(comments) { comment in
+                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                    Divider()
+                }
+            }
+        }
+        .onAppear {
+            retrieveMyComments()
+        }
+    }
+    
+    func retrieveMyComments() {
+        self.comments = []
+        print("user wanted to retrieve their comments, id: \(userID!)")
+        
+        // option 1: call every collection
+        queryCommentCollection(collectionName: "General")
+        queryCommentCollection(collectionName: "Depression")
+        queryCommentCollection(collectionName: "Stress and Anxiety")
+        queryCommentCollection(collectionName: "Relationships")
+        queryCommentCollection(collectionName: "Recovery")
+        queryCommentCollection(collectionName: "Addiction")
+        queryCommentCollection(collectionName: "Sobriety")
+        queryCommentCollection(collectionName: "Personal Stories")
+        queryCommentCollection(collectionName: "Advice")
+        
+    }
+    
+    func queryCommentCollection(collectionName: String) {
+        let collection = forumManager.getFstoreForumCommentsCategoryCollectionName(category: collectionName)
+        
+        let collectionRef = self.db.collection(collection).whereField("authorID", isEqualTo: self.userID!)
+        
+        collectionRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error retrieving posts: \(err.localizedDescription)")
+            } else if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    let comment = ForumPostComment(
+                        id: document.documentID,
+                        postID: document.data()["postID"] as? String,
+                        authorID: document.data()["authorID"] as? String,
+                        date: document.data()["date"] as? Date,
+                        commentCategory: document.data()["commentCategory"] as? String,
+                        content: document.data()["content"] as? String,
+                        likes: document.data()["likes"] as? [String],
+                        reportCount: document.data()["reportCount"] as? Int)
+                    comments.append(comment)
+                }
+            }
+        }
     }
 }
 
 
 struct LikedPosts: View {
+    @EnvironmentObject var forumManager: ForumManager
+    let db = Firestore.firestore()
+    
+    let userID: String?
+    @State var posts: [ForumPost] = []
+    
     var body: some View {
-        Text("This is My Liked Posts")
+        ScrollView {
+            VStack(alignment: .leading) {
+                // look up the username with their id
+                ForEach(posts, id: \.id) { post in
+                    if post.id != nil {
+                        Post(postID: post.id!, category: post.category!, userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                            .id(post.id)
+                    } else {
+                        Text("Unable to retrieve post")
+                    }
+                }
+            }
+            .padding(.trailing, 30)
+            .padding(.leading, 20)
+            .padding(.bottom, 1)
+        }
+        .onAppear {
+            retrieveLikedPosts()
+        }
+    }
+    
+    func retrieveLikedPosts() {
+        self.posts = []
+        print("user wanted to retrieve their liked posts, id: \(userID!)")
+        
+        // option 1: call every collection
+        queryCollectionForLikedPosts(collectionName: "General")
+        queryCollectionForLikedPosts(collectionName: "Depression")
+        queryCollectionForLikedPosts(collectionName: "Stress and Anxiety")
+        queryCollectionForLikedPosts(collectionName: "Relationships")
+        queryCollectionForLikedPosts(collectionName: "Recovery")
+        queryCollectionForLikedPosts(collectionName: "Addiction")
+        queryCollectionForLikedPosts(collectionName: "Sobriety")
+        queryCollectionForLikedPosts(collectionName: "Personal Stories")
+        queryCollectionForLikedPosts(collectionName: "Advice")
+    }
+    
+    func queryCollectionForLikedPosts(collectionName: String) {
+        let collection = forumManager.getFstoreForumCategoryCollectionName(category: collectionName)
+        
+        let collectionRef = self.db.collection(collection).whereField("likes", arrayContains: self.userID!)
+        
+        collectionRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error retrieving posts: \(err.localizedDescription)")
+            } else if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    let post = ForumPost(
+                        id: document.documentID,
+                        authorID: document.data()["authorID"] as? String,
+                        category: document.data()["category"] as? String,
+                        date: document.data()["date"] as? Date,
+                        content: document.data()["content"] as? String,
+                        likes: document.data()["likes"] as? [String])
+                    posts.append(post)
+                }
+            }
+        }
+        
     }
 }

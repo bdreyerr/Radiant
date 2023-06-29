@@ -148,20 +148,12 @@ struct ForumSinglePostView: View {
                                 }
                                 
                             }
-                            
-                            
-                            
-                            
                             Divider()
                                 .background(Color.white)
                         }
-                        
-                        
-                        
-                        
                         // List of comments
                         VStack {
-                            ScrollView{
+                            ScrollView {
                                 ForEach(comments) { comment in
                                     
                                     Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
