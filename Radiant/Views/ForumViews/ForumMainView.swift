@@ -156,6 +156,12 @@ struct MyPosts: View {
     @State var posts: [ForumPost] = []
     
     var body: some View {
+        
+        HStack {
+            Text("My Posts")
+        }
+        .padding(.bottom, 15)
+        
         ScrollView {
             VStack(alignment: .leading) {
                 // look up the username with their id
@@ -230,6 +236,10 @@ struct MyComments: View {
     
     var body: some View {
         VStack {
+            HStack {
+                Text("My Comments")
+            }
+            .padding(.bottom, 15)
             ScrollView {
                 ForEach(comments) { comment in
                     Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
@@ -294,6 +304,10 @@ struct LikedPosts: View {
     @State var posts: [ForumPost] = []
     
     var body: some View {
+        HStack {
+            Text("Liked Posts")
+        }
+        .padding(.bottom, 15)
         ScrollView {
             VStack(alignment: .leading) {
                 // look up the username with their id
