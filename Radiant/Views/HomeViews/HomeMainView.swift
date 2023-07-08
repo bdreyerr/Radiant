@@ -17,19 +17,20 @@ struct HomeMainView: View {
             
             VStack(alignment: .leading) {
                 ScrollView {
-                    UserOverviewView()
+                    WelcomeModule()
+                    
+                    GoalsModule()
                         .padding(.bottom, 40)
                     
                     
-//                    Divider().frame(width: 300, height: 0.5).overlay(Color.white).padding(.trailing,20)
+                    MoodGraphModule()
                     
-                    ActivitiesView()
+                    ActivitiesModule()
                         .padding(.bottom, 40)
                     
-//                    Divider().frame(width: 300, height: 0.4).overlay(Color.white)
-//                        .padding(.trailing,20)
+
                     
-                    EducationView()
+                    EducationModule()
                         .padding(.bottom, 40)
                 }
                 .padding(.bottom, 50)
@@ -37,7 +38,7 @@ struct HomeMainView: View {
             }
             .padding(.leading, 20)
             .padding(.bottom, 30)
-            .padding(.top, 100)
+            .padding(.top, 60)
         }
     }
 }
@@ -48,84 +49,161 @@ struct HomeMainView_Previews: PreviewProvider {
     }
 }
 
-
-struct UserOverviewView: View {
+struct WelcomeModule: View {
     var body: some View {
-        VStack {
-            
-            RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(.blue)
-                .frame(minWidth: 340, maxWidth: 200, minHeight: 200, maxHeight: 200)
-                .overlay {
-                    Image("graph")
+        
+        RoundedRectangle(cornerRadius: 25)
+            .frame(minWidth: 360, minHeight: 400)
+            .overlay {
+                ZStack {
+                    Image("Home_Welcome_BG")
                         .resizable()
-                        .frame(width: 340, height:200)
+                        .frame(width: 360, height:400)
                         .cornerRadius(25)
-                }
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Goals:")
-                        .foregroundColor(.white)
-                        .bold()
                     
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                            .foregroundColor(.green)
+                    VStack {
+                        Text("Radiant")
+                            .font(.system(size: 40, weight: .bold))
+                            .padding(10)
+                            .offset(y: -40)
                         
-                        Text ("Workout Monday")
-                            .foregroundColor(.white)
-                    }
-                    
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                            .foregroundColor(.green)
+                        // Daily Affirmation
+                        Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
+                            .foregroundColor(.blue)
+                            .italic()
+                            .padding(10)
+                            .offset(y: -40)
                         
-                        Text ("Go to therapy")
-                            .foregroundColor(.white)
-                    }
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                            .foregroundColor(.black)
                         
-                        Text ("Cook a chicken dinner")
-                            .foregroundColor(.white)
+                        // Check in prompt OR recommended activity/education
+                        VStack {
+                            Text("You haven't checked in yet today")
+                                .foregroundColor(.orange)
+                                .bold()
+                            Button(action: {
+                                print("User wanted to initiate their daily check in")
+                            }) {
+                                
+                                RoundedRectangle(cornerRadius: 40)
+                                    .frame(maxWidth: 250, maxHeight: 50)
+                                    .foregroundColor(.green)
+                                    .overlay {
+                                        Text("Check In")
+                                            .foregroundColor(.white)
+                                    }
+                            }
+                        }
+                        .offset(y: 60)
+                        
+                        
                     }
+                    .padding(20)
+                    .padding(.bottom, 20)
                 }
-                .padding(20)
-                .border(Color.orange, width: 3)
-                
-                
-                VStack(alignment: .leading) {
-                    Text ("Daily affirmation: ")
-                        .foregroundColor(.white)
-                        .bold()
-                    Text ("I am capable of great things. I believe in myself and my abilities. I am goated at everything I do.")
-                        .foregroundColor(.white)
-                }
-                .padding(20)
-                .clipShape(RoundedRectangle(cornerRadius: 30))
-                .border(Color.blue, width: 3)
-                
-                
-            }
-            
-        }
+            }.padding(.trailing, 20)
+    
         
-        
-        .padding(.trailing, 20)
-        
-        
+//        VStack(alignment: .leading) {
+//            Text ("Daily affirmation: ")
+//                .foregroundColor(.white)
+//                .bold()
+//            Text ("I am capable of great things. I believe in myself and my abilities. I am goated at everything I do.")
+//                .foregroundColor(.white)
+//        }
+//        .padding(20)
+//        .clipShape(RoundedRectangle(cornerRadius: 30))
+//        .border(Color.blue, width: 3)
     }
 }
 
-struct ActivitiesView: View {
+
+struct GoalsModule: View {
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                
+                RoundedRectangle(cornerRadius: 25)
+                    .frame(minWidth: 360, minHeight: 250, maxHeight: 300)
+                    .overlay {
+                        ZStack {
+                            Image("Home_Goals_BG")
+                                .resizable()
+                                .frame(width: 360, height:250)
+                                .cornerRadius(25)
+                            
+                            VStack(alignment: .leading) {
+                                Text("Your Goals for Today")
+                                    .foregroundColor(.white)
+                                HStack {
+                                    Image(systemName: "checkmark.square.fill")
+                                        .resizable()
+                                        .frame(width: 15, height: 15)
+                                        .foregroundColor(.green)
+                                    Text("Call Brenda")
+                                        .foregroundColor(.white)
+                                }
+                                HStack {
+                                    Image(systemName: "square")
+                                        .resizable()
+                                        .frame(width: 15, height: 15)
+                                        .foregroundColor(.gray)
+                                    Text("Study for math test")
+                                        .foregroundColor(.white)
+                                }
+                                HStack {
+                                    Image(systemName: "checkmark.square.fill")
+                                        .resizable()
+                                        .frame(width: 15, height: 15)
+                                        .foregroundColor(.green)
+                                    Text("Study for math test")
+                                        .foregroundColor(.white)
+                                }
+                                VStack(alignment: .center) {
+                                    Text("You haven't set your goals for today")
+                                        .foregroundColor(.orange)
+                                        .bold()
+                                    
+                                    Button(action: {
+                                        print("User wanted to update their goals")
+                                    }) {
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .frame(maxWidth: 200, maxHeight: 50)
+                                            .foregroundColor(.orange)
+                                            .overlay {
+                                                Text("Set Goals")
+                                                    .foregroundColor(.white)
+                                            }
+                                    }
+                                }
+                            }
+                        }
+
+                        
+                    }
+            }
+        }
+        .padding(.trailing, 20)
+    }
+}
+
+struct MoodGraphModule: View {
+    var body: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 25)
+                .foregroundColor(.blue)
+                .frame(minWidth: 360, maxWidth: 360, minHeight: 200, maxHeight: 200)
+                .overlay {
+                    Image("graph")
+                        .resizable()
+                        .frame(width: 360, height:200)
+                        .cornerRadius(25)
+                }
+        }
+        .padding(.trailing, 20)
+    }
+}
+
+struct ActivitiesModule: View {
     var activities = ["Quiz1", "Quiz2", "Quiz3"]
     
     var body: some View {
@@ -142,13 +220,13 @@ struct ActivitiesView: View {
                     Activity(bg_image: "Register_BG", title: "Personality Quiz")
                 }
             }
-                
+            
         }
     }
 }
 
 
-struct EducationView: View {
+struct EducationModule: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Education")
@@ -192,7 +270,7 @@ struct Activity: View {
                                 .foregroundColor(.green)
                                 .offset(y: -40)
                                 .offset(x: 100)
-                                
+                            
                         }
                         
                         Text(title)
@@ -228,7 +306,7 @@ struct Education: View {
                                 .foregroundColor(.green)
                                 .offset(y: -40)
                                 .offset(x: 100)
-                                
+                            
                         }
                         
                         Text(title)
