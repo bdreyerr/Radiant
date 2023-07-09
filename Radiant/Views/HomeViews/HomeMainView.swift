@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import Charts
 
 struct HomeMainView: View {
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    @StateObject var homeManager = HomeManager()
+    
     var body: some View {
         ZStack {
             Image("Home_BG")
@@ -15,12 +19,18 @@ struct HomeMainView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .center) {
+                Image("flower")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(.yellow)
+                
                 ScrollView {
                     WelcomeModule()
+                        .padding(.bottom, 20)
                     
                     GoalsModule()
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 20)
                     
                     
                     MoodGraphModule()
@@ -34,146 +44,199 @@ struct HomeMainView: View {
                         .padding(.bottom, 40)
                 }
                 .padding(.bottom, 50)
+                .padding(.leading, 20)
                 
             }
-            .padding(.leading, 20)
+            
             .padding(.bottom, 30)
             .padding(.top, 60)
         }
+        .onAppear {
+            if let user = profileStateManager.userProfile {
+                homeManager.userInit(user: user)
+            } else {
+                print("no user yet")
+            }
+        }
+        .environmentObject(homeManager)
     }
 }
 
 struct HomeMainView_Previews: PreviewProvider {
     static var previews: some View {
         HomeMainView()
+            .environmentObject(HomeManager())
+            .environmentObject(ProfileStatusManager())
     }
 }
 
 struct WelcomeModule: View {
+    @EnvironmentObject var homeManager: HomeManager
+    
+    @State private var todaysDate = Date()
     var body: some View {
         
         RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 360, minHeight: 400)
+            .frame(minWidth: 380, maxWidth: 380, minHeight: 300, maxHeight: 300)
+            
             .overlay {
                 ZStack {
                     Image("Home_Welcome_BG")
                         .resizable()
-                        .frame(width: 360, height:400)
+                        .frame(width: 380, height: 300)
                         .cornerRadius(25)
+                        
                     
                     VStack {
-                        Text("Radiant")
-                            .font(.system(size: 40, weight: .bold))
-                            .padding(10)
-                            .offset(y: -40)
+                        // Date
+                        Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
+                            .font(.system(size: 30, design: .monospaced))
+                            .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
+                            .offset(y: -20)
                         
                         // Daily Affirmation
                         Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color(hue: 0.517, saturation: 0.205, brightness: 1.0))
                             .italic()
-                            .padding(10)
-                            .offset(y: -40)
+                            .font(.system(size: 15, design: .monospaced))
+                            .padding(15)
+                            .offset(y: -30)
                         
+                        // Check In OR Radiant
                         
-                        // Check in prompt OR recommended activity/education
-                        VStack {
-                            Text("You haven't checked in yet today")
-                                .foregroundColor(.orange)
-                                .bold()
-                            Button(action: {
-                                print("User wanted to initiate their daily check in")
-                            }) {
-                                
-                                RoundedRectangle(cornerRadius: 40)
-                                    .frame(maxWidth: 250, maxHeight: 50)
-                                    .foregroundColor(.green)
-                                    .overlay {
+                        Button(action: {
+                            print("User wanted to check in")
+                            homeManager.isCheckInPopupShowing = true
+                        }) {
+                            RoundedRectangle(cornerRadius: 40)
+                                .frame(maxWidth: 200, maxHeight: 60)
+                                .overlay {
+                                    ZStack {
+                                        // image
+                                        Image("CheckIn")
+                                            .resizable()
+                                            .frame(width: 200, height: 60)
+                                            .cornerRadius(25)
+                                        
                                         Text("Check In")
                                             .foregroundColor(.white)
+                                            .font(.system(size: 15, design: .monospaced))
                                     }
-                            }
+                                }
                         }
-                        .offset(y: 60)
-                        
-                        
+                        .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
+                            CheckInView()
+                        }
                     }
-                    .padding(20)
-                    .padding(.bottom, 20)
                 }
-            }.padding(.trailing, 20)
-    
-        
-//        VStack(alignment: .leading) {
-//            Text ("Daily affirmation: ")
-//                .foregroundColor(.white)
-//                .bold()
-//            Text ("I am capable of great things. I believe in myself and my abilities. I am goated at everything I do.")
-//                .foregroundColor(.white)
-//        }
-//        .padding(20)
-//        .clipShape(RoundedRectangle(cornerRadius: 30))
-//        .border(Color.blue, width: 3)
+            }
+            .padding(.trailing, 20)
     }
 }
 
 
 struct GoalsModule: View {
+    @State var goalOneComplete = true
+    @State var goalTwoComplete = false
+    @State var goalThreeComplete = true
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
                 
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 360, minHeight: 250, maxHeight: 300)
+                    .frame(minWidth: 380, maxWidth: 380, minHeight: 300, maxHeight: 300)
                     .overlay {
                         ZStack {
-                            Image("Home_Goals_BG")
+                            Image("Goals_BG")
                                 .resizable()
-                                .frame(width: 360, height:250)
+                                .frame(width: 380, height:300)
                                 .cornerRadius(25)
                             
-                            VStack(alignment: .leading) {
-                                Text("Your Goals for Today")
-                                    .foregroundColor(.white)
-                                HStack {
-                                    Image(systemName: "checkmark.square.fill")
-                                        .resizable()
-                                        .frame(width: 15, height: 15)
-                                        .foregroundColor(.green)
-                                    Text("Call Brenda")
-                                        .foregroundColor(.white)
-                                }
-                                HStack {
-                                    Image(systemName: "square")
-                                        .resizable()
-                                        .frame(width: 15, height: 15)
-                                        .foregroundColor(.gray)
-                                    Text("Study for math test")
-                                        .foregroundColor(.white)
-                                }
-                                HStack {
-                                    Image(systemName: "checkmark.square.fill")
-                                        .resizable()
-                                        .frame(width: 15, height: 15)
-                                        .foregroundColor(.green)
-                                    Text("Study for math test")
-                                        .foregroundColor(.white)
-                                }
+                            VStack {
                                 VStack(alignment: .center) {
-                                    Text("You haven't set your goals for today")
-                                        .foregroundColor(.orange)
-                                        .bold()
+                                    Text("Goals")
+                                        .font(.system(size: 30, design: .monospaced))
+                                        .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
+                                }
+                                
+                                VStack(alignment: .leading) {
+                                    
+                                    // Goal one
+                                    Button(action: {
+                                        goalOneComplete = !goalOneComplete
+                                    }) {
+                                        HStack {
+                                            if goalOneComplete {
+                                                Image(systemName: "checkmark.square.fill")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.green)
+                                            } else {
+                                                Image(systemName: "square")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            
+                                            Text("Call Brenda")
+                                                .foregroundColor(.white)
+                                        }
+                                    }
                                     
                                     Button(action: {
-                                        print("User wanted to update their goals")
+                                        goalTwoComplete = !goalTwoComplete
                                     }) {
-                                        RoundedRectangle(cornerRadius: 40)
-                                            .frame(maxWidth: 200, maxHeight: 50)
-                                            .foregroundColor(.orange)
-                                            .overlay {
-                                                Text("Set Goals")
-                                                    .foregroundColor(.white)
+                                        HStack {
+                                            if goalTwoComplete {
+                                                Image(systemName: "checkmark.square.fill")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.green)
+                                            } else {
+                                                Image(systemName: "square")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.gray)
                                             }
+                                            Text("Study for math test")
+                                                .foregroundColor(.white)
+                                        }
                                     }
+                                    
+                                    Button(action: {
+                                        goalThreeComplete = !goalThreeComplete
+                                    }) {
+                                        HStack {
+                                            if goalThreeComplete {
+                                                Image(systemName: "checkmark.square.fill")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.green)
+                                            } else {
+                                                Image(systemName: "square")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.gray)
+                                            }
+                                            Text("Study for math test")
+                                                .foregroundColor(.white)
+                                        }
+                                    }
+                                }
+                                .offset(x: -60)
+                                .padding(.bottom, 10)
+                                
+                                VStack(alignment: .center) {
+                                    Text("Gratitude")
+                                        .font(.system(size: 30, design: .monospaced))
+                                        .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
+                                }
+                                .padding(.bottom, 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("I'm grateful for my parents and my pets")
+                                        .foregroundColor(.white)
                                 }
                             }
                         }
@@ -186,17 +249,62 @@ struct GoalsModule: View {
     }
 }
 
+struct MoodData: Identifiable {
+    let id = UUID()
+    let day: String
+    let val: Double
+}
+
 struct MoodGraphModule: View {
+    
+    
+    let depression = [MoodData(day: "M", val: 4),
+                      MoodData(day: "T", val: 3),
+                      MoodData(day: "W", val: 2),
+                      MoodData(day: "T", val: 1),
+                      MoodData(day: "F", val: 4),
+                      MoodData(day: "S", val: 5),
+                      MoodData(day: "S", val: 6)]
+    let anxiety = [MoodData(day: "M", val: 8),
+                      MoodData(day: "T", val: 7),
+                      MoodData(day: "W", val: 6),
+                      MoodData(day: "T", val: 3),
+                      MoodData(day: "F", val: 1),
+                      MoodData(day: "S", val: 2),
+                      MoodData(day: "S", val: 5)]
+    let happiness = [MoodData(day: "M", val: 10),
+                      MoodData(day: "T", val: 8),
+                      MoodData(day: "W", val: 9),
+                      MoodData(day: "T", val: 6),
+                      MoodData(day: "F", val: 4),
+                      MoodData(day: "S", val: 8),
+                      MoodData(day: "S", val: 9)]
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(.blue)
-                .frame(minWidth: 360, maxWidth: 360, minHeight: 200, maxHeight: 200)
+                .foregroundColor(.white)
+                .frame(minWidth: 360, maxWidth: 380, minHeight: 300, maxHeight: 300)
                 .overlay {
-                    Image("graph")
-                        .resizable()
-                        .frame(width: 360, height:200)
-                        .cornerRadius(25)
+                    
+                    Chart() {
+                        ForEach(happiness) { item in
+                            LineMark(
+                                x: .value("Day", item.day),
+                                y: .value("Val", item.val)
+                            )
+                        }
+                        
+                        ForEach(depression) { item in
+                            LineMark(
+                                x: .value("Day", item.day),
+                                y: .value("Val", item.val)
+                            )
+                        }
+                        
+                    }
+                    .frame(width: 360, height: 200)
+                    .foregroundColor(.blue)
                 }
         }
         .padding(.trailing, 20)
