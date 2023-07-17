@@ -17,6 +17,7 @@
 		1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */; };
 		1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */; };
 		1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56F3E32A08316A0057A6D6 /* UserProfile.swift */; };
+		1A57BB6D2A65AEE50016901D /* CirclularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */; };
 		1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */; };
 		1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */; };
 		1A6585E42A29091E00B4DE6D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E32A29091E00B4DE6D /* Message.swift */; };
@@ -62,6 +63,7 @@
 		1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
 		1A56F3E12A06DF7B0057A6D6 /* ForumMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumMainView.swift; sourceTree = "<group>"; };
 		1A56F3E32A08316A0057A6D6 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclularSlider.swift; sourceTree = "<group>"; };
 		1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCategoriesView.swift; sourceTree = "<group>"; };
 		1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantBotChatView.swift; sourceTree = "<group>"; };
 		1A6585E32A29091E00B4DE6D /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				1A8C6C1E2A02E2A800676E5F /* ActionButtonView.swift */,
+				1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */,
 			);
 			path = ModuleViews;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				1AC9905F2A01794F00851A14 /* WelcomeView.swift in Sources */,
 				1A6C47972A5A1F85006DB377 /* HomeManager.swift in Sources */,
 				1A56F3D92A06CFD50057A6D6 /* BottomNavBar.swift in Sources */,
+				1A57BB6D2A65AEE50016901D /* CirclularSlider.swift in Sources */,
 				1AE12E7E2A40D5450020F7E3 /* ChatMainView.swift in Sources */,
 				1A98C4562A08459600BB3203 /* MapMainView.swift in Sources */,
 				1AB0B8242A1D2CE600DF1571 /* ForumManager.swift in Sources */,

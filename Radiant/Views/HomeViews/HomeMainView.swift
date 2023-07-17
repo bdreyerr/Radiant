@@ -27,13 +27,14 @@ struct HomeMainView: View {
                 
                 ScrollView {
                     WelcomeModule()
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 40)
                     
                     GoalsModule()
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 40)
                     
                     
                     MoodGraphModule()
+                        .padding(.bottom, 40)
                     
                     ActivitiesModule()
                         .padding(.bottom, 40)
@@ -77,13 +78,13 @@ struct WelcomeModule: View {
     var body: some View {
         
         RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 380, maxWidth: 380, minHeight: 300, maxHeight: 300)
+            .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
             
             .overlay {
                 ZStack {
                     Image("Home_Welcome_BG")
                         .resizable()
-                        .frame(width: 380, height: 300)
+                        .frame(width: 360, height: 300)
                         .cornerRadius(25)
                         
                     
@@ -145,12 +146,12 @@ struct GoalsModule: View {
             VStack(alignment: .leading) {
                 
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 380, maxWidth: 380, minHeight: 300, maxHeight: 300)
+                    .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
                     .overlay {
                         ZStack {
                             Image("Goals_BG")
                                 .resizable()
-                                .frame(width: 380, height:300)
+                                .frame(width: 360, height:300)
                                 .cornerRadius(25)
                             
                             VStack {
@@ -284,7 +285,7 @@ struct MoodGraphModule: View {
         VStack {
             RoundedRectangle(cornerRadius: 25)
                 .foregroundColor(.white)
-                .frame(minWidth: 360, maxWidth: 380, minHeight: 300, maxHeight: 300)
+                .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
                 .overlay {
                     
                     Chart() {

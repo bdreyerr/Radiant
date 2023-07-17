@@ -14,6 +14,49 @@ struct CheckInView: View {
     
     var body: some View {
         
+        NavigationView {
+            
+            ZStack {
+                Image("Login_Email_BG")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    
+                    Text("Please rate your happiness today: ")
+                        .foregroundColor(.white)
+                        .padding(.bottom, 20)
+                        .font(.system(size: 18, design: .monospaced))
+                        .bold()
+                    CirclularSlider()
+                    
+                    
+                    NavigationLink(destination: DepressionView()) {
+                        Text("Next")
+                            .foregroundColor(.white)
+                            .font(.system(size: 30, design: .monospaced))
+                        Image(systemName: "arrow.right")
+                            .foregroundColor(.white)
+                    }
+                    .offset(y: 200)
+                }
+            }
+        }
+    }
+}
+
+struct CheckInView_Previews: PreviewProvider {
+    static var previews: some View {
+        CheckInView()
+    }
+}
+
+
+struct DepressionView: View {
+    var body: some View {
+        
+        
         ZStack {
             Image("Login_Email_BG")
                 .resizable()
@@ -22,52 +65,56 @@ struct CheckInView: View {
             
             VStack {
                 
-                Text("Rate your happiness today:")
+                Text("Please rate your depression today: ")
                     .foregroundColor(.white)
-                Slider(value: $happinessSliderValue, in:0...10, step: 1) {
-                    Text("Value: \(happinessSliderValue)")
-                }
-                .frame(width: 400)
-                .padding(.bottom, 40)
+                    .padding(.bottom, 20)
+                    .font(.system(size: 18, design: .monospaced))
+                    .bold()
+                CirclularSlider()
                 
-                Text("Rate your happiness today:")
-                    .foregroundColor(.white)
-                Slider(value: $depressionSliderValue, in:0...10, step: 1) {
-                    Text("Value: \(depressionSliderValue)")
-                }
-                .frame(width: 400)
-                .padding(.bottom, 40)
-                
-                Text("Rate your happiness today:")
-                    .foregroundColor(.white)
-                Slider(value: $anxietySliderValue, in:0...10, step: 1) {
-                    Text("Value: \(anxietySliderValue)")
-                }
-                .frame(width: 400)
-                
-                
-                Button(action: {
-                    print("user wanted to go next")
-                }) {
-                    HStack {
-                        Text("Next")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30, design: .monospaced))
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.white)
-                    }
-                    
+                NavigationLink(destination: AnxeityView()) {
+                    Text("Next")
+                        .foregroundColor(.white)
+                        .font(.system(size: 30, design: .monospaced))
+                    Image(systemName: "arrow.right")
+                        .foregroundColor(.white)
                 }
                 .offset(y: 200)
             }
-            
             
         }
     }
 }
 
-struct CheckInView_Previews: PreviewProvider {
-    static var previews: some View {
-        CheckInView()
+
+struct AnxeityView: View {
+    var body: some View {
+        
+        ZStack {
+            Image("Login_Email_BG")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                
+                Text("Please rate your anxiety today: ")
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
+                    .font(.system(size: 18, design: .monospaced))
+                    .bold()
+                CirclularSlider()
+                
+                NavigationLink(destination: HomeMainView()) {
+                    Text("Next")
+                        .foregroundColor(.white)
+                        .font(.system(size: 30, design: .monospaced))
+                    Image(systemName: "arrow.right")
+                        .foregroundColor(.white)
+                }
+                .offset(y: 200)
+                
+            }
+        }
     }
 }

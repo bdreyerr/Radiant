@@ -28,7 +28,6 @@ class HomeManager: ObservableObject {
         let oneDayAgo = Date() - TimeInterval(86400)
         if let lastCheckInDate = user.lastCheckinDate {
             hasUserCheckedInToday = (lastCheckInDate > oneDayAgo)
-            
         }
         print("Has user checked in: \(self.hasUserCheckedInToday)")
         
