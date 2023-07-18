@@ -8,27 +8,31 @@
 import SwiftUI
 
 struct CirclularSlider: View {
+    @Binding var sliderValue: CGFloat
+    
     var body: some View {
         ZStack {
 //            Rectangle()
 //                .fill(Color.init(red: 34/255, green: 30/255, blue: 47/255))
 //                .edgesIgnoringSafeArea(.all)
             
-            SliderControlView()
+            SliderControlView(sliderValue: $sliderValue)
         }
     }
 }
 
-struct CirclularSlider_Previews: PreviewProvider {
-    static var previews: some View {
-        CirclularSlider()
-    }
-}
+//struct CirclularSlider_Previews: PreviewProvider {
+//    @State private var val: CGFloat = 5.0
+//
+//    static var previews: some View {
+//        CirclularSlider($val)
+//    }
+//}
 
 
 struct SliderControlView: View {
-    @State var sliderValue: CGFloat = 10.0
-    @State var angleValue: CGFloat = 0.0
+    @Binding var sliderValue: CGFloat
+    @State var angleValue: CGFloat = 180.0
     let config = Config(minimumValue: 0.0, maximumValue: 10.0, totalValue: 10.0, knobRadius: 15.0, radius: 125.0)
     
     var body: some View {

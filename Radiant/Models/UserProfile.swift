@@ -19,10 +19,12 @@ struct UserProfile: Codable {
     var birthday: Date?
     var weight: Int?
     var height: Double?
-    var goals: [String]? // Figure out how to store this based on preset goals I define for the user
+    
     var lastCheckinDate: Date?
-    var lastGoalsUpdateDate: Date?
-    var anxietyScores: [Int]?
-    var depressionScores: [Int]?
-    var happinessScores: [Int]?
+    var goals: [String]?
+    var gratitude: String?
+    // Store 
+    var anxietyScores: [CGFloat]?
+    var depressionScores: [CGFloat]?
+    var happinessScores: [CGFloat]?
 }

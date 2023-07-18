@@ -7,6 +7,9 @@
 
 import SwiftUI
 import Charts
+import FirebaseFirestore
+import FirebaseAuth
+import AuthenticationServices
 
 struct HomeMainView: View {
     @EnvironmentObject var profileStateManager: ProfileStatusManager
@@ -23,7 +26,7 @@ struct HomeMainView: View {
                 Image("flower")
                     .resizable()
                     .frame(width: 100, height: 100)
-                    .foregroundColor(.yellow)
+                    .foregroundColor(.white)
                 
                 ScrollView {
                     WelcomeModule()
@@ -39,7 +42,7 @@ struct HomeMainView: View {
                     ActivitiesModule()
                         .padding(.bottom, 40)
                     
-
+                    
                     
                     EducationModule()
                         .padding(.bottom, 40)
@@ -79,14 +82,14 @@ struct WelcomeModule: View {
         
         RoundedRectangle(cornerRadius: 25)
             .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
-            
+        
             .overlay {
                 ZStack {
                     Image("Home_Welcome_BG")
                         .resizable()
                         .frame(width: 360, height: 300)
                         .cornerRadius(25)
-                        
+                    
                     
                     VStack {
                         // Date
@@ -141,17 +144,23 @@ struct GoalsModule: View {
     @State var goalTwoComplete = false
     @State var goalThreeComplete = true
     
+    @State var goals: [String] = []
+    @State var gratitude: String = "I'm grateful for you!"
+    
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    let db = Firestore.firestore()
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
                 
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
+                    .frame(minWidth: 360, maxWidth: 360, minHeight: 320, maxHeight: 320)
                     .overlay {
                         ZStack {
                             Image("Goals_BG")
                                 .resizable()
-                                .frame(width: 360, height:300)
+                                .frame(width: 360, height:320)
                                 .cornerRadius(25)
                             
                             VStack {
@@ -180,8 +189,13 @@ struct GoalsModule: View {
                                                     .foregroundColor(.gray)
                                             }
                                             
-                                            Text("Call Brenda")
-                                                .foregroundColor(.white)
+                                            if goals.isEmpty {
+                                                Text("call brenda")
+                                            } else {
+                                                Text(goals[0])
+                                                    .foregroundColor(.white)
+                                            }
+                                            
                                         }
                                     }
                                     
@@ -200,8 +214,14 @@ struct GoalsModule: View {
                                                     .frame(width: 15, height: 15)
                                                     .foregroundColor(.gray)
                                             }
-                                            Text("Study for math test")
-                                                .foregroundColor(.white)
+                                            
+                                            if goals.isEmpty {
+                                                Text("call brenda")
+                                            } else {
+                                                Text(goals[1])
+                                                    .foregroundColor(.white)
+                                            }
+                                            
                                         }
                                     }
                                     
@@ -220,13 +240,21 @@ struct GoalsModule: View {
                                                     .frame(width: 15, height: 15)
                                                     .foregroundColor(.gray)
                                             }
-                                            Text("Study for math test")
-                                                .foregroundColor(.white)
+                                            
+                                            if goals.isEmpty {
+                                                Text("I'd like to win")
+                                            } else {
+                                                Text(goals[2])
+                                                    .foregroundColor(.white)
+                                            }
+                                            
                                         }
                                     }
                                 }
-                                .offset(x: -60)
+//                                .offset(x: -60)
                                 .padding(.bottom, 10)
+                                .padding(.leading, 10)
+                                .padding(.trailing, 10)
                                 
                                 VStack(alignment: .center) {
                                     Text("Gratitude")
@@ -236,19 +264,49 @@ struct GoalsModule: View {
                                 .padding(.bottom, 5)
                                 
                                 VStack(alignment: .leading) {
-                                    Text("I'm grateful for my parents and my pets")
+                                    Text(gratitude)
                                         .foregroundColor(.white)
                                 }
                             }
                         }
-
+                        
                         
                     }
             }
         }
         .padding(.trailing, 20)
+        .onAppear {
+            print("testing user ID from auth: \(Auth.auth().currentUser?.uid ?? "000")")
+            retriveGoalsAndGratitude(userID: Auth.auth().currentUser?.uid ?? "000")
+        }
+    }
+    
+    func retriveGoalsAndGratitude(userID: String) {
+        self.goals = []
+        
+        let docRef = db.collection("users").document(userID)
+        
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                
+                if let goals = document.data()!["goals"] as? [String] {
+                    self.goals = goals
+                }
+                
+                if let gratitude = document.data()!["gratitude"] as? String {
+                    self.gratitude = gratitude
+                }
+//                self.goals = document.data()!["goals"] as! [String]
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
 }
+
+
 
 struct MoodData: Identifiable {
     let id = UUID()
@@ -267,19 +325,19 @@ struct MoodGraphModule: View {
                       MoodData(day: "S", val: 5),
                       MoodData(day: "S", val: 6)]
     let anxiety = [MoodData(day: "M", val: 8),
-                      MoodData(day: "T", val: 7),
-                      MoodData(day: "W", val: 6),
-                      MoodData(day: "T", val: 3),
-                      MoodData(day: "F", val: 1),
-                      MoodData(day: "S", val: 2),
-                      MoodData(day: "S", val: 5)]
+                   MoodData(day: "T", val: 7),
+                   MoodData(day: "W", val: 6),
+                   MoodData(day: "T", val: 3),
+                   MoodData(day: "F", val: 1),
+                   MoodData(day: "S", val: 2),
+                   MoodData(day: "S", val: 5)]
     let happiness = [MoodData(day: "M", val: 10),
-                      MoodData(day: "T", val: 8),
-                      MoodData(day: "W", val: 9),
-                      MoodData(day: "T", val: 6),
-                      MoodData(day: "F", val: 4),
-                      MoodData(day: "S", val: 8),
-                      MoodData(day: "S", val: 9)]
+                     MoodData(day: "T", val: 8),
+                     MoodData(day: "W", val: 9),
+                     MoodData(day: "T", val: 6),
+                     MoodData(day: "F", val: 4),
+                     MoodData(day: "S", val: 8),
+                     MoodData(day: "S", val: 9)]
     
     var body: some View {
         VStack {

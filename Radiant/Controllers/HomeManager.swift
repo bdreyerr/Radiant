@@ -17,10 +17,12 @@ class HomeManager: ObservableObject {
     @Published var hasUserCheckedInToday: Bool = false
     
     
-    var weeklyDepressionScores: [Int] = []
-    var weeklyAnxietyScores: [Int] = []
-    var weeklyHappinessScores: [Int] = []
+    var weeklyDepressionScores: [CGFloat] = []
+    var weeklyAnxietyScores: [CGFloat] = []
+    var weeklyHappinessScores: [CGFloat] = []
     
+    
+    let db = Firestore.firestore()
     
     // initiate variables in the HomeManager on appear
     func userInit(user: UserProfile) {
@@ -43,20 +45,6 @@ class HomeManager: ObservableObject {
             self.weeklyHappinessScores = happinessScores
             print(happinessScores)
         }
-    }
-    
-    func checkIn() {
-        print("User wanted to check-in")
-        
-        // Write dpression scores
-        
-        // Write anxiety scores
-        
-        // Write happiness scores
-        
-        // Write goals
-        
-        
     }
     
 }
