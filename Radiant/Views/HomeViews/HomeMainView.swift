@@ -23,7 +23,7 @@ struct HomeMainView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(alignment: .center) {
-                Image("flower")
+                Image("Gold_Lotus")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .foregroundColor(.white)
@@ -56,8 +56,8 @@ struct HomeMainView: View {
             .padding(.top, 60)
         }
         .onAppear {
-            if let user = profileStateManager.userProfile {
-                homeManager.userInit(user: user)
+            if let user = Auth.auth().currentUser?.uid {
+                homeManager.userInit(userID: user)
             } else {
                 print("no user yet")
             }
@@ -130,6 +130,13 @@ struct WelcomeModule: View {
                         }
                         .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
                             CheckInView()
+                                .onDisappear {
+                                    if let user = Auth.auth().currentUser?.uid {
+                                        homeManager.userInit(userID: user)
+                                    } else {
+                                        print("no user yet")
+                                    }
+                                }
                         }
                     }
                 }
@@ -144,10 +151,9 @@ struct GoalsModule: View {
     @State var goalTwoComplete = false
     @State var goalThreeComplete = true
     
-    @State var goals: [String] = []
-    @State var gratitude: String = "I'm grateful for you!"
-    
     @EnvironmentObject var profileStateManager: ProfileStatusManager
+    @EnvironmentObject var homeManager: HomeManager
+    
     let db = Firestore.firestore()
     
     var body: some View {
@@ -189,10 +195,10 @@ struct GoalsModule: View {
                                                     .foregroundColor(.gray)
                                             }
                                             
-                                            if goals.isEmpty {
+                                            if homeManager.goals.count < 1 {
                                                 Text("call brenda")
                                             } else {
-                                                Text(goals[0])
+                                                Text(homeManager.goals[0])
                                                     .foregroundColor(.white)
                                             }
                                             
@@ -215,10 +221,10 @@ struct GoalsModule: View {
                                                     .foregroundColor(.gray)
                                             }
                                             
-                                            if goals.isEmpty {
+                                            if homeManager.goals.count < 2 {
                                                 Text("call brenda")
                                             } else {
-                                                Text(goals[1])
+                                                Text(homeManager.goals[1])
                                                     .foregroundColor(.white)
                                             }
                                             
@@ -241,17 +247,17 @@ struct GoalsModule: View {
                                                     .foregroundColor(.gray)
                                             }
                                             
-                                            if goals.isEmpty {
-                                                Text("I'd like to win")
+                                            if homeManager.goals.count < 3 {
+                                                Text("call brenda")
                                             } else {
-                                                Text(goals[2])
+                                                Text(homeManager.goals[2])
                                                     .foregroundColor(.white)
                                             }
                                             
                                         }
                                     }
                                 }
-//                                .offset(x: -60)
+                                //                                .offset(x: -60)
                                 .padding(.bottom, 10)
                                 .padding(.leading, 10)
                                 .padding(.trailing, 10)
@@ -264,7 +270,7 @@ struct GoalsModule: View {
                                 .padding(.bottom, 5)
                                 
                                 VStack(alignment: .leading) {
-                                    Text(gratitude)
+                                    Text(homeManager.gratitude)
                                         .foregroundColor(.white)
                                 }
                             }
@@ -277,31 +283,7 @@ struct GoalsModule: View {
         .padding(.trailing, 20)
         .onAppear {
             print("testing user ID from auth: \(Auth.auth().currentUser?.uid ?? "000")")
-            retriveGoalsAndGratitude(userID: Auth.auth().currentUser?.uid ?? "000")
-        }
-    }
-    
-    func retriveGoalsAndGratitude(userID: String) {
-        self.goals = []
-        
-        let docRef = db.collection("users").document(userID)
-        
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                print("Document data: \(dataDescription)")
-                
-                if let goals = document.data()!["goals"] as? [String] {
-                    self.goals = goals
-                }
-                
-                if let gratitude = document.data()!["gratitude"] as? String {
-                    self.gratitude = gratitude
-                }
-//                self.goals = document.data()!["goals"] as! [String]
-            } else {
-                print("Document does not exist")
-            }
+            //            homeManager.userInit(userID: Auth.auth().currentUser?.uid ?? "000")
         }
     }
 }
@@ -317,53 +299,82 @@ struct MoodData: Identifiable {
 struct MoodGraphModule: View {
     
     
-    let depression = [MoodData(day: "M", val: 4),
-                      MoodData(day: "T", val: 3),
-                      MoodData(day: "W", val: 2),
-                      MoodData(day: "T", val: 1),
-                      MoodData(day: "F", val: 4),
-                      MoodData(day: "S", val: 5),
-                      MoodData(day: "S", val: 6)]
-    let anxiety = [MoodData(day: "M", val: 8),
-                   MoodData(day: "T", val: 7),
-                   MoodData(day: "W", val: 6),
-                   MoodData(day: "T", val: 3),
-                   MoodData(day: "F", val: 1),
-                   MoodData(day: "S", val: 2),
-                   MoodData(day: "S", val: 5)]
-    let happiness = [MoodData(day: "M", val: 10),
-                     MoodData(day: "T", val: 8),
-                     MoodData(day: "W", val: 9),
-                     MoodData(day: "T", val: 6),
-                     MoodData(day: "F", val: 4),
-                     MoodData(day: "S", val: 8),
-                     MoodData(day: "S", val: 9)]
+    var h: [Double] = []
+    let d: [Double] = []
+    let a: [Double] = []
+    
+    @EnvironmentObject var homeManager: HomeManager
     
     var body: some View {
         VStack {
+        
+            
             RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(.white)
-                .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
+                .foregroundColor(.black)
+                .frame(minWidth: 360, maxWidth: 360, minHeight: 160, maxHeight: 160)
                 .overlay {
+//                    Chart() {
+//                        ForEach(happiness) { item in
+//                            LineMark(
+//                                x: .value("Day", item.day),
+//                                y: .value("Val", item.val)
+//                            )
+//                        }
+//
+//                        ForEach(depression) { item in
+//                            LineMark(
+//                                x: .value("Day", item.day),
+//                                y: .value("Val", item.val)
+//                            )
+//                        }
+//
+//                    }
+//                    .frame(width: 360, height: 200)
+//                    .foregroundColor(.blue)
                     
-                    Chart() {
-                        ForEach(happiness) { item in
-                            LineMark(
-                                x: .value("Day", item.day),
-                                y: .value("Val", item.val)
-                            )
-                        }
-                        
-                        ForEach(depression) { item in
-                            LineMark(
-                                x: .value("Day", item.day),
-                                y: .value("Val", item.val)
-                            )
-                        }
-                        
+                    Chart(0..<self.homeManager.visibleHappinessScores.count, id: \.self)
+                    { nr in
+                        LineMark(
+                            x: .value("X values", nr),
+                            y: .value("Y values", self.homeManager.visibleHappinessScores[nr])
+                        )
                     }
-                    .frame(width: 360, height: 200)
                     .foregroundColor(.blue)
+                    .padding(20)
+                    
+                    Chart(0..<self.homeManager.visibleDepressionScores.count, id: \.self)
+                    { nr in
+                        LineMark(
+                            x: .value("X values", nr),
+                            y: .value("Y values", self.homeManager.visibleDepressionScores[nr])
+                        )
+                    }
+                    .foregroundColor(.orange)
+                    .padding(20)
+                    
+                    Chart(0..<self.homeManager.visibleAnxietyScores.count, id: \.self)
+                    { nr in
+                        LineMark(
+                            x: .value("X values", nr),
+                            y: .value("Y values", self.homeManager.visibleAnxietyScores[nr])
+                        )
+                    }
+                    .foregroundColor(.green)
+                    .padding(20)
+                    
+                    
+                    HStack {
+                        Text("Happiness")
+                            .foregroundColor(.blue)
+                        
+                        Text("Depression")
+                            .foregroundColor(.orange)
+
+                        Text("Anxiety")
+                            .foregroundColor(.green)
+                    }
+                    .offset(y: 50)
+                                        
                 }
         }
         .padding(.trailing, 20)

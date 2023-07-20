@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CirclularSlider: View {
-    @Binding var sliderValue: CGFloat
+    @Binding var sliderValue: Double
     
     var body: some View {
         ZStack {
@@ -31,7 +31,7 @@ struct CirclularSlider: View {
 
 
 struct SliderControlView: View {
-    @Binding var sliderValue: CGFloat
+    @Binding var sliderValue: Double
     @State var angleValue: CGFloat = 180.0
     let config = Config(minimumValue: 0.0, maximumValue: 10.0, totalValue: 10.0, knobRadius: 15.0, radius: 125.0)
     

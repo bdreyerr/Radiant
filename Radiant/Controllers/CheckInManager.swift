@@ -10,9 +10,9 @@ import FirebaseFirestore
 
 
 class CheckInManager: ObservableObject {
-    @Published var happinessSliderVal: CGFloat = 5.0
-    @Published var depressionSliderVal: CGFloat = 5.0
-    @Published var anxeitySliderVal: CGFloat = 5.0
+    @Published var happinessSliderVal: Double = 5.0
+    @Published var depressionSliderVal: Double = 5.0
+    @Published var anxeitySliderVal: Double = 5.0
     
     @Published var goalOne: String = ""
     @Published var goalTwo: String = ""
@@ -36,25 +36,7 @@ class CheckInManager: ObservableObject {
             } else {
                 print("Document successfully updated")
             }
-        }
-        
-        
-//        var happiness = [Date: CGFloat]()
-//        var depression = [Date: CGFloat]()
-//        var anxiety = [Date: CGFloat]()
-//        let date = Date()
-//
-//        let vH = happinessSliderVal
-//        happiness[date] = vH
-//        print(happiness)
-//
-//        let vD = depressionSliderVal
-//        depression[date] = vD
-//        print(depression)
-//
-//        let vA = anxeitySliderVal
-//        anxiety[date] = vA
-//        print(anxiety)
+        } 
         
         // store new goals
         documentRef.updateData([

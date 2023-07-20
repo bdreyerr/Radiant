@@ -24,7 +24,7 @@ struct UserProfile: Codable {
     var goals: [String]?
     var gratitude: String?
     // Store 
-    var anxietyScores: [CGFloat]?
-    var depressionScores: [CGFloat]?
-    var happinessScores: [CGFloat]?
+    var anxietyScores: [Double]?
+    var depressionScores: [Double]?
+    var happinessScores: [Double]?
 }
