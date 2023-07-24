@@ -15,45 +15,183 @@ struct HomeMainView: View {
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @StateObject var homeManager = HomeManager()
     
+    @State private var todaysDate = Date()
+    
+    @State var goalOneComplete = true
+    @State var goalTwoComplete = false
+    @State var goalThreeComplete = true
+    
     var body: some View {
         ZStack {
-            Image("Home_BG")
+            Image("White_Lotus_Field")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(alignment: .center) {
-                Image("Gold_Lotus")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.white)
+            VStack {
+                
+                HStack {
+                    // User Image
+                    Image("default_prof_pic")
+                        .resizable()
+                        .frame(width: 60, height: 60, alignment: .leading)
+                        .clipShape(Circle())
+                        .padding(.trailing, 10)
+                    Text ("Hi User!")
+                        .foregroundColor(.black)
+                    
+                    // Notifcation Bell
+                    Image(systemName: "bell.fill")
+                        .resizable()
+                        .frame(width: 24, height: 26, alignment: .leading)
+                        .padding(.leading, 180)
+                        .foregroundColor(.black)
+                    
+                    Circle()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(.red)
+                        .offset(x: -20, y:-10)
+                }
+                .padding(.leading, 20)
+                .padding(.top, 10)
+                
+                
+                VStack(alignment: .center) {
+                    Image("Lotus_Flower")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .foregroundColor(.white)
+                    
+                    // Date
+                    Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
+                        .font(.system(size: 30, design: .monospaced))
+                        .foregroundColor(.black)
+                    //                        .offset(y: -20)
+                    
+                    // Daily Affirmation
+                    Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
+                        .foregroundColor(.black)
+                        .italic()
+                        .font(.system(size: 15, design: .monospaced))
+                        .padding(20)
+                        .offset(y: -20)
+                        .frame(alignment: .center)
+                }
+                .offset(y: -30)
+                
                 
                 ScrollView {
-                    WelcomeModule()
-                        .padding(.bottom, 40)
                     
-                    GoalsModule()
-                        .padding(.bottom, 40)
+                    // Check In
+                    Text("Check In")
+                        .bold()
+                        .font(.system(size: 22))
+                        .offset(x: -140)
+                        .padding(.leading, 20)
+                        .foregroundColor(.white)
+                    
+                    Button(action: {
+                        print("User wanted to check in")
+                        homeManager.isCheckInPopupShowing = true
+                    }) {
+                        RoundedRectangle(cornerRadius: 40)
+                            .frame(maxWidth: 300, minHeight: 50, maxHeight: 200)
+                            .overlay {
+                                ZStack {
+                                    Text("Check In")
+                                        .foregroundColor(.black)
+                                        .font(.system(size: 15, design: .monospaced))
+                                }
+                            }
+                    }
+                    .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
+                        CheckInView()
+                            .onDisappear {
+                                if let user = Auth.auth().currentUser?.uid {
+                                    homeManager.userInit(userID: user)
+                                } else {
+                                    print("no user yet")
+                                }
+                            }
+                    }
+                    //                    .padding(10)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
                     
                     
-                    MoodGraphModule()
-                        .padding(.bottom, 40)
+                    
+                    // Goals
+                    Text("Goals")
+                        .bold()
+                        .font(.system(size: 22))
+                        .offset(x: -145)
+                        .foregroundColor(.white)
+                    //                        .underline()
+                    
+                    
+                    // Goals
+                    VStack {
+                        // Goal one
+                        GoalView(goalNum: "one", goalSetDate: "7/20", goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
+
+                        
+                        // Goal two
+                        GoalView(goalNum: "two", goalSetDate: "7/15", goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                        
+                        // Goal three
+                        GoalView(goalNum: "three", goalSetDate: "7/23", goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                    }
+                    .padding(.bottom, 20)
+                    
+                    
+                    // Gratitude
+                    VStack {
+                        Text("Gratitude")
+                            .bold()
+                            .font(.system(size: 22))
+                            .offset(x: -130)
+                            .foregroundColor(.white)
+                        
+                        
+                        Text(homeManager.gratitude)
+                            .font(.system(size: 16, design: .monospaced))
+                            .foregroundColor(.white)
+                            .italic()
+                            .padding(.top, 10)
+                    }
+                    
+                    
+                    // Mood Graph
+                    VStack {
+                        Text("Mood")
+                            .bold()
+                            .font(.system(size: 22))
+                            .offset(x: -140)
+                            .foregroundColor(.white)
+                        
+                        MoodGraphModule()
+                    }
+                    .padding(.top, 10)
+                    
                     
                     ActivitiesModule()
                         .padding(.bottom, 40)
-                    
+                        .padding(.leading, 20)
                     
                     
                     EducationModule()
                         .padding(.bottom, 40)
+                        .padding(.leading, 20)
+                    
+                    
                 }
-                .padding(.bottom, 50)
-                .padding(.leading, 20)
+                .padding(.bottom, 10)
+                .offset(y: -40)
                 
             }
-            
             .padding(.bottom, 30)
             .padding(.top, 60)
+            
         }
         .onAppear {
             if let user = Auth.auth().currentUser?.uid {
@@ -74,221 +212,68 @@ struct HomeMainView_Previews: PreviewProvider {
     }
 }
 
-struct WelcomeModule: View {
-    @EnvironmentObject var homeManager: HomeManager
+
+struct GoalView: View {
+    let goalNum: String?
+    let goalSetDate: String?
     
-    @State private var todaysDate = Date()
+    let goalText: String?
+    
+    let goalHue: CGFloat?
+    let goalSaturation: CGFloat?
+    
+    @State var goalComplete = false
+    
     var body: some View {
-        
-        RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 360, maxWidth: 360, minHeight: 300, maxHeight: 300)
-        
+        RoundedRectangle(cornerRadius: 10)
+            .foregroundColor(Color(hue: goalHue!, saturation: goalSaturation!, brightness: 1.0))
+            .frame(width: 360, height: 80, alignment: .leading)
             .overlay {
-                ZStack {
-                    Image("Home_Welcome_BG")
-                        .resizable()
-                        .frame(width: 360, height: 300)
-                        .cornerRadius(25)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Goal " + goalNum!)
+                            .font(.system(size: 14))
+                            .frame(alignment: .leading)
+                            .foregroundColor(.black)
+                        
+                        
+                        Text("Set on " + goalSetDate!)
+                            .font(.system(size: 13))
+                            .frame(alignment: .trailing)
+                            .offset(x: 170)
+                            .foregroundColor(.black)
+                    }
                     
                     
-                    VStack {
-                        // Date
-                        Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
-                            .font(.system(size: 30, design: .monospaced))
-                            .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
-                            .offset(y: -20)
-                        
-                        // Daily Affirmation
-                        Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
-                            .foregroundColor(Color(hue: 0.517, saturation: 0.205, brightness: 1.0))
-                            .italic()
-                            .font(.system(size: 15, design: .monospaced))
-                            .padding(15)
-                            .offset(y: -30)
-                        
-                        // Check In OR Radiant
-                        
-                        Button(action: {
-                            print("User wanted to check in")
-                            homeManager.isCheckInPopupShowing = true
-                        }) {
-                            RoundedRectangle(cornerRadius: 40)
-                                .frame(maxWidth: 200, maxHeight: 60)
-                                .overlay {
-                                    ZStack {
-                                        // image
-                                        Image("CheckIn")
-                                            .resizable()
-                                            .frame(width: 200, height: 60)
-                                            .cornerRadius(25)
-                                        
-                                        Text("Check In")
-                                            .foregroundColor(.white)
-                                            .font(.system(size: 15, design: .monospaced))
-                                    }
-                                }
-                        }
-                        .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
-                            CheckInView()
-                                .onDisappear {
-                                    if let user = Auth.auth().currentUser?.uid {
-                                        homeManager.userInit(userID: user)
-                                    } else {
-                                        print("no user yet")
-                                    }
-                                }
+                    Button(action: {
+                        goalComplete = !goalComplete
+                    }) {
+                        HStack {
+                            if goalComplete {
+                                Image(systemName: "checkmark.square.fill")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.green)
+                            } else {
+                                Image(systemName: "square")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(.gray)
+                            }
+                            
+                            Text(goalText!)
+                                .foregroundColor(.black)
+                                .font(.system(size: 18))
+                            
                         }
                     }
                 }
+                .padding(.trailing, 20)
+                .padding(.leading, 20)
+                .offset(x: CGFloat(-120 + (goalText!.count * 3)))
             }
-            .padding(.trailing, 20)
     }
 }
-
-
-struct GoalsModule: View {
-    @State var goalOneComplete = true
-    @State var goalTwoComplete = false
-    @State var goalThreeComplete = true
-    
-    @EnvironmentObject var profileStateManager: ProfileStatusManager
-    @EnvironmentObject var homeManager: HomeManager
-    
-    let db = Firestore.firestore()
-    
-    var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                
-                RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 360, maxWidth: 360, minHeight: 320, maxHeight: 320)
-                    .overlay {
-                        ZStack {
-                            Image("Goals_BG")
-                                .resizable()
-                                .frame(width: 360, height:320)
-                                .cornerRadius(25)
-                            
-                            VStack {
-                                VStack(alignment: .center) {
-                                    Text("Goals")
-                                        .font(.system(size: 30, design: .monospaced))
-                                        .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
-                                }
-                                
-                                VStack(alignment: .leading) {
-                                    
-                                    // Goal one
-                                    Button(action: {
-                                        goalOneComplete = !goalOneComplete
-                                    }) {
-                                        HStack {
-                                            if goalOneComplete {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.green)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.gray)
-                                            }
-                                            
-                                            if homeManager.goals.count < 1 {
-                                                Text("call brenda")
-                                            } else {
-                                                Text(homeManager.goals[0])
-                                                    .foregroundColor(.white)
-                                            }
-                                            
-                                        }
-                                    }
-                                    
-                                    Button(action: {
-                                        goalTwoComplete = !goalTwoComplete
-                                    }) {
-                                        HStack {
-                                            if goalTwoComplete {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.green)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.gray)
-                                            }
-                                            
-                                            if homeManager.goals.count < 2 {
-                                                Text("call brenda")
-                                            } else {
-                                                Text(homeManager.goals[1])
-                                                    .foregroundColor(.white)
-                                            }
-                                            
-                                        }
-                                    }
-                                    
-                                    Button(action: {
-                                        goalThreeComplete = !goalThreeComplete
-                                    }) {
-                                        HStack {
-                                            if goalThreeComplete {
-                                                Image(systemName: "checkmark.square.fill")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.green)
-                                            } else {
-                                                Image(systemName: "square")
-                                                    .resizable()
-                                                    .frame(width: 15, height: 15)
-                                                    .foregroundColor(.gray)
-                                            }
-                                            
-                                            if homeManager.goals.count < 3 {
-                                                Text("call brenda")
-                                            } else {
-                                                Text(homeManager.goals[2])
-                                                    .foregroundColor(.white)
-                                            }
-                                            
-                                        }
-                                    }
-                                }
-                                //                                .offset(x: -60)
-                                .padding(.bottom, 10)
-                                .padding(.leading, 10)
-                                .padding(.trailing, 10)
-                                
-                                VStack(alignment: .center) {
-                                    Text("Gratitude")
-                                        .font(.system(size: 30, design: .monospaced))
-                                        .foregroundColor(Color(hue: 0.142, saturation: 0.267, brightness: 0.816))
-                                }
-                                .padding(.bottom, 5)
-                                
-                                VStack(alignment: .leading) {
-                                    Text(homeManager.gratitude)
-                                        .foregroundColor(.white)
-                                }
-                            }
-                        }
-                        
-                        
-                    }
-            }
-        }
-        .padding(.trailing, 20)
-        .onAppear {
-            print("testing user ID from auth: \(Auth.auth().currentUser?.uid ?? "000")")
-            //            homeManager.userInit(userID: Auth.auth().currentUser?.uid ?? "000")
-        }
-    }
-}
-
-
 
 struct MoodData: Identifiable {
     let id = UUID()
@@ -297,86 +282,71 @@ struct MoodData: Identifiable {
 }
 
 struct MoodGraphModule: View {
-    
-    
-    var h: [Double] = []
-    let d: [Double] = []
-    let a: [Double] = []
-    
     @EnvironmentObject var homeManager: HomeManager
     
     var body: some View {
         VStack {
-        
-            
             RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(.black)
+                .foregroundColor(Color(hue: 0.686, saturation: 0.707, brightness: 0.165))
                 .frame(minWidth: 360, maxWidth: 360, minHeight: 160, maxHeight: 160)
                 .overlay {
-//                    Chart() {
-//                        ForEach(happiness) { item in
-//                            LineMark(
-//                                x: .value("Day", item.day),
-//                                y: .value("Val", item.val)
-//                            )
-//                        }
-//
-//                        ForEach(depression) { item in
-//                            LineMark(
-//                                x: .value("Day", item.day),
-//                                y: .value("Val", item.val)
-//                            )
-//                        }
-//
-//                    }
-//                    .frame(width: 360, height: 200)
-//                    .foregroundColor(.blue)
-                    
-                    Chart(0..<self.homeManager.visibleHappinessScores.count, id: \.self)
-                    { nr in
-                        LineMark(
-                            x: .value("X values", nr),
-                            y: .value("Y values", self.homeManager.visibleHappinessScores[nr])
-                        )
-                    }
-                    .foregroundColor(.blue)
-                    .padding(20)
-                    
-                    Chart(0..<self.homeManager.visibleDepressionScores.count, id: \.self)
-                    { nr in
-                        LineMark(
-                            x: .value("X values", nr),
-                            y: .value("Y values", self.homeManager.visibleDepressionScores[nr])
-                        )
-                    }
-                    .foregroundColor(.orange)
-                    .padding(20)
-                    
-                    Chart(0..<self.homeManager.visibleAnxietyScores.count, id: \.self)
-                    { nr in
-                        LineMark(
-                            x: .value("X values", nr),
-                            y: .value("Y values", self.homeManager.visibleAnxietyScores[nr])
-                        )
-                    }
-                    .foregroundColor(.green)
-                    .padding(20)
-                    
-                    
                     HStack {
                         Text("Happiness")
                             .foregroundColor(.blue)
+                            .padding(10)
                         
                         Text("Depression")
                             .foregroundColor(.orange)
-
+                            .padding(10)
+                        
                         Text("Anxiety")
                             .foregroundColor(.green)
+                            .padding(10)
                     }
-                    .offset(y: 50)
-                                        
+                    .offset(y: -50)
+                    
+                    Group {
+                        Chart(0..<self.homeManager.visibleHappinessScores.count, id: \.self)
+                        { nr in
+                            LineMark(
+                                x: .value("X values", nr),
+                                y: .value("Y values", self.homeManager.visibleHappinessScores[nr])
+                            )
+                        }
+                        .foregroundColor(.blue)
+                        .padding(20)
+                        .chartXAxis(.hidden)
+                        .chartYAxis(.hidden)
+                        
+                        Chart(0..<self.homeManager.visibleDepressionScores.count, id: \.self)
+                        { nr in
+                            LineMark(
+                                x: .value("X values", nr),
+                                y: .value("Y values", self.homeManager.visibleDepressionScores[nr])
+                            )
+                        }
+                        .foregroundColor(.orange)
+                        .padding(20)
+                        .chartXAxis(.hidden)
+                        .chartYAxis(.hidden)
+                        
+                        Chart(0..<self.homeManager.visibleAnxietyScores.count, id: \.self)
+                        { nr in
+                            LineMark(
+                                x: .value("X values", nr),
+                                y: .value("Y values", self.homeManager.visibleAnxietyScores[nr])
+                            )
+                        }
+                        .foregroundColor(.green)
+                        .padding(20)
+                        .chartXAxis(.hidden)
+                        .chartYAxis(.hidden)
+                    }
+                    .offset(y: 40)
+                    
                 }
         }
+        .padding(.leading, 20)
         .padding(.trailing, 20)
     }
 }
@@ -388,14 +358,16 @@ struct ActivitiesModule: View {
         VStack(alignment: .leading) {
             Text("Activities")
                 .foregroundColor(.white)
+                .font(.system(size: 22))
+                .bold()
             
             ScrollView(.horizontal) {
                 HStack {
-                    Activity(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
+                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
                     
-                    Activity(title: "Character Archtype")
+                    ActivityView(title: "Character Archtype")
                     
-                    Activity(bg_image: "Register_BG", title: "Personality Quiz")
+                    ActivityView(bg_image: "Register_BG", title: "Personality Quiz")
                 }
             }
             
@@ -409,91 +381,18 @@ struct EducationModule: View {
         VStack(alignment: .leading) {
             Text("Education")
                 .foregroundColor(.white)
+                .font(.system(size: 22))
+                .bold()
             
             ScrollView(.horizontal) {
                 HStack {
-                    Education(bg_image: "Profile_BG", completed: true, title: "Dopamine and Cortisal")
+                    EducationArticleView(bg_image: "Profile_BG", completed: true, title: "Dopamine and Cortisal")
                     
-                    Education(bg_image: "Register_Email_BG", completed: false, title: "The Brain and the Prefrontal Cortex")
+                    EducationArticleView(bg_image: "Register_Email_BG", completed: false, title: "The Brain and the Prefrontal Cortex")
                     
-                    Education(bg_image: "Register_BG", title: "Linked Thought Patterns & Nuerons")
+                    EducationArticleView(bg_image: "Register_BG", title: "Linked Thought Patterns & Nuerons")
                 }
             }
         }
     }
 }
-
-
-struct Activity: View {
-    var bg_image = "Forum_BG2"
-    var completed: Bool = true
-    var title: String
-    
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 250, maxWidth: 300, minHeight: 200, maxHeight: 200)
-            .foregroundColor(.blue)
-            .overlay {
-                ZStack {
-                    Image(bg_image)
-                        .resizable()
-                        .cornerRadius(25)
-                    
-                    VStack {
-                        if completed {
-                            Image(systemName: "checkmark.circle.fill")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundColor(.green)
-                                .offset(y: -40)
-                                .offset(x: 100)
-                            
-                        }
-                        
-                        Text(title)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 40)
-                    }
-                }
-            }
-    }
-}
-
-struct Education: View {
-    var bg_image = "Forum_BG2"
-    var completed: Bool = true
-    var title: String
-    
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 250, maxWidth: 300, minHeight: 200, maxHeight: 200)
-            .foregroundColor(.blue)
-            .overlay {
-                ZStack {
-                    Image(bg_image)
-                        .resizable()
-                        .cornerRadius(25)
-                    
-                    VStack {
-                        if completed {
-                            Image(systemName: "checkmark.circle.fill")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundColor(.green)
-                                .offset(y: -40)
-                                .offset(x: 100)
-                            
-                        }
-                        
-                        Text(title)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 40)
-                    }
-                }
-            }
-    }
-}
-
-

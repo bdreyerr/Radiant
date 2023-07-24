@@ -36,6 +36,8 @@
 		1A98C45D2A0ABA0900BB3203 /* NotoSansTC-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */; };
 		1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */; };
 		1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */; };
+		1AAF79FD2A6E0D85005AA26B /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */; };
+		1AAF79FF2A6E0E12005AA26B /* EducationArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */; };
 		1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */; };
 		1AB0B8202A1D2B5300DF1571 /* ForumPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B81F2A1D2B5300DF1571 /* ForumPost.swift */; };
 		1AB0B8222A1D2C2B00DF1571 /* ForumPostComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B8212A1D2C2B00DF1571 /* ForumPostComment.swift */; };
@@ -86,6 +88,8 @@
 		1A98C45C2A0ABA0800BB3203 /* NotoSansTC-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansTC-Thin.otf"; path = "../../../../../Downloads/Noto_Sans_TC/NotoSansTC-Thin.otf"; sourceTree = "<group>"; };
 		1A98C45E2A0ABE9E00BB3203 /* ProfileStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatusManager.swift; sourceTree = "<group>"; };
 		1A98C4602A0AC75600BB3203 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
+		1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EducationArticleView.swift; sourceTree = "<group>"; };
 		1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumDetailedView.swift; sourceTree = "<group>"; };
 		1AB0B81F2A1D2B5300DF1571 /* ForumPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumPost.swift; sourceTree = "<group>"; };
 		1AB0B8212A1D2C2B00DF1571 /* ForumPostComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumPostComment.swift; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 			children = (
 				1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */,
 				1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */,
+				1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */,
+				1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -390,6 +396,7 @@
 			files = (
 				1A8C6C182A0202F200676E5F /* LoginWithEmailView.swift in Sources */,
 				1A541A3D2A40FB8000B1EE11 /* KeyboardGuardian.swift in Sources */,
+				1AAF79FF2A6E0E12005AA26B /* EducationArticleView.swift in Sources */,
 				1AB0B8222A1D2C2B00DF1571 /* ForumPostComment.swift in Sources */,
 				1A195C8F2A229D4A00749695 /* ForumSinglePostView.swift in Sources */,
 				1A6585E62A29104B00B4DE6D /* ChatManager.swift in Sources */,
@@ -401,6 +408,7 @@
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
 				1A6585E42A29091E00B4DE6D /* Message.swift in Sources */,
+				1AAF79FD2A6E0D85005AA26B /* ActivityView.swift in Sources */,
 				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
 				1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */,
 				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,

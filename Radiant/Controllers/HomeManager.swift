@@ -16,7 +16,7 @@ class HomeManager: ObservableObject {
     
     @Published var hasUserCheckedInToday: Bool = false
     
-    @Published var goals: [String] = []
+    @Published var goals: [String] = ["", "", ""]
     @Published var gratitude: String = "I'm grateful for you!"
     
     
@@ -42,7 +42,7 @@ class HomeManager: ObservableObject {
         // retrieve user mood scores
         
         // get goals and gratitude
-        self.goals = []
+//        self.goals = []
         
         userDocRef.getDocument { (document, error) in
             if let document = document, document.exists {
