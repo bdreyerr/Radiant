@@ -22,185 +22,196 @@ struct HomeMainView: View {
     @State var goalThreeComplete = true
     
     var body: some View {
-        ZStack {
-            Image("White_Lotus_Field")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack {
+        NavigationView {
+            ZStack {
+                Image("White_Lotus_Field")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
                 
-                HStack {
-                    // User Image
-                    Image("default_prof_pic")
-                        .resizable()
-                        .frame(width: 60, height: 60, alignment: .leading)
-                        .clipShape(Circle())
-                        .padding(.trailing, 10)
-                    Text ("Hi User!")
-                        .foregroundColor(.black)
+                VStack {
                     
-                    // Notifcation Bell
-                    Image(systemName: "bell.fill")
-                        .resizable()
-                        .frame(width: 24, height: 26, alignment: .leading)
-                        .padding(.leading, 180)
-                        .foregroundColor(.black)
-                    
-                    Circle()
-                        .frame(width: 10, height: 10)
-                        .foregroundColor(.red)
-                        .offset(x: -20, y:-10)
-                }
-                .padding(.leading, 20)
-                .padding(.top, 10)
-                
-                
-                VStack(alignment: .center) {
-                    Image("Lotus_Flower")
-                        .resizable()
-                        .frame(width: 150, height: 150)
-                        .foregroundColor(.white)
-                    
-                    // Date
-                    Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
-                        .font(.system(size: 30, design: .monospaced))
-                        .foregroundColor(.black)
-                    //                        .offset(y: -20)
-                    
-                    // Daily Affirmation
-                    Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
-                        .foregroundColor(.black)
-                        .italic()
-                        .font(.system(size: 15, design: .monospaced))
-                        .padding(20)
-                        .offset(y: -20)
-                        .frame(alignment: .center)
-                }
-                .offset(y: -30)
-                
-                
-                ScrollView {
-                    
-                    // Check In
-                    Text("Check In")
-                        .bold()
-                        .font(.system(size: 22))
-                        .offset(x: -140)
-                        .padding(.leading, 20)
-                        .foregroundColor(.white)
-                    
-                    Button(action: {
-                        print("User wanted to check in")
-                        homeManager.isCheckInPopupShowing = true
-                    }) {
-                        RoundedRectangle(cornerRadius: 40)
-                            .frame(maxWidth: 300, minHeight: 50, maxHeight: 200)
-                            .overlay {
-                                ZStack {
-                                    Text("Check In")
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 15, design: .monospaced))
-                                }
-                            }
-                    }
-                    .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
-                        CheckInView()
-                            .onDisappear {
-                                if let user = Auth.auth().currentUser?.uid {
-                                    homeManager.userInit(userID: user)
-                                } else {
-                                    print("no user yet")
-                                }
-                            }
-                    }
-                    //                    .padding(10)
-                    .foregroundColor(.white)
-                    .padding(.bottom, 20)
-                    
-                    
-                    
-                    // Goals
-                    Text("Goals")
-                        .bold()
-                        .font(.system(size: 22))
-                        .offset(x: -145)
-                        .foregroundColor(.white)
-                    //                        .underline()
-                    
-                    
-                    // Goals
-                    VStack {
-                        // Goal one
-                        GoalView(goalNum: "one", goalSetDate: "7/20", goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
-
+                    HStack {
+                        // User Image
+                        Image("default_prof_pic")
+                            .resizable()
+                            .frame(width: 60, height: 60, alignment: .leading)
+                            .clipShape(Circle())
+                            .padding(.trailing, 10)
+                        Text ("Hi, User!")
+                            .foregroundColor(.black)
                         
-                        // Goal two
-                        GoalView(goalNum: "two", goalSetDate: "7/15", goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                        // Notifcation Bell
+                        Image(systemName: "bell.fill")
+                            .resizable()
+                            .frame(width: 24, height: 26, alignment: .leading)
+                            .padding(.leading, 180)
+                            .foregroundColor(.black)
                         
-                        // Goal three
-                        GoalView(goalNum: "three", goalSetDate: "7/23", goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                        Circle()
+                            .frame(width: 10, height: 10)
+                            .foregroundColor(.red)
+                            .offset(x: -20, y:-10)
                     }
-                    .padding(.bottom, 20)
-                    
-                    
-                    // Gratitude
-                    VStack {
-                        Text("Gratitude")
-                            .bold()
-                            .font(.system(size: 22))
-                            .offset(x: -130)
-                            .foregroundColor(.white)
-                        
-                        
-                        Text(homeManager.gratitude)
-                            .font(.system(size: 16, design: .monospaced))
-                            .foregroundColor(.white)
-                            .italic()
-                            .padding(.top, 10)
-                    }
-                    
-                    
-                    // Mood Graph
-                    VStack {
-                        Text("Mood")
-                            .bold()
-                            .font(.system(size: 22))
-                            .offset(x: -140)
-                            .foregroundColor(.white)
-                        
-                        MoodGraphModule()
-                    }
+                    .padding(.leading, 20)
                     .padding(.top, 10)
                     
                     
-                    ActivitiesModule()
-                        .padding(.bottom, 40)
-                        .padding(.leading, 20)
+                    VStack(alignment: .center) {
+                        Image("home_lotus")
+                            .resizable()
+                            .frame(width: 130, height: 130)
+                            .foregroundColor(.white)
+                        
+                        // Date
+                        Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
+                            .font(.system(size: 30, design: .monospaced))
+                            .foregroundColor(.black)
+                        //                        .offset(y: -20)
+                        
+                    }
+                    .offset(y: -30)
                     
                     
-                    EducationModule()
-                        .padding(.bottom, 40)
-                        .padding(.leading, 20)
-                    
+                    ScrollView {
+                        // Daily Affirmation
+                        Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
+                            .foregroundColor(.black)
+                            .italic()
+                            .font(.system(size: 15, design: .monospaced))
+                            .padding(20)
+                            .offset(y: -20)
+                            .frame(alignment: .center)
+                        
+                        // Check In
+                        Text("Check In")
+                            .bold()
+                            .font(.system(size: 22))
+                            .offset(x: -140)
+                            .padding(.leading, 20)
+                            .foregroundColor(.white)
+                        
+                        if homeManager.hasUserCheckedInToday == false {
+                            Button(action: {
+                                print("User wanted to check in")
+                                homeManager.isCheckInPopupShowing = true
+                            }) {
+                                RoundedRectangle(cornerRadius: 40)
+                                    .frame(maxWidth: 300, minHeight: 50, maxHeight: 200)
+                                    .overlay {
+                                        ZStack {
+                                            Text("Check In")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 15, design: .monospaced))
+                                        }
+                                    }
+                            }
+                            .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
+                                CheckInView()
+                                    .onDisappear {
+                                        if let user = Auth.auth().currentUser?.uid {
+                                            homeManager.userInit(userID: user)
+                                        } else {
+                                            print("no user yet")
+                                        }
+                                    }
+                            }
+                            //                    .padding(10)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 20)
+                            
+                            
+                            
+                        } else {
+                            Text("User has already checked in family.")
+                        }
+                        
+                        
+                        
+                        // Goals
+                        Text("Goals")
+                            .bold()
+                            .font(.system(size: 22))
+                            .offset(x: -145)
+                            .foregroundColor(.white)
+                        //                        .underline()
+                        
+                        
+                        // Goals
+                        VStack {
+                            // Goal one
+                            GoalView(goalNum: "one", goalSetDate: "7/20", goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
+                            
+                            
+                            // Goal two
+                            GoalView(goalNum: "two", goalSetDate: "7/15", goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                            
+                            // Goal three
+                            GoalView(goalNum: "three", goalSetDate: "7/23", goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                        }
+                        .padding(.bottom, 20)
+                        
+                        
+                        // Gratitude
+                        VStack {
+                            Text("Gratitude")
+                                .bold()
+                                .font(.system(size: 22))
+                                .offset(x: -130)
+                                .foregroundColor(.white)
+                            
+                            
+                            Text(homeManager.gratitude)
+                                .font(.system(size: 16, design: .monospaced))
+                                .foregroundColor(.white)
+                                .italic()
+                                .padding(.top, 10)
+                        }
+                        
+                        
+                        // Mood Graph
+                        VStack {
+                            Text("Mood")
+                                .bold()
+                                .font(.system(size: 22))
+                                .offset(x: -140)
+                                .foregroundColor(.white)
+                            
+                            MoodGraphModule()
+                        }
+                        .padding(.top, 10)
+                        
+                        
+                        ActivitiesModule()
+                            .padding(.bottom, 40)
+                            .padding(.leading, 20)
+                        
+                        
+                        EducationModule()
+                            .padding(.bottom, 40)
+                            .padding(.leading, 20)
+                        
+                        
+                    }
+                    .padding(.bottom, 10)
+                    .offset(y: -40)
                     
                 }
-                .padding(.bottom, 10)
-                .offset(y: -40)
+                .padding(.bottom, 30)
+                .padding(.top, 60)
                 
             }
-            .padding(.bottom, 30)
-            .padding(.top, 60)
-            
-        }
-        .onAppear {
-            if let user = Auth.auth().currentUser?.uid {
-                homeManager.userInit(userID: user)
-            } else {
-                print("no user yet")
+            .onAppear {
+                if let user = Auth.auth().currentUser?.uid {
+                    homeManager.userInit(userID: user)
+                } else {
+                    print("no user yet")
+                }
+                
+                print("has user checked in: \(homeManager.hasUserCheckedInToday)")
             }
+            .environmentObject(homeManager)
         }
-        .environmentObject(homeManager)
     }
 }
 
@@ -225,53 +236,50 @@ struct GoalView: View {
     @State var goalComplete = false
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .foregroundColor(Color(hue: goalHue!, saturation: goalSaturation!, brightness: 1.0))
-            .frame(width: 360, height: 80, alignment: .leading)
-            .overlay {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Goal " + goalNum!)
-                            .font(.system(size: 14))
-                            .frame(alignment: .leading)
-                            .foregroundColor(.black)
+        Button(action: {
+            print("goal complete")
+            goalComplete = !goalComplete
+        }) {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(Color(hue: goalHue!, saturation: goalSaturation!, brightness: 1.0))
+                .frame(width: 360, height: 80, alignment: .leading)
+                .overlay {
+                    VStack() {
+                        if goalComplete {
+                            Text("Set on " + goalSetDate!)
+                                .font(.system(size: 12))
+                                .foregroundColor(.green)
+                        } else {
+                            Text("Set on " + goalSetDate!)
+                                .font(.system(size: 12))
+                                .foregroundColor(.black)
+                        }
                         
-                        
-                        Text("Set on " + goalSetDate!)
-                            .font(.system(size: 13))
-                            .frame(alignment: .trailing)
-                            .offset(x: 170)
-                            .foregroundColor(.black)
-                    }
-                    
-                    
-                    Button(action: {
-                        goalComplete = !goalComplete
-                    }) {
-                        HStack {
-                            if goalComplete {
-                                Image(systemName: "checkmark.square.fill")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.green)
-                            } else {
-                                Image(systemName: "square")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.gray)
-                            }
-                            
+                        if goalComplete {
+                            Text(goalText!)
+                                .foregroundColor(.green)
+                                .font(.system(size: 16))
+                        }
+                        else {
                             Text(goalText!)
                                 .foregroundColor(.black)
-                                .font(.system(size: 18))
-                            
+                                .font(.system(size: 16))
                         }
                     }
+                    .padding(.trailing, 20)
+                    .padding(.leading, 20)
+                    
+                    if goalComplete {
+                        Image(systemName: "checkmark.circle.fill")
+                            .resizable()
+                            .frame(width: 24, height: 26, alignment: .leading)
+                            .foregroundColor(.green)
+                            .offset(x: 175, y: -38)
+                    }
                 }
-                .padding(.trailing, 20)
-                .padding(.leading, 20)
-                .offset(x: CGFloat(-120 + (goalText!.count * 3)))
-            }
+        }
+        
+        
     }
 }
 

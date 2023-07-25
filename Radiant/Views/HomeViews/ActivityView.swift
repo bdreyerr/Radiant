@@ -14,43 +14,42 @@ struct ActivityView: View {
     
     
     var body: some View {
-        
-        NavigationView {
-            NavigationLink(destination: ActivityPageView(title: title)) {
-                RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 250, maxWidth: 300, minHeight: 200, maxHeight: 200)
-                    .foregroundColor(.blue)
-                    .overlay {
-                        ZStack {
-                            Image(bg_image)
-                                .resizable()
-                                .cornerRadius(25)
-                            
-                            VStack {
-                                if completed {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .resizable()
-                                        .frame(width: 28, height: 28)
-                                        .foregroundColor(.green)
-                                        .offset(y: -40)
-                                        .offset(x: 100)
-                                    
-                                }
+        NavigationLink(destination: ActivityPageView(title: title)) {
+            RoundedRectangle(cornerRadius: 25)
+                .frame(minWidth: 250, maxWidth: 300, minHeight: 200, maxHeight: 200)
+                .foregroundColor(.blue)
+                .overlay {
+                    ZStack {
+                        Image(bg_image)
+                            .resizable()
+                            .cornerRadius(25)
+                        
+                        VStack {
+                            if completed {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .resizable()
+                                    .frame(width: 28, height: 28)
+                                    .foregroundColor(.green)
+                                    .offset(y: -40)
+                                    .offset(x: 100)
                                 
-                                Text(title)
-                                    .foregroundColor(.white)
-                                    .padding(.bottom, 40)
                             }
+                            
+                            Text(title)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 40)
                         }
                     }
-            }
+                }
         }
     }
 }
 
 struct ActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        ActivityView(title: "Base Activity Title")
+        HomeMainView()
+            .environmentObject(HomeManager())
+            .environmentObject(ProfileStatusManager())
     }
 }
 
@@ -70,10 +69,10 @@ struct ActivityPageView: View {
                     .font(.system(size: 18, design: .serif))
                     .padding(20)
                     .offset(y: -100)
-            
-            
-            
-            
+                
+                
+                
+                
                 Button(action: {
                     print("User wanted to check in")
                 }) {

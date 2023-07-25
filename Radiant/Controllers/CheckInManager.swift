@@ -38,13 +38,14 @@ class CheckInManager: ObservableObject {
             }
         } 
         
-        // store new goals
+        // store new data
         documentRef.updateData([
             "goals": FieldValue.arrayUnion([goalOne, goalTwo, goalThree]),
             "gratitude": gratitude,
             "happinessScores": FieldValue.arrayUnion([happinessSliderVal]),
             "depressionScores": FieldValue.arrayUnion([depressionSliderVal]),
-            "anxietyScores": FieldValue.arrayUnion([anxeitySliderVal])
+            "anxietyScores": FieldValue.arrayUnion([anxeitySliderVal]),
+            "lastCheckinDate": Date()
         ]) { err in
             if let err = err {
                 print("error updating userProfile after checkin: \(err.localizedDescription)")

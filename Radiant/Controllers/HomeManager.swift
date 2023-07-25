@@ -16,7 +16,7 @@ class HomeManager: ObservableObject {
     
     @Published var hasUserCheckedInToday: Bool = false
     
-    @Published var goals: [String] = ["", "", ""]
+    @Published var goals: [String] = ["Please check-in to set your goals", "", ""]
     @Published var gratitude: String = "I'm grateful for you!"
     
     
@@ -46,10 +46,18 @@ class HomeManager: ObservableObject {
         
         userDocRef.getDocument { (document, error) in
             if let document = document, document.exists {
+                // get last check in date
+                if let lastCheckinDate = document.data()!["lastCheckinDate"] as? Timestamp {
+                    
+                    print(lastCheckinDate)
+                    // Figure out how to check how long ago this is
+                    
+                } else {
+                    print("last check in date doesn't exist")
+                }
 
                 // get happiness scores
                 if let happinessScores = document.data()!["happinessScores"] as? [Double] {
-                    print(happinessScores)
                     self.totalHappinessScores = happinessScores
                     
                     // if < 7 values in the array, or if exactly 7, do nothing
@@ -99,7 +107,16 @@ class HomeManager: ObservableObject {
                 
                 // get goals
                 if let goals = document.data()!["goals"] as? [String] {
-                    self.goals = goals
+                    if goals.count >= 1 {
+                        self.goals[0] = goals[0]
+                    }
+                    if goals.count >= 2 {
+                        self.goals[1] = goals[1]
+                    }
+                    if goals.count >= 3 {
+                        self.goals[2] = goals[2]
+                    }
+//                    self.goals = goals
                 }
                 
                 // get gratitude
