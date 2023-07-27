@@ -68,7 +68,7 @@ struct SliderControlView: View {
             
             Text("\(String.init(format: "%.0f", sliderValue))")
                 .font(.system(size: 60))
-                .foregroundColor(.white)
+                .foregroundColor(.black)
                 
         }
     }

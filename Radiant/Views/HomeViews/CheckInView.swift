@@ -9,42 +9,144 @@ import SwiftUI
 
 struct CheckInView: View {
     @StateObject var checkInManager = CheckInManager()
+    @EnvironmentObject var homeManager: HomeManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     
     @State private var happinessSliderValue = 5.0
     @State private var depressionSliderValue = 5.0
     @State private var anxietySliderValue = 5.0
+    
+    @State private var todaysDate = Date()
     
     var body: some View {
         
         NavigationView {
             
             ZStack {
-                Image("CheckIn_BG")
+                Image("Red_Flower_BG")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    
-                    Text("How happy are you today? ")
-                        .foregroundColor(.white)
-                        .padding(.bottom, 20)
-                        .font(.system(size: 18, design: .monospaced))
+                    Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
+                        .font(.system(size: 30, design: .serif))
+                        .foregroundColor(.black)
                         .bold()
-                        .padding(20)
-                    CirclularSlider(sliderValue: $checkInManager.happinessSliderVal)
-                    
-                    
-                    NavigationLink(destination: DepressionView()) {
-                        Text("Next")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30, design: .monospaced))
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.white)
+                        .padding(.bottom, 20)
+                    ScrollView {
+                        
+                        // Goals
+                        VStack {
+                            Text("What are your goals for today?")
+                                .foregroundColor(.black)
+                                .font(.system(size: 20, design: .serif))
+                            
+                            TextField("Enter text", text: $checkInManager.goalOne)
+                                .font(.system(size: 20, design: .serif))
+                                .padding(.leading, 10)
+                                .foregroundColor(.black)
+                                .padding(20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.black, lineWidth: 1)
+                                        .padding(20)
+                                        .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
+                                )
+                            
+                            TextField("Enter text", text: $checkInManager.goalTwo)
+                                .font(.system(size: 20, design: .serif))
+                                .padding(.leading, 10)
+                                .foregroundColor(.black)
+                                .padding(20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.black, lineWidth: 1)
+                                        .padding(20)
+                                        .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
+                                )
+                            
+                            TextField("Enter text", text: $checkInManager.goalThree)
+                                .font(.system(size: 20, design: .serif))
+                                .padding(.leading, 10)
+                                .foregroundColor(.black)
+                                .padding(20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.black, lineWidth: 1)
+                                        .padding(20)
+                                        .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
+                                )
+                        }
+                        .padding(.bottom, 40)
+                        
+                        // Gratitude
+                        VStack {
+                            Text("What are you grateful for today?")
+                                .foregroundColor(.black)
+                                .font(.system(size: 20, design: .serif))
+                            
+                            TextField("Enter text", text: $checkInManager.gratitude)
+                                .font(.system(size: 20, design: .serif))
+                                .padding(.leading, 10)
+                                .foregroundColor(.black)
+                                .padding(20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.black, lineWidth: 1)
+                                        .padding(20)
+                                        .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
+                                )
+                                .padding(.bottom, 40)
+                        }
+                        
+                        // Mood sliders
+                        VStack {
+                            // Happiness
+                            Text("How happy are you today? ")
+                                .foregroundColor(.black)
+                                .padding(.bottom, 20)
+                                .font(.system(size: 18, design: .serif))
+                                .bold()
+                                .padding(10)
+                            CirclularSlider(sliderValue: $checkInManager.happinessSliderVal)
+                            
+                            // Depression
+                            Text("Please rate your depression today: ")
+                                .foregroundColor(.black)
+                                .padding(.bottom, 20)
+                                .font(.system(size: 18, design: .serif))
+                                .bold()
+                                .padding(10)
+                            CirclularSlider(sliderValue: $checkInManager.depressionSliderVal)
+                            
+                            // Anxiety
+                            Text("Please rate your anxiety today: ")
+                                .foregroundColor(.black)
+                                .padding(.bottom, 20)
+                                .font(.system(size: 18, design: .serif))
+                                .bold()
+                                .padding(10)
+                            CirclularSlider(sliderValue: $checkInManager.anxeitySliderVal)
+                                .padding(.bottom, 40)
+                            
+                            // Finish Check in
+                            Button(action: {
+                                if let user = profileStateManager.userProfile {
+                                    checkInManager.checkIn(userID: user.id!)
+                                }
+                                homeManager.isCheckInPopupShowing = false
+                            }) {
+                                Text("Finish Check In")
+                                    .font(.system(size: 20, design: .serif))
+                            }
+                        }
                     }
-                    .offset(y: 200)
-                    .padding(.bottom, 80)
                 }
+                .padding(.top, 140)
+                .padding(.bottom, 40)
+                .offset(y: -40)
+                
             }
         }.environmentObject(checkInManager)
     }

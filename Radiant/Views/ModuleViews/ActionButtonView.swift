@@ -20,7 +20,7 @@ struct ActionButtonView: View {
                 Image(systemName: symbolName).foregroundColor(.black).font(.system(size: 25))
                 
                 // Action text
-                Text(text).font(.system(size: 25))
+                Text(text).font(.system(size: 25, design: .serif))
                     .fontWeight(.light)
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)

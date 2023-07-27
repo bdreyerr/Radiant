@@ -40,37 +40,38 @@ struct HomeMainView: View {
                             .padding(.trailing, 10)
                         Text ("Hi, User!")
                             .foregroundColor(.black)
+                            .font(.system(size: 18, design: .serif))
                         
                         // Notifcation Bell
-                        Image(systemName: "bell.fill")
-                            .resizable()
-                            .frame(width: 24, height: 26, alignment: .leading)
-                            .padding(.leading, 180)
-                            .foregroundColor(.black)
+//                        Image(systemName: "bell.fill")
+//                            .resizable()
+//                            .frame(width: 24, height: 26, alignment: .leading)
+//                            .padding(.leading, 180)
+//                            .foregroundColor(.black)
+//
+//                        Circle()
+//                            .frame(width: 10, height: 10)
+//                            .foregroundColor(.red)
+//                            .offset(x: -20, y:-10)
                         
-                        Circle()
-                            .frame(width: 10, height: 10)
-                            .foregroundColor(.red)
-                            .offset(x: -20, y:-10)
+                        // Radiant Icon
+                        Image("home_lotus")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .padding(.leading, 120)
                     }
                     .padding(.leading, 20)
                     .padding(.top, 10)
                     
                     
                     VStack(alignment: .center) {
-                        Image("home_lotus")
-                            .resizable()
-                            .frame(width: 130, height: 130)
-                            .foregroundColor(.white)
-                        
                         // Date
                         Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
-                            .font(.system(size: 30, design: .monospaced))
+                            .font(.system(size: 30, design: .serif))
                             .foregroundColor(.black)
-                        //                        .offset(y: -20)
-                        
+                            .bold()
                     }
-                    .offset(y: -30)
+                    .padding(.bottom, 30)
                     
                     
                     ScrollView {
@@ -78,15 +79,17 @@ struct HomeMainView: View {
                         Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
                             .foregroundColor(.black)
                             .italic()
-                            .font(.system(size: 15, design: .monospaced))
-                            .padding(20)
-                            .offset(y: -20)
+                            .font(.system(size: 16, design: .serif))
+                            .padding(.leading, 25)
+                            .padding(.trailing, 25)
+                            .padding(.top, 20)
+                            .padding(.bottom, 20)
                             .frame(alignment: .center)
                         
                         // Check In
                         Text("Check In")
                             .bold()
-                            .font(.system(size: 22))
+                            .font(.system(size: 22, design: .serif))
                             .offset(x: -140)
                             .padding(.leading, 20)
                             .foregroundColor(.white)
@@ -102,7 +105,7 @@ struct HomeMainView: View {
                                         ZStack {
                                             Text("Check In")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 15, design: .monospaced))
+                                                .font(.system(size: 15, design: .serif))
                                         }
                                     }
                             }
@@ -129,12 +132,21 @@ struct HomeMainView: View {
                         
                         
                         // Goals
-                        Text("Goals")
-                            .bold()
-                            .font(.system(size: 22))
-                            .offset(x: -145)
-                            .foregroundColor(.white)
-                        //                        .underline()
+                        
+                        HStack {
+                            Text("Goals")
+                                .bold()
+                                .font(.system(size: 22, design: .serif))
+                                .foregroundColor(.white)
+                            
+                            //TODO: replace this date with the date of the last checkin
+                            Text("Set on 7/26")
+                                .font(.system(size: 20, design: .serif))
+                                .foregroundColor(.white)
+                                .padding(.leading, 180)
+                        }
+                        .padding(.leading, 20)
+                        .padding(.trailing, 20)
                         
                         
                         // Goals
@@ -156,30 +168,30 @@ struct HomeMainView: View {
                         VStack {
                             Text("Gratitude")
                                 .bold()
-                                .font(.system(size: 22))
+                                .font(.system(size: 22, design: .serif))
                                 .offset(x: -130)
                                 .foregroundColor(.white)
                             
                             
                             Text(homeManager.gratitude)
-                                .font(.system(size: 16, design: .monospaced))
+                                .font(.system(size: 18, design: .serif))
                                 .foregroundColor(.white)
                                 .italic()
                                 .padding(.top, 10)
                         }
                         
                         
-                        // Mood Graph
-                        VStack {
-                            Text("Mood")
-                                .bold()
-                                .font(.system(size: 22))
-                                .offset(x: -140)
-                                .foregroundColor(.white)
-                            
-                            MoodGraphModule()
-                        }
-                        .padding(.top, 10)
+//                        // Mood Graph
+//                        VStack {
+//                            Text("Mood")
+//                                .bold()
+//                                .font(.system(size: 22, design: .serif))
+//                                .offset(x: -140)
+//                                .foregroundColor(.white)
+//                            
+//                            MoodGraphModule()
+//                        }
+//                        .padding(.top, 10)
                         
                         
                         ActivitiesModule()
@@ -194,6 +206,7 @@ struct HomeMainView: View {
                         
                     }
                     .padding(.bottom, 10)
+                    .padding(.top, 10)
                     .offset(y: -40)
                     
                 }
@@ -240,30 +253,20 @@ struct GoalView: View {
             print("goal complete")
             goalComplete = !goalComplete
         }) {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: 20)
                 .foregroundColor(Color(hue: goalHue!, saturation: goalSaturation!, brightness: 1.0))
-                .frame(width: 360, height: 80, alignment: .leading)
+                .frame(width: 360, height: 70, alignment: .leading)
                 .overlay {
                     VStack() {
                         if goalComplete {
-                            Text("Set on " + goalSetDate!)
-                                .font(.system(size: 12))
-                                .foregroundColor(.green)
-                        } else {
-                            Text("Set on " + goalSetDate!)
-                                .font(.system(size: 12))
-                                .foregroundColor(.black)
-                        }
-                        
-                        if goalComplete {
                             Text(goalText!)
                                 .foregroundColor(.green)
-                                .font(.system(size: 16))
+                                .font(.system(size: 16, design: .serif))
                         }
                         else {
                             Text(goalText!)
                                 .foregroundColor(.black)
-                                .font(.system(size: 16))
+                                .font(.system(size: 16, design: .serif))
                         }
                     }
                     .padding(.trailing, 20)
@@ -366,7 +369,7 @@ struct ActivitiesModule: View {
         VStack(alignment: .leading) {
             Text("Activities")
                 .foregroundColor(.white)
-                .font(.system(size: 22))
+                .font(.system(size: 22, design: .serif))
                 .bold()
             
             ScrollView(.horizontal) {
@@ -389,7 +392,7 @@ struct EducationModule: View {
         VStack(alignment: .leading) {
             Text("Education")
                 .foregroundColor(.white)
-                .font(.system(size: 22))
+                .font(.system(size: 22, design: .serif))
                 .bold()
             
             ScrollView(.horizontal) {

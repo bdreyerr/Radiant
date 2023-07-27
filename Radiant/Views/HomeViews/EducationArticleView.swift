@@ -24,19 +24,23 @@ struct EducationArticleView: View {
                         .cornerRadius(25)
                     
                     VStack {
-                        if completed {
-                            Image(systemName: "checkmark.circle.fill")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundColor(.green)
-                                .offset(y: -40)
-                                .offset(x: 100)
-                            
-                        }
+//                        if completed {
+//                            Image(systemName: "checkmark.circle.fill")
+//                                .resizable()
+//                                .frame(width: 28, height: 28)
+//                                .foregroundColor(.green)
+////                                .offset(y: -10)
+////                                .offset(x: 140)
+//                        }
                         
                         Text(title)
                             .foregroundColor(.white)
                             .padding(.bottom, 40)
+                            .font(.system(size: 18, design: .serif))
+                        
+                        
+                        Text("")
+                            .padding(.top, 60)
                     }
                 }
             }
