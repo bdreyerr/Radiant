@@ -21,6 +21,11 @@ class AuthStatusManager: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     
+    // Variables used for the closed beta
+    @Published var betaCode = ""
+    @Published var isBetaCodeValid: Bool = false
+    
+    
     // Error text used to display to the user (Email already in use, password not secure enough, etc...)
     @Published private var errorText: String?
     
@@ -33,7 +38,7 @@ class AuthStatusManager: ObservableObject {
     
     // Firestore
     let db = Firestore.firestore()
-//    @Published var userProfile: UserProfile?
+    //    @Published var userProfile: UserProfile?
     
     
     // Log the user in with email and password
@@ -63,12 +68,12 @@ class AuthStatusManager: ObservableObject {
             UserDefaults.standard.set(strongSelf.isLoggedIn, forKey: loginStatusKey)
             
             // Retrieved the user profile from Firestore and store it in this class' userProfile var
-//            if let userID = Auth.auth().currentUser?.uid {
-//                strongSelf.retrieveUserProfile(userID: userID)
-//            } else {
-//                print("The current user could not be retrieved")
-////                authStateManager.logOut()
-//            }
+            //            if let userID = Auth.auth().currentUser?.uid {
+            //                strongSelf.retrieveUserProfile(userID: userID)
+            //            } else {
+            //                print("The current user could not be retrieved")
+            ////                authStateManager.logOut()
+            //            }
         }
     }
     
@@ -95,6 +100,10 @@ class AuthStatusManager: ObservableObject {
             UserDefaults.standard.set(self.email, forKey: emailKey)
             UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
             
+            // Set beta status as false after register before user enters their code
+            print("setting the user default for the beta as false")
+            UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
+            
             // Create the user profile in Firestore
             let userProf = UserProfile(email: self.email, displayName: self.email, anonDisplayName: nil, birthday: nil, weight: nil, height: nil, goals: nil)
             let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
@@ -106,12 +115,12 @@ class AuthStatusManager: ObservableObject {
             }
             
             // Retrieve the user profile from Firestore and store it in this class' userProfile var
-//            if let userID = Auth.auth().currentUser?.uid {
-//                self.retrieveUserProfile(userID: userID)
-//            } else {
-//                print("The current user could not be retrieved")
-////                authStateManager.logOut()
-//            }
+            //            if let userID = Auth.auth().currentUser?.uid {
+            //                self.retrieveUserProfile(userID: userID)
+            //            } else {
+            //                print("The current user could not be retrieved")
+            ////                authStateManager.logOut()
+            //            }
         }
     }
     
@@ -157,9 +166,13 @@ class AuthStatusManager: ObservableObject {
                     }
                     self.isLoggedIn = true
                     self.isRegisterPopupShowing = false
-
+                    
                     // Set user defaults
                     UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
+                    
+                    // Set beta status as false after register before user enters their code
+                    print("setting the user default for the beta as false")
+                    UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
                     
                     // Create the user profile in Firestore
                     let userProf = UserProfile(email: self.email, displayName: self.email, birthday: nil, weight: nil, height: nil, goals: nil)
@@ -172,12 +185,12 @@ class AuthStatusManager: ObservableObject {
                     }
                     
                     // Retrieved the user profile from Firestore and store it in this class' userProfile var
-//                    if let userID = Auth.auth().currentUser?.uid {
-//                        self.retrieveUserProfile(userID: userID)
-//                    } else {
-//                        print("The current user could not be retrieved")
-//        //                authStateManager.logOut()
-//                    }
+                    //                    if let userID = Auth.auth().currentUser?.uid {
+                    //                        self.retrieveUserProfile(userID: userID)
+                    //                    } else {
+                    //                        print("The current user could not be retrieved")
+                    //        //                authStateManager.logOut()
+                    //                    }
                 }
             default:
                 break
@@ -186,9 +199,9 @@ class AuthStatusManager: ObservableObject {
             break
         }
     }
-
+    
     // Update a user's email address stored in the auth table (as long as they didn't sign in with apple)
-        // We don't need to pass in a the newEmail as a argument, because the changing email is tied to the text field on the edit email popup
+    // We don't need to pass in a the newEmail as a argument, because the changing email is tied to the text field on the edit email popup
     func updateAuthEmail(newEmail: String) -> String? {
         var returnError: String?
         if let user = Auth.auth().currentUser {
@@ -198,7 +211,7 @@ class AuthStatusManager: ObservableObject {
                     print("There was an error updating the user's email: \(e.localizedDescription)")
                     returnError = e.localizedDescription
                     
-//                    self.logOut()
+                    //                    self.logOut()
                 } else {
                     print("Successfully updated user email in the auth table, no error.")
                     self.email = newEmail
@@ -223,6 +236,10 @@ class AuthStatusManager: ObservableObject {
         }
         self.isLoggedIn = false
         UserDefaults.standard.set(isLoggedIn, forKey: loginStatusKey)
+        
+        self.isBetaCodeValid = false
+        UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+        
         print("The user logged out")
     }
     
@@ -272,6 +289,65 @@ class AuthStatusManager: ObservableObject {
         }
         
         return result
+    }
+    
+    func addBetaCodes() {
+        let codes = [""]
+        
+        // Add the beta codes to firebase
+        for code in codes {
+            print("adding beta code \(code) to firebase")
+            db.collection("betaCodes").document(code).setData([
+                "code": code,
+                "isCodeUsed": false,
+            ]) { err in
+                if let err = err {
+                    print("Error adding code: \(err)")
+                } else {
+                    print("Beta code successfully written!")
+                }
+            }
+        }
+    }
+    
+    // Check if a user's beta code is valid, allowing them to continue to the app
+    func checkBetaCode(code: String, user: String) {
+        // check if the code exists in the db
+        let docRef = db.collection("betaCodes").document(code)
+
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Document data: \(dataDescription)")
+                
+                if let isCodeUsed = document.data()!["isCodeUsed"] as? Bool {
+                    if isCodeUsed == false {
+                        self.isBetaCodeValid = true
+                        UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+                        
+                        // Mark the beta code as being used
+                        docRef.setData([
+                            "code": code,
+                            "isCodeUsed": true,
+                            "usedBy": user,
+                        ])
+                        
+                    } else {
+                        print("Beta code has already been used")
+                        
+                        if let usedBy = document.data()!["usedBy"] as? String {
+                            if usedBy == user {
+                                self.isBetaCodeValid = true
+                                UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+                            }
+                        }
+                    }
+                }
+                
+            } else {
+                print("Beta code is not valid")
+            }
+        }
     }
     
 }

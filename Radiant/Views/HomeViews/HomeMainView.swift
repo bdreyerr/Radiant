@@ -70,6 +70,8 @@ struct HomeMainView: View {
                             .font(.system(size: 30, design: .serif))
                             .foregroundColor(.black)
                             .bold()
+                        
+                        
                     }
                     .padding(.bottom, 30)
                     

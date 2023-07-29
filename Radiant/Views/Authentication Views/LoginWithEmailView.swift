@@ -33,11 +33,18 @@ struct LoginWithEmailView: View {
                     .padding(.top, 30)
                 
                 VStack {
+                    // Label
+                    Text("Login with your email")
+                        .padding(.bottom, 400)
+                        .font(.system(size: 30, design: .serif))
+                        .foregroundColor(.white)
+                    
                     // Email text field
                     TextField("Email", text: $authStateManager.email)
                         .foregroundColor(Color.white)
+                        .padding(.leading, 20)
                         .cornerRadius(50)
-                        .frame(maxWidth: 300)
+                        .frame(maxWidth: 300, minHeight: 40)
                         .font(.system(size: 25, design: .default))
                         .overlay(
                             RoundedRectangle(cornerRadius: 50)
@@ -48,8 +55,9 @@ struct LoginWithEmailView: View {
                     // Password text fields
                     SecureField("Password", text: $authStateManager.password)
                         .foregroundColor(Color.white)
+                        .padding(.leading, 20)
                         .cornerRadius(50)
-                        .frame(maxWidth: 300)
+                        .frame(maxWidth: 300, minHeight: 40)
                         .font(.system(size: 25, design: .default))
                         .overlay(
                             RoundedRectangle(cornerRadius: 50)
@@ -75,5 +83,6 @@ struct LoginWithEmailView: View {
 struct LoginWithEmailView_Previews: PreviewProvider {
     static var previews: some View {
         LoginWithEmailView()
+            .environmentObject(AuthStatusManager())
     }
 }

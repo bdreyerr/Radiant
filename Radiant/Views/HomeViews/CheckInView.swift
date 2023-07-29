@@ -23,7 +23,7 @@ struct CheckInView: View {
         NavigationView {
             
             ZStack {
-                Image("Red_Flower_BG")
+                Image("Checkin_BG")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -31,7 +31,7 @@ struct CheckInView: View {
                 VStack {
                     Text(todaysDate.formatted(date: .abbreviated, time: .omitted))
                         .font(.system(size: 30, design: .serif))
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .bold()
                         .padding(.bottom, 20)
                     ScrollView {
@@ -39,17 +39,17 @@ struct CheckInView: View {
                         // Goals
                         VStack {
                             Text("What are your goals for today?")
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .font(.system(size: 20, design: .serif))
                             
                             TextField("Enter text", text: $checkInManager.goalOne)
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 10)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.black, lineWidth: 1)
+                                        .stroke(Color.white, lineWidth: 1)
                                         .padding(20)
                                         .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
                                 )
@@ -57,11 +57,11 @@ struct CheckInView: View {
                             TextField("Enter text", text: $checkInManager.goalTwo)
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 10)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.black, lineWidth: 1)
+                                        .stroke(Color.white, lineWidth: 1)
                                         .padding(20)
                                         .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
                                 )
@@ -69,11 +69,11 @@ struct CheckInView: View {
                             TextField("Enter text", text: $checkInManager.goalThree)
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 10)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.black, lineWidth: 1)
+                                        .stroke(Color.white, lineWidth: 1)
                                         .padding(20)
                                         .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
                                 )
@@ -83,17 +83,17 @@ struct CheckInView: View {
                         // Gratitude
                         VStack {
                             Text("What are you grateful for today?")
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .font(.system(size: 20, design: .serif))
                             
                             TextField("Enter text", text: $checkInManager.gratitude)
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 10)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.black, lineWidth: 1)
+                                        .stroke(Color.white, lineWidth: 1)
                                         .padding(20)
                                         .frame(minWidth: 200, minHeight: 100, maxHeight: 160)
                                 )
@@ -104,7 +104,7 @@ struct CheckInView: View {
                         VStack {
                             // Happiness
                             Text("How happy are you today? ")
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(.bottom, 20)
                                 .font(.system(size: 18, design: .serif))
                                 .bold()
@@ -113,7 +113,7 @@ struct CheckInView: View {
                             
                             // Depression
                             Text("Please rate your depression today: ")
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(.bottom, 20)
                                 .font(.system(size: 18, design: .serif))
                                 .bold()
@@ -122,7 +122,7 @@ struct CheckInView: View {
                             
                             // Anxiety
                             Text("Please rate your anxiety today: ")
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .padding(.bottom, 20)
                                 .font(.system(size: 18, design: .serif))
                                 .bold()
@@ -145,7 +145,7 @@ struct CheckInView: View {
                 }
                 .padding(.top, 140)
                 .padding(.bottom, 40)
-                .offset(y: -40)
+
                 
             }
         }.environmentObject(checkInManager)

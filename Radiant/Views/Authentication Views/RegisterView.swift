@@ -35,6 +35,10 @@ struct RegisterView: View {
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
                 VStack {
+//                    Text("Radiant")
+//                        .padding(.top, 200)
+//                        .font(.system(size: 30, design: .serif))
+//                        .foregroundColor(Color(hue: 0.066, saturation: 0.513, brightness: 0.183))
                     Spacer()
                     
                     // Register with email button
@@ -83,5 +87,6 @@ struct RegisterView: View {
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
         RegisterView()
+            .environmentObject(AuthStatusManager())
     }
 }

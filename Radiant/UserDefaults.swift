@@ -15,3 +15,5 @@ let emailKey = "email"
 // Need to add something for apple sign in
 let loginStatusKey = "loginStatus"
 
+// User Default for beta code access
+let isUserValidForBetaKey = "isUserValidForBeta"

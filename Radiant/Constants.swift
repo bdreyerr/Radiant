@@ -52,5 +52,6 @@ struct Constants {
     struct UserDefaults {
         static let emailKey = "emailKey"
         static let userLoggedInKey = "userLoggedInKey"
+        static let isUserValidForBetaKey = "isUserValidForBetaKey"
     }
 }

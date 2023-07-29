@@ -15,25 +15,25 @@ struct ContentView: View {
     @StateObject var authStateManager = AuthStatusManager()
     @StateObject var profileStateManager = ProfileStatusManager()
     
+    @State var test: Bool = false
+    
     var body: some View {
         
         ZStack {
             // Show the WelcomeView or Register View depending on user login status stored in userDefaults
             if let loginStatus = UserDefaults.standard.object(forKey: loginStatusKey) as? Bool {
                 
+                
                 // Show the register / login screen either if the loginStatus is nil, or false
                 if loginStatus == false {
                     RegisterView()
                 }
                 
-                // Welcome Survey flow
-                // if this is user's first time signing into the app, show Welcome Survey
-                
                 
                 // Main App Flow
                 if loginStatus == true {
                     WelcomeView()
-                        // Retrieve the UserProfile from firestore and store it in authStateManager.userProfile
+                    // Retrieve the UserProfile from firestore and store it in authStateManager.userProfile
                         .onAppear {
                             if let userID = Auth.auth().currentUser?.uid {
                                 // This function is async, and code below it will not function properly if relying on authStateManager.userProfile
@@ -43,10 +43,21 @@ struct ContentView: View {
                                 authStateManager.logOut()
                             }
                         }
+                    
+                    
+                    // Welcome Survey flow
+                    // if this is user's first time signing into the app, show Welcome Survey
+                    
+                    
+                    // Check code for the closed beta
+                    if let betaStatus = UserDefaults.standard.object(forKey: isUserValidForBetaKey) as? Bool {
+                        if betaStatus == false {
+                            BetaTestValidationView()
+                        }
+                    }
+                } else {
+//                    RegisterView()
                 }
-            } else {
-                // Show the register / login screen either if the loginStatus is nil
-                RegisterView()
             }
         }
         .environmentObject(authStateManager)
