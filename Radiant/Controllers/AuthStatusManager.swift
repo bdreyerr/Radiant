@@ -25,6 +25,12 @@ class AuthStatusManager: ObservableObject {
     @Published var betaCode = ""
     @Published var isBetaCodeValid: Bool = false
     
+    // Variables used for the welcome survey
+    @Published var name: String = ""
+    @Published var birthday: Date = Date()
+    @Published var displayName: String = ""
+    @Published var hasUserCompletedSurvey: Bool = false
+    
     
     // Error text used to display to the user (Email already in use, password not secure enough, etc...)
     @Published private var errorText: String?
@@ -104,6 +110,10 @@ class AuthStatusManager: ObservableObject {
             print("setting the user default for the beta as false")
             UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
             
+            // Set the user default for the user completing the welcome survey to false, they will complete it after register
+            print("setting the user default for the welcome survey as false")
+            UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
+            
             // Create the user profile in Firestore
             let userProf = UserProfile(email: self.email, displayName: self.email, anonDisplayName: nil, birthday: nil, weight: nil, height: nil, goals: nil)
             let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
@@ -174,6 +184,10 @@ class AuthStatusManager: ObservableObject {
                     print("setting the user default for the beta as false")
                     UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
                     
+                    // Set the user default for the user completing the welcome survey to false, they will complete it after register
+                    print("setting the user default for the welcome survey as false")
+                    UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
+                    
                     // Create the user profile in Firestore
                     let userProf = UserProfile(email: self.email, displayName: self.email, birthday: nil, weight: nil, height: nil, goals: nil)
                     let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
@@ -239,6 +253,9 @@ class AuthStatusManager: ObservableObject {
         
         self.isBetaCodeValid = false
         UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+        
+        self.hasUserCompletedSurvey = false
+        UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
         
         print("The user logged out")
     }
@@ -346,6 +363,26 @@ class AuthStatusManager: ObservableObject {
                 
             } else {
                 print("Beta code is not valid")
+            }
+        }
+    }
+    
+    // Complete the welcome survey
+    func completeWelcomeSurvey(user: String) {
+        // update the user's firestore document with name, birthday, displayName and aspirations
+        db.collection("users").document(user).updateData([
+            "name": self.name,
+            "birthday": self.birthday,
+            "displayName": self.displayName
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+                
+                // Set user default for completing the welcome survey to true
+                self.hasUserCompletedSurvey = true
+                UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
             }
         }
     }

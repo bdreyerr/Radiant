@@ -120,6 +120,7 @@ struct ForumCreateCommentView: View {
                     .frame(maxWidth: 350, maxHeight: 100)
                     .overlay(
                         TextField("Enter comment here", text: $text)
+                            .padding(.leading, 20)
                     )
                     
         

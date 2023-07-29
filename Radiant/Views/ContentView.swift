@@ -47,6 +47,11 @@ struct ContentView: View {
                     
                     // Welcome Survey flow
                     // if this is user's first time signing into the app, show Welcome Survey
+                    if let hasUserCompletedWelcomeSurvey = UserDefaults.standard.object(forKey: hasUserCompletedWelcomeSurveyKey) as? Bool {
+                        if hasUserCompletedWelcomeSurvey == false {
+                            WelcomeSurveyView()
+                        }
+                    }
                     
                     
                     // Check code for the closed beta

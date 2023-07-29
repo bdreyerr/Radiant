@@ -26,7 +26,7 @@ struct BetaTestValidationView: View {
                     .font(.system(size: 26, design: .serif))
                     .padding(.top, 200)
                 
-                Text("Thank you so much for checking out my app, I hope you like it. Please let me know if I could do anything better - Ben")
+                Text("Thank you so much for checking out my app, it really means a lot to me :) I'd love any and all feedback you have, enjoy! - Ben")
                     .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))
                     .padding(20)

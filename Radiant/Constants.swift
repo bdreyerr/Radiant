@@ -53,5 +53,6 @@ struct Constants {
         static let emailKey = "emailKey"
         static let userLoggedInKey = "userLoggedInKey"
         static let isUserValidForBetaKey = "isUserValidForBetaKey"
+        static let hasUserCompletedWelcomeSurveyKey = "hasUserCompletedWelcomeSurveyKey"
     }
 }

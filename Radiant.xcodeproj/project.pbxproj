@@ -39,6 +39,7 @@
 		1AAF79FD2A6E0D85005AA26B /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */; };
 		1AAF79FF2A6E0E12005AA26B /* EducationArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */; };
 		1AAF7A012A748C5F005AA26B /* BetaTestValidationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF7A002A748C5F005AA26B /* BetaTestValidationView.swift */; };
+		1AAF7A032A75B06E005AA26B /* WelcomeSurveyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF7A022A75B06E005AA26B /* WelcomeSurveyView.swift */; };
 		1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */; };
 		1AB0B8202A1D2B5300DF1571 /* ForumPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B81F2A1D2B5300DF1571 /* ForumPost.swift */; };
 		1AB0B8222A1D2C2B00DF1571 /* ForumPostComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB0B8212A1D2C2B00DF1571 /* ForumPostComment.swift */; };
@@ -92,6 +93,7 @@
 		1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EducationArticleView.swift; sourceTree = "<group>"; };
 		1AAF7A002A748C5F005AA26B /* BetaTestValidationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaTestValidationView.swift; sourceTree = "<group>"; };
+		1AAF7A022A75B06E005AA26B /* WelcomeSurveyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSurveyView.swift; sourceTree = "<group>"; };
 		1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumDetailedView.swift; sourceTree = "<group>"; };
 		1AB0B81F2A1D2B5300DF1571 /* ForumPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumPost.swift; sourceTree = "<group>"; };
 		1AB0B8212A1D2C2B00DF1571 /* ForumPostComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumPostComment.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */,
 				1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */,
 				1AAF79FE2A6E0E12005AA26B /* EducationArticleView.swift */,
+				1AAF7A022A75B06E005AA26B /* WelcomeSurveyView.swift */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */,
 				1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */,
 				1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */,
+				1AAF7A032A75B06E005AA26B /* WelcomeSurveyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

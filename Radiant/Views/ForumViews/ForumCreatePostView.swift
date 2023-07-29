@@ -74,6 +74,7 @@ struct ForumCreatePostView: View {
                     .frame(maxWidth: 350, maxHeight: 100)
                     .overlay(
                         TextField("Enter post here", text: $text)
+                            .padding(.leading, 20)
                     )
                 
             }

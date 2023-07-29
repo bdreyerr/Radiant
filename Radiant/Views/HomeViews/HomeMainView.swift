@@ -154,14 +154,14 @@ struct HomeMainView: View {
                         // Goals
                         VStack {
                             // Goal one
-                            GoalView(goalNum: "one", goalSetDate: "7/20", goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
+                            GoalView(goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
                             
                             
                             // Goal two
-                            GoalView(goalNum: "two", goalSetDate: "7/15", goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                            GoalView(goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
                             
                             // Goal three
-                            GoalView(goalNum: "three", goalSetDate: "7/23", goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                            GoalView(goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
                         }
                         .padding(.bottom, 20)
                         
@@ -240,9 +240,6 @@ struct HomeMainView_Previews: PreviewProvider {
 
 
 struct GoalView: View {
-    let goalNum: String?
-    let goalSetDate: String?
-    
     let goalText: String?
     
     let goalHue: CGFloat?

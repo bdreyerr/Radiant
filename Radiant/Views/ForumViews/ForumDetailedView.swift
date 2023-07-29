@@ -74,6 +74,9 @@ struct ForumDetailedView: View {
                     .padding(.leading, 20)
                     .padding(.bottom, 1)
                 }
+                .padding(.bottom, 40)
+                .offset(y: -60)
+                .padding(.top, 40)
                 
             }.padding(.top, 80)
         }

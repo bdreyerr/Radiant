@@ -17,3 +17,6 @@ let loginStatusKey = "loginStatus"
 
 // User Default for beta code access
 let isUserValidForBetaKey = "isUserValidForBeta"
+
+// User default for completing the welcome survey
+let hasUserCompletedWelcomeSurveyKey = "hasUserCompletedWelcomeSurvey"
