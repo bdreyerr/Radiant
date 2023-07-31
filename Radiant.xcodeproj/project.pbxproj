@@ -29,6 +29,8 @@
 		1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C192A02122800676E5F /* RegisterView.swift */; };
 		1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */; };
 		1A8C6C1F2A02E2A800676E5F /* ActionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C1E2A02E2A800676E5F /* ActionButtonView.swift */; };
+		1A8CCE092A7837D2001D5D55 /* CharacterAchetypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8CCE082A7837D2001D5D55 /* CharacterAchetypeView.swift */; };
+		1A8CCE0B2A7837E1001D5D55 /* CharacterAchetypeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8CCE0A2A7837E1001D5D55 /* CharacterAchetypeManager.swift */; };
 		1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A92F9B32A0411BE000C2AE3 /* AuthStatusManager.swift */; };
 		1A98C4532A083AC800BB3203 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1A98C4522A083AC800BB3203 /* FirebaseFirestoreSwift */; };
 		1A98C4562A08459600BB3203 /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A98C4552A08459600BB3203 /* MapMainView.swift */; };
@@ -80,6 +82,8 @@
 		1A8C6C192A02122800676E5F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		1A8C6C1B2A02E15E00676E5F /* RegisterWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterWithEmailView.swift; sourceTree = "<group>"; };
 		1A8C6C1E2A02E2A800676E5F /* ActionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonView.swift; sourceTree = "<group>"; };
+		1A8CCE082A7837D2001D5D55 /* CharacterAchetypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterAchetypeView.swift; sourceTree = "<group>"; };
+		1A8CCE0A2A7837E1001D5D55 /* CharacterAchetypeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterAchetypeManager.swift; sourceTree = "<group>"; };
 		1A92F9B32A0411BE000C2AE3 /* AuthStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatusManager.swift; sourceTree = "<group>"; };
 		1A92F9B52A056A3A000C2AE3 /* Radiant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Radiant.entitlements; sourceTree = "<group>"; };
 		1A92F9B82A05732D000C2AE3 /* AuthStatusManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStatusManagerTests.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 		1A56F3DD2A06DF230057A6D6 /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
+				1A8CCE042A78377E001D5D55 /* ActivityViews */,
 				1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */,
 				1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */,
 				1AAF79FC2A6E0D85005AA26B /* ActivityView.swift */,
@@ -176,6 +181,23 @@
 				1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */,
 			);
 			path = ModuleViews;
+			sourceTree = "<group>";
+		};
+		1A8CCE042A78377E001D5D55 /* ActivityViews */ = {
+			isa = PBXGroup;
+			children = (
+				1A8CCE052A78379E001D5D55 /* CharacterAchetype */,
+			);
+			path = ActivityViews;
+			sourceTree = "<group>";
+		};
+		1A8CCE052A78379E001D5D55 /* CharacterAchetype */ = {
+			isa = PBXGroup;
+			children = (
+				1A8CCE082A7837D2001D5D55 /* CharacterAchetypeView.swift */,
+				1A8CCE0A2A7837E1001D5D55 /* CharacterAchetypeManager.swift */,
+			);
+			path = CharacterAchetype;
 			sourceTree = "<group>";
 		};
 		1A92F9BA2A0573D3000C2AE3 /* Frameworks */ = {
@@ -420,6 +442,7 @@
 				1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */,
 				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,
 				1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */,
+				1A8CCE0B2A7837E1001D5D55 /* CharacterAchetypeManager.swift in Sources */,
 				1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
 				1AC990492A01703B00851A14 /* ContentView.swift in Sources */,
@@ -437,6 +460,7 @@
 				1A8C6C1F2A02E2A800676E5F /* ActionButtonView.swift in Sources */,
 				1A56F3DC2A06D5C80057A6D6 /* ProfileMainView.swift in Sources */,
 				1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */,
+				1A8CCE092A7837D2001D5D55 /* CharacterAchetypeView.swift in Sources */,
 				1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */,
 				1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */,
 				1AAF7A032A75B06E005AA26B /* WelcomeSurveyView.swift in Sources */,

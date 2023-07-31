@@ -375,7 +375,9 @@ struct ActivitiesModule: View {
             
             ScrollView(.horizontal) {
                 HStack {
-                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
+//                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
+                    
+                    CharacterAchetypeView()
                     
                     ActivityView(title: "Character Archtype")
                     
