@@ -139,13 +139,18 @@ struct WelcomeSurveyView: View {
                         }
                         .padding(.bottom, 40)
                         
+                        
+                        if authStateManager.isErrorInSurvey {
+                            Text(authStateManager.errorText)
+                                .foregroundColor(.red)
+                                .font(.system(size: 20, design: .serif))
+                        }
                         // Submit
                         Button(action: {
                             print("User wanted to finish their welcome survey")
                             if let user = Auth.auth().currentUser?.uid {
                                 authStateManager.completeWelcomeSurvey(user: user)
                             }
-                            
                         }) {
                             
                             RoundedRectangle(cornerRadius: 25)

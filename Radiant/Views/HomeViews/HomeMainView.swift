@@ -40,7 +40,7 @@ struct HomeMainView: View {
                             .frame(width: 60, height: 60, alignment: .leading)
                             .clipShape(Circle())
                             .padding(.trailing, 10)
-                        Text ("Hi, User!")
+                        Text ("Hi, \(homeManager.userFirstName)!")
                             .foregroundColor(.black)
                             .font(.system(size: 18, design: .serif))
                         

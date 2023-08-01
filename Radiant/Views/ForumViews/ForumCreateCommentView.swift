@@ -96,7 +96,7 @@ struct ForumCreateCommentView: View {
 //                            }
                             if forumManager.focusedPostID != "" {
                                 if forumManager.focusedPostCategoryName != "" {
-                                    forumManager.publishComment(authorID: user.id!, category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
+                                    forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
                                     forumManager.isCreateCommentPopupShowing = false
                                 }
                             }

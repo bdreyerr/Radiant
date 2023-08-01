@@ -14,6 +14,7 @@ import FirebaseFirestoreSwift
 struct UserProfile: Codable {
     @DocumentID var id: String?
     var email: String?
+    var name: String?
     var displayName: String?
     var anonDisplayName: String?
     var birthday: Date?

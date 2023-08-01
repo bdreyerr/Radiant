@@ -30,10 +30,12 @@ class AuthStatusManager: ObservableObject {
     @Published var birthday: Date = Date()
     @Published var displayName: String = ""
     @Published var hasUserCompletedSurvey: Bool = false
+    @Published var isErrorInSurvey = false
+    @Published var errorText: String = ""
     
     
     // Error text used to display to the user (Email already in use, password not secure enough, etc...)
-    @Published private var errorText: String?
+//    @Published private var errorText: String?
     
     // These vars are used for controlling the Auth popups
     @Published var isRegisterPopupShowing: Bool = false
@@ -369,6 +371,21 @@ class AuthStatusManager: ObservableObject {
     
     // Complete the welcome survey
     func completeWelcomeSurvey(user: String) {
+        // First check if the text fields are empty
+        if self.name == "" {
+            self.isErrorInSurvey = true
+            self.errorText = "Please enter a name"
+            return
+        }
+        
+        // First check if the text fields are empty
+        if self.displayName == "" {
+            self.isErrorInSurvey = true
+            self.errorText = "Please enter a username"
+            return
+        }
+        
+        
         // update the user's firestore document with name, birthday, displayName and aspirations
         db.collection("users").document(user).updateData([
             "name": self.name,

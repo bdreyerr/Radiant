@@ -63,7 +63,7 @@ struct ForumDetailedView: View {
                         // look up the username with their id
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
-                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
+                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorUsername ?? "Username missing", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
                                     .id(post.id)
                             } else {
                                 Text("Unable to retrieve post")
@@ -101,6 +101,7 @@ struct ForumDetailedView: View {
                     let post = ForumPost(
                         id: document.documentID,
                         authorID: document.data()["authorID"] as? String,
+                        authorUsername: document.data()["authorUsername"] as? String,
                         category: document.data()["category"] as? String,
                         date: document.data()["date"] as? Date,
                         content: document.data()["content"] as? String,

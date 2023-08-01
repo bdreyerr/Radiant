@@ -15,6 +15,7 @@ class HomeManager: ObservableObject {
     @Published var isCheckInPopupShowing: Bool = false
     
     @Published var hasUserCheckedInToday: Bool = false
+    @Published var userFirstName: String = "User"
     
     @Published var goals: [String] = ["Please check-in to set your goals", "", ""]
     @Published var gratitude: String = "I'm grateful for you!"
@@ -60,6 +61,11 @@ class HomeManager: ObservableObject {
         
         userDocRef.getDocument { (document, error) in
             if let document = document, document.exists {
+                // Get first name
+                if let firstName = document.data()!["name"] as? String {
+                    self.userFirstName = firstName
+                }
+                
                 // get last check in date
                 if let lastCheckinDate = document.data()!["lastCheckinDate"] as? Timestamp {
                     

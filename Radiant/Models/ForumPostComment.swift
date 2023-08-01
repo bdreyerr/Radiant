@@ -14,6 +14,7 @@ struct ForumPostComment: Codable, Identifiable {
     var postID: String?
     var parentCommentID: String?
     var authorID: String?
+    var authorUsername: String?
     var date: Date?
     var commentCategory: String?
     var content: String?

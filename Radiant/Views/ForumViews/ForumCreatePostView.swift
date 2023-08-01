@@ -56,7 +56,7 @@ struct ForumCreatePostView: View {
                     Button(action: {
                         print("User wanted to submit a post with the following text: \(text)")
                         if let user = profileStateManager.userProfile {
-                            forumManager.publishPost(authorID: user.id!, category: title!, content: text)
+                            forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, category: title!, content: text)
                         }
                     }) {
                         Text("Submit Post")

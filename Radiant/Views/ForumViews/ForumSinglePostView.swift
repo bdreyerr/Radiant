@@ -156,7 +156,7 @@ struct ForumSinglePostView: View {
                             ScrollView {
                                 ForEach(comments) { comment in
                                     
-                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
                                     
                                 }
                             }
@@ -185,7 +185,7 @@ struct ForumSinglePostView: View {
                 self.post?.postID = forumManager.focusedPostID
                 self.post?.category = forumManager.focusedPostCategoryName
                 self.post?.userPhoto = "default_prof_pic"
-                self.post?.username = document.data()!["authorID"] as! String
+                self.post?.username = document.data()!["authorUsername"] as! String
 //                self.post?.datePosted = document.data()!["date"] as! Date
                 self.post?.postContent = document.data()!["content"] as! String
                 self.post?.likes = document.data()!["likes"] as! [String]
@@ -225,6 +225,7 @@ struct ForumSinglePostView: View {
                         postID: document.data()["postID"] as? String,
                         parentCommentID: document.data()["parentCommentID"] as? String,
                         authorID: document.data()["authorID"] as? String,
+                        authorUsername: document.data()["authorUsername"] as? String,
                         date: document.data()["date"] as? Date,
                         commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
