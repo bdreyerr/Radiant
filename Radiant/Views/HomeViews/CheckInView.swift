@@ -23,7 +23,7 @@ struct CheckInView: View {
         NavigationView {
             
             ZStack {
-                Image("Checkin_BG")
+                Image("BG_checkin")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)

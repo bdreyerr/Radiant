@@ -28,9 +28,10 @@ class HomeManager: ObservableObject {
     @Published var visibleAnxietyScores: [Double] = []
     @Published var visibleHappinessScores: [Double] = []
     
-    
+    @Published var quoteOfTheDay: String = ""
     
     let db = Firestore.firestore()
+
     
     // initiate variables in the HomeManager on appear
     func userInit(userID: String) {
@@ -43,6 +44,19 @@ class HomeManager: ObservableObject {
         
         // get goals and gratitude
 //        self.goals = []
+        
+        // Get the day of the month for the quote of the day
+        let day = Calendar.current.component(.day, from: Date())
+        print("day of the month: \(day)")
+        let quoteRef = db.collection("quotes").document("\(day)")
+        quoteRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                self.quoteOfTheDay = document.data()!["quote"] as! String
+            } else {
+                print("Quote of the day does exist")
+            }
+        }
+        
         
         userDocRef.getDocument { (document, error) in
             if let document = document, document.exists {

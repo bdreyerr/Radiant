@@ -80,7 +80,7 @@ struct HomeMainView: View {
                     
                     ScrollView {
                         // Daily Affirmation
-                        Text("\"The future belongs to those who believe in the beauty of their dreams\" - Eleanor Roosevelt")
+                        Text(homeManager.quoteOfTheDay)
                             .foregroundColor(.black)
                             .italic()
                             .font(.system(size: 16, design: .serif))
@@ -91,12 +91,12 @@ struct HomeMainView: View {
                             .frame(alignment: .center)
                         
                         // Check In
-                        Text("Check In")
-                            .bold()
-                            .font(.system(size: 22, design: .serif))
-                            .offset(x: -140)
-                            .padding(.leading, 20)
-                            .foregroundColor(.white)
+//                        Text("Check In")
+//                            .bold()
+//                            .font(.system(size: 22, design: .serif))
+//                            .offset(x: -140)
+//                            .padding(.leading, 20)
+//                            .foregroundColor(.white)
                         
                         if homeManager.hasUserCheckedInToday == false {
                             Button(action: {
@@ -132,8 +132,6 @@ struct HomeMainView: View {
                         } else {
                             Text("User has already checked in family.")
                         }
-                        
-                        
                         
                         // Goals
                         
