@@ -73,9 +73,10 @@ struct LoginWithEmailView: View {
                     }) {
                         Text("Login").foregroundColor(.white).font(.system(size: 20)).underline()
                     }
-                }.offset(y: 80)
+                }
                 
             }
+            .padding(.bottom, 60)
         }
     }
 }

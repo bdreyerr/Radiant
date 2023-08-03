@@ -20,11 +20,30 @@ class CheckInManager: ObservableObject {
     
     @Published var gratitude: String = ""
     
+    @Published var isErrorInCheckIn: Bool = false
+    @Published var errorText: String = ""
+    
     let db = Firestore.firestore()
     
     func checkIn(userID: String) {
         
         print("user wanted to check in and send the goals, user: \(userID)")
+        
+        if goalOne == "" && goalTwo == "" && goalThree == "" {
+            self.isErrorInCheckIn = true
+            self.errorText = "Please enter at least one goal"
+            return
+        }
+        
+        if gratitude == "" {
+            self.isErrorInCheckIn = true
+            self.errorText = "Please enter something you are grateful for"
+            return
+        } else {
+            self.isErrorInCheckIn = false
+            self.errorText = ""
+        }
+        
         let documentRef = db.collection("users").document(userID)
         
         // delete old goals

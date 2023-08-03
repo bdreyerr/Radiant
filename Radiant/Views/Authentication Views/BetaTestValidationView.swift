@@ -80,6 +80,7 @@ struct BetaTestValidationView: View {
                 //                    .font(.system(size: 26, design: .serif))
                 //                    .padding(.bottom, 200)
             }
+            .padding(.bottom, 60)
             
             
             

@@ -86,7 +86,6 @@ struct ForumCreateCommentView: View {
 //                            .padding(.trailing, 10)
                     
                     
-                    
                     Button(action: {
                         print("User wanted to submit a comment with the following text: \(text)")
                         if let user = profileStateManager.userProfile {
@@ -97,7 +96,10 @@ struct ForumCreateCommentView: View {
                             if forumManager.focusedPostID != "" {
                                 if forumManager.focusedPostCategoryName != "" {
                                     forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
-                                    forumManager.isCreateCommentPopupShowing = false
+                                    if forumManager.isErrorCreatingComment == false {
+                                        forumManager.isCreateCommentPopupShowing = false
+                                    }
+                                    
                                 }
                             }
                         }
@@ -113,7 +115,10 @@ struct ForumCreateCommentView: View {
                     
                 }
                 
-                
+                if forumManager.isErrorCreatingComment {
+                    Text(forumManager.errorText)
+                        .foregroundColor(.red)
+                }
                 
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.blue, lineWidth: 4)
@@ -134,6 +139,10 @@ struct ForumCreateCommentView: View {
             }
             .offset(y: -200)
             
+        }
+        .onDisappear {
+            forumManager.isErrorCreatingComment = false
+            forumManager.errorText = ""
         }
     }
 }

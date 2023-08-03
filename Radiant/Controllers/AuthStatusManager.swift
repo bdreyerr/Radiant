@@ -11,6 +11,8 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
+import PhotosUI
 
 
 class AuthStatusManager: ObservableObject {
@@ -29,13 +31,11 @@ class AuthStatusManager: ObservableObject {
     @Published var name: String = ""
     @Published var birthday: Date = Date()
     @Published var displayName: String = ""
+    @Published var userPhotoNonPremium: String = ""
     @Published var hasUserCompletedSurvey: Bool = false
     @Published var isErrorInSurvey = false
     @Published var errorText: String = ""
     
-    
-    // Error text used to display to the user (Email already in use, password not secure enough, etc...)
-//    @Published private var errorText: String?
     
     // These vars are used for controlling the Auth popups
     @Published var isRegisterPopupShowing: Bool = false
@@ -46,6 +46,10 @@ class AuthStatusManager: ObservableObject {
     
     // Firestore
     let db = Firestore.firestore()
+    
+    // Firebase Storage
+    let storage = Storage.storage()
+    
     //    @Published var userProfile: UserProfile?
     
     
@@ -369,8 +373,29 @@ class AuthStatusManager: ObservableObject {
         }
     }
     
+    func uploadUserProfilePicture(userID: String, image: UIImage) {
+        let storageRef = storage.reference().child("profile_pictures/\(userID).png")
+        
+        let data = image.pngData()
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        
+        if let data = data {
+            storageRef.putData(data, metadata: metadata) { (metadata, error) in
+                if let error = error {
+                    print("Error while uploading file: ", error.localizedDescription)
+                }
+                
+                if let metadata = metadata {
+                    print("Metadata: ", metadata)
+                }
+            }
+        }
+    }
+    
     // Complete the welcome survey
-    func completeWelcomeSurvey(user: String) {
+    func completeWelcomeSurvey(user: String, userPhotoSelection: Int) {
         // First check if the text fields are empty
         if self.name == "" {
             self.isErrorInSurvey = true
@@ -386,11 +411,21 @@ class AuthStatusManager: ObservableObject {
         }
         
         
+        switch userPhotoSelection {
+            case 0: self.userPhotoNonPremium = "profile_photo_0"
+            case 1: self.userPhotoNonPremium = "profile_photo_1"
+            case 2: self.userPhotoNonPremium = "profile_photo_2"
+            case 3: self.userPhotoNonPremium = "profile_photo_3"
+            case 4: self.userPhotoNonPremium = "profile_photo_4"
+            default: self.userPhotoNonPremium = "profile_photo_0"
+        }
+        
         // update the user's firestore document with name, birthday, displayName and aspirations
         db.collection("users").document(user).updateData([
             "name": self.name,
             "birthday": self.birthday,
-            "displayName": self.displayName
+            "displayName": self.displayName,
+            "userPhotoNonPremium": self.userPhotoNonPremium
         ]) { err in
             if let err = err {
                 print("Error writing document: \(err)")

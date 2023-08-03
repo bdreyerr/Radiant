@@ -130,16 +130,27 @@ struct CheckInView: View {
                             CirclularSlider(sliderValue: $checkInManager.anxeitySliderVal)
                                 .padding(.bottom, 40)
                             
+                            
+                            if checkInManager.isErrorInCheckIn {
+                                Text(checkInManager.errorText)
+                                    .foregroundColor(.red)
+                                    .font(.system(size: 20, design: .serif))
+                                    .padding(.bottom, 20)
+                            }
+                            
                             // Finish Check in
                             Button(action: {
                                 if let user = profileStateManager.userProfile {
                                     checkInManager.checkIn(userID: user.id!)
                                 }
-                                homeManager.isCheckInPopupShowing = false
+                                if checkInManager.isErrorInCheckIn == false {
+                                    homeManager.isCheckInPopupShowing = false
+                                }
                             }) {
                                 Text("Finish Check In")
                                     .font(.system(size: 20, design: .serif))
                             }
+                            .padding(.bottom, 40)
                         }
                     }
                 }

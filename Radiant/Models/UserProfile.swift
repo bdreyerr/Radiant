@@ -20,6 +20,7 @@ struct UserProfile: Codable {
     var birthday: Date?
     var weight: Int?
     var height: Double?
+    var userPhotoNonPremium: String?
     
     var lastCheckinDate: Date?
     var goals: [String]?

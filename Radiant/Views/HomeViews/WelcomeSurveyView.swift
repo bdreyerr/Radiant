@@ -7,11 +7,14 @@
 
 import SwiftUI
 import FirebaseAuth
+import PhotosUI
 
 struct WelcomeSurveyView: View {
     
 //    @StateObject var welcomeSurveyManager = WelcomeSurveyManager()
     @EnvironmentObject var authStateManager: AuthStatusManager
+    
+    @State var selectedProfilePhoto: Int = 0
     
     var body: some View {
         ZStack {
@@ -20,7 +23,7 @@ struct WelcomeSurveyView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
+            VStack(alignment: .center) {
                 Text("Welcome to Radiant")
                     .font(.system(size: 24, design: .serif))
                     .padding(.bottom, 40)
@@ -28,6 +31,8 @@ struct WelcomeSurveyView: View {
                 Text("Please answer a few questions so we can know you better")
                     .font(.system(size: 18, design: .serif))
                     .padding(.bottom, 40)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
                 
                 
                 ScrollView {
@@ -38,12 +43,13 @@ struct WelcomeSurveyView: View {
                             Text("What's your name?")
                                 .foregroundColor(.black)
                                 .font(.system(size: 20, design: .serif))
+                                .padding(.bottom, 20)
                             
                             TextField("Enter text", text: $authStateManager.name)
                                 .font(.system(size: 20, design: .serif))
-                                .padding(.leading, 10)
+                                .padding(.leading, 40)
                                 .foregroundColor(.black)
-                                .padding(20)
+//                                .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.black, lineWidth: 1)
@@ -52,35 +58,141 @@ struct WelcomeSurveyView: View {
                                 )
                                 .padding(.bottom, 20)
                         }
+                        .padding(.leading, 20)
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 40)
                         
                         // Photo
                         VStack {
-                            Text("Would you like to upload a photo?")
+                            Text("Please select a profile photo:")
                                 .foregroundColor(.black)
                                 .font(.system(size: 20, design: .serif))
                             
-                            ZStack {
-                                Image("Selection Mix II")
-                                    .resizable()
-                                    .frame(width: 60, height: 60)
-                                    .clipShape(Circle())
-                                
-                                Circle()
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(Color.white)
-                                    .padding(.leading, 40)
-                                    .padding(.bottom, 50)
-                                
+                            
+                            HStack {
+                                // Profile Pic 1
                                 Button(action: {
-                                    print("change image button pressed")
+                                    self.selectedProfilePhoto = 0
                                 }) {
-                                    Image(systemName: "square.and.pencil")
-                                        .padding(.leading, 40)
-                                        .padding(.bottom, 50)
-                                        .foregroundColor(.black)
+                                    ZStack {
+                                        Image("profile_photo_0")
+                                            .resizable()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                        
+                                        if self.selectedProfilePhoto == 0 {
+                                            Circle()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(Color.green)
+                                                .offset(x: 25, y: -25)
+                                            
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.black)
+                                                .offset(x: 25, y: -25)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+                                // Profile Pic 2
+                                Button(action: {
+                                    self.selectedProfilePhoto = 1
+                                }) {
+                                    ZStack {
+                                        Image("profile_photo_1")
+                                            .resizable()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                        
+                                        if self.selectedProfilePhoto == 1 {
+                                            Circle()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(Color.green)
+                                                .offset(x: 25, y: -25)
+                                            
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.black)
+                                                .offset(x: 25, y: -25)
+                                        }
+                                    }
                                 }
                             }
-                            .padding(.bottom, 20)}
+                            .padding(.bottom, 10)
+                            
+                            HStack {
+                                // Profile Pic 3
+                                Button(action: {
+                                    self.selectedProfilePhoto = 2
+                                }) {
+                                    ZStack {
+                                        Image("profile_photo_2")
+                                            .resizable()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                        
+                                        if self.selectedProfilePhoto == 2 {
+                                            Circle()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(Color.green)
+                                                .offset(x: 25, y: -25)
+                                            
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.black)
+                                                .offset(x: 25, y: -25)
+                                        }
+                                    }
+                                }
+                                .padding(.trailing, 10)
+                                // Profile Pic 4
+                                Button(action: {
+                                    self.selectedProfilePhoto = 3
+                                }) {
+                                    ZStack {
+                                        Image("profile_photo_3")
+                                            .resizable()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                        
+                                        if self.selectedProfilePhoto == 3 {
+                                            Circle()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(Color.green)
+                                                .offset(x: 25, y: -25)
+                                            
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.black)
+                                                .offset(x: 25, y: -25)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.bottom, 10)
+                            
+                            // Profile Pic 5
+                            Button(action: {
+                                self.selectedProfilePhoto = 4
+                            }) {
+                                ZStack {
+                                    Image("profile_photo_4")
+                                        .resizable()
+                                        .frame(width:80, height: 80)
+                                        .clipShape(Circle())
+                                    
+                                    if self.selectedProfilePhoto == 4 {
+                                        Circle()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(Color.green)
+                                            .offset(x: 25, y: -25)
+                                        
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.black)
+                                            .offset(x: 25, y: -25)
+                                    }
+                                }
+                            }
+                            
+                            
+                        }
+                        .padding(.bottom, 40)
                         
                         // Birthday
                         VStack {
@@ -96,12 +208,12 @@ struct WelcomeSurveyView: View {
 
                         // Display Name
                         VStack {
-                            Text("What would you like your username to be?")
+                            Text("What's you username?")
                                 .foregroundColor(.black)
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 20)
                             
-                            Text("This is the name that will be used when you create a post on the community forum")
+                            Text("Username is used for the communty forum")
                                 .foregroundColor(.black)
                                 .font(.system(size: 16, design: .serif))
                                 .padding(.leading, 20)
@@ -120,6 +232,8 @@ struct WelcomeSurveyView: View {
                                 )
                                 .padding(.bottom, 40)
                         }
+                        .padding(.leading, 20)
+                        .padding(.trailing, 20)
                         
                         // Aspiration
                         VStack {
@@ -137,6 +251,8 @@ struct WelcomeSurveyView: View {
                             
                             Aspiration(aspirationText: "Find help in my area", goalHue: 0.324, goalSaturation: 0.111)
                         }
+                        .padding(.leading, 40)
+                        .padding(.trailing, 20)
                         .padding(.bottom, 40)
                         
                         
@@ -149,7 +265,7 @@ struct WelcomeSurveyView: View {
                         Button(action: {
                             print("User wanted to finish their welcome survey")
                             if let user = Auth.auth().currentUser?.uid {
-                                authStateManager.completeWelcomeSurvey(user: user)
+                                authStateManager.completeWelcomeSurvey(user: user, userPhotoSelection: self.selectedProfilePhoto)
                             }
                         }) {
                             
@@ -169,6 +285,7 @@ struct WelcomeSurveyView: View {
                     .padding(.trailing, 20)
                     
                 }
+                .padding(.bottom, 80)
             }
             .padding(.top, 140)
             
@@ -225,3 +342,4 @@ struct Aspiration : View {
         }
     }
 }
+

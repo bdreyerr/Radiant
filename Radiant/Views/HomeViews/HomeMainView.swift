@@ -8,6 +8,7 @@
 // Testing again, after
 
 import SwiftUI
+import UIKit
 import Charts
 import FirebaseFirestore
 import FirebaseAuth
@@ -35,14 +36,17 @@ struct HomeMainView: View {
                     
                     HStack {
                         // User Image
-                        Image("default_prof_pic")
+                        Image(homeManager.userProfilePhoto)
                             .resizable()
                             .frame(width: 60, height: 60, alignment: .leading)
                             .clipShape(Circle())
                             .padding(.trailing, 10)
+                       
+
                         Text ("Hi, \(homeManager.userFirstName)!")
                             .foregroundColor(.black)
                             .font(.system(size: 18, design: .serif))
+                            .animation(.easeInOut(duration: 1.0))
                         
                         // Notifcation Bell
 //                        Image(systemName: "bell.fill")
@@ -64,6 +68,7 @@ struct HomeMainView: View {
                     }
                     .padding(.leading, 20)
                     .padding(.top, 10)
+                    
                     
                     
                     VStack(alignment: .center) {

@@ -100,27 +100,39 @@ struct ChatMainView: View {
                         )
                         
                         
-                    
-                    Button(action: {
-                        if let user = profileStateManager.userProfile {
-                            chatManager.sendMessage(userID: user.id!, content: self.text)
-                            self.retrieveMessages(userID: user.id!)
+                    if self.text == "" {
+                        Button(action: {
+                            // Do nothing if no text is entered
+                        }) {
+                            Image(systemName: "paperplane")
+                                .resizable()
+                                .frame(maxWidth: 25, maxHeight: 25, alignment: .trailing)
+                                .padding(.leading, 15)
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 40)
                         }
-                        self.text = ""
-                    }) {
-                        Image(systemName: "paperplane")
-                            .resizable()
-                            .frame(maxWidth: 25, maxHeight: 25, alignment: .trailing)
-                            .padding(.leading, 15)
-                            .foregroundColor(.blue)
-                            .padding(.trailing, 40)
-                        
+                    } else {
+                        Button(action: {
+                            if let user = profileStateManager.userProfile {
+                                chatManager.sendMessage(userID: user.id!, content: self.text)
+                                self.retrieveMessages(userID: user.id!)
+                            }
+                            self.text = ""
+                        }) {
+                            Image(systemName: "paperplane")
+                                .resizable()
+                                .frame(maxWidth: 25, maxHeight: 25, alignment: .trailing)
+                                .padding(.leading, 15)
+                                .foregroundColor(.blue)
+                                .padding(.trailing, 40)
+                        }
                     }
                 }
                 .padding(.bottom, 140)
             }
             .padding(.top, 80)
-            .offset(y: kGuardian.slide).animation(.easeInOut(duration: 1.0))
+            .offset(y: kGuardian.slide)
+            .animation(.easeInOut(duration: 1.0))
         }
         .background(Color.clear)
         .environmentObject(chatManager)
@@ -171,7 +183,7 @@ struct MessageFromYou : View {
         HStack {
             ZStack {
                 // Create the bubble shape
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .fill(Color.blue)
                 
                 // Add the text content
@@ -181,7 +193,7 @@ struct MessageFromYou : View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.white)
-            .cornerRadius(16)
+            .cornerRadius(20)
             .padding(.leading, 60)
             
             Image("default_prof_pic")
@@ -221,6 +233,7 @@ struct MessageFromBot : View {
             .background(Color.white)
             .cornerRadius(16)
             .padding(.trailing, 50)
+            
         }
         .padding(.leading, 15)
         

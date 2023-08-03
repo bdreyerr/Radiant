@@ -9,6 +9,7 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 
 class HomeManager: ObservableObject {
     
@@ -16,6 +17,7 @@ class HomeManager: ObservableObject {
     
     @Published var hasUserCheckedInToday: Bool = false
     @Published var userFirstName: String = "User"
+    @Published var userProfilePhoto: String = "default_prof_pic"
     
     @Published var goals: [String] = ["Please check-in to set your goals", "", ""]
     @Published var gratitude: String = "I'm grateful for you!"
@@ -31,11 +33,25 @@ class HomeManager: ObservableObject {
     
     @Published var quoteOfTheDay: String = ""
     
+    
     let db = Firestore.firestore()
+    let storage = Storage.storage()
+    
 
     
     // initiate variables in the HomeManager on appear
     func userInit(userID: String) {
+        
+        // Get users profile photo
+//        let Ref = storage.reference(forURL: "profile_pictures/RadiantBotPic.png")
+//        // Download photo in memory
+//        Ref.getData(maxSize: 1 * 1024 * 1024) { data, error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                self.userProfilePhoto = UIImage(data: data!)
+//            }
+//        }
         
         let userDocRef = db.collection("users").document(userID)
         
@@ -64,6 +80,14 @@ class HomeManager: ObservableObject {
                 // Get first name
                 if let firstName = document.data()!["name"] as? String {
                     self.userFirstName = firstName
+                }
+                
+                // Get photo
+                if let userProfilePhoto = document.data()!["userPhotoNonPremium"] as? String {
+                    self.userProfilePhoto = userProfilePhoto
+                    print(self.userProfilePhoto)
+                } else {
+                    print("no profile photo")
                 }
                 
                 // get last check in date

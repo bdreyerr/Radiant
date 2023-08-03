@@ -69,6 +69,11 @@ struct ForumCreatePostView: View {
                     
                 }
                 
+                if forumManager.isErrorCreatingPost {
+                    Text(forumManager.errorText)
+                        .foregroundColor(.red)
+                }
+                
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.blue, lineWidth: 4)
                     .frame(maxWidth: 350, maxHeight: 100)
@@ -81,11 +86,16 @@ struct ForumCreatePostView: View {
             .offset(y: -200)
             
         }
+        .onDisappear {
+            forumManager.isErrorCreatingPost = false
+            forumManager.errorText = ""
+        }
     }
 }
 
 struct ForumCreatePostView_Previews: PreviewProvider {
     static var previews: some View {
         ForumCreatePostView(title: "General")
+            .environmentObject(ForumManager())
     }
 }

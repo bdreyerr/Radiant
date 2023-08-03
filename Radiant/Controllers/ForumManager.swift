@@ -34,51 +34,32 @@ class ForumManager: ObservableObject {
     
     @Published var focusedCommentID: String = ""
     
-    // This function retrieves the posts of a certain category when the user opens that category's page
+    @Published var isErrorCreatingPost: Bool = false
+    @Published var isErrorCreatingComment: Bool = false
+    @Published var errorText: String = ""
+
     // TODO: Find a way to limit the number of posts loaded, and load more when the user scrolls down
-//    func retrievePosts(postCategory: String) -> [ForumPost]{
-//
-//        var posts: [ForumPost] = []
-//        let collectionName = getFstoreForumCategoryCollectionReference(category: postCategory)
-//
-//        posts = await retrievePostsfromFStore(collectionName: collectionName)
-//
-//        return posts
-//    }
-    
-//    func retrievePosts(postsInView: inout [ForumPost], category: String) {
-//        let collectionName = getFstoreForumCategoryCollectionName(category: category)
-//        let collectionRef = db.collection(collectionName)
-//
-//        var posts: [ForumPost] = []
-//
-//        postsInView = []
-//
-//        collectionRef.getDocuments() { (querySnapshot, err) in
-//            if let err = err {
-//                print("Erorr retrieving forum posts from firestore: \(err.localizedDescription)")
-//            } else if let querySnapshot = querySnapshot {
-//                for document in querySnapshot.documents {
-//                    let post = ForumPost(
-//                        id: document.documentID, authorID: document.data()["authorID"] as? String,
-//                            category: document.data()["category"] as? String,
-//                            date: document.data()["date"] as? Date,
-//                            content: document.data()["content"] as? String,
-//                            likeCount: document.data()["likeCount"] as? Int)
-//                    posts.append(post)
-//                }
-//            }
-//        }
-//
-//        for post in posts {
-//            postsInView.append(post)
-//        }
-//
-//    }
     
     
     func publishPost(authorID: String, authorUsername: String, category: String, content: String) {
         print("User wanted to publish a post")
+        
+        print("The post length is: \(content.count)")
+        
+        if content == "" {
+            self.isErrorCreatingPost = true
+            self.errorText = "Please enter your post content"
+            return
+        }
+        
+        if content.count > 300 {
+            self.isErrorCreatingPost = true
+            self.errorText = "Your post is too long, please shorten your post"
+            return
+        } else {
+            self.isErrorCreatingPost = false
+            self.errorText = ""
+        }
         
         // Create the Post Object and save it to the corresponding firestore collection
         let post = ForumPost(authorID: authorID, authorUsername: authorUsername, category: category, date: Date.now, content: content, reportCount: 0, likes: [authorID])
@@ -133,6 +114,21 @@ class ForumManager: ObservableObject {
     
     func publishComment(authorID: String, authorUsername: String, category: String, postID: String, content: String) {
         print("User wanted to publish a comment on a post")
+        
+        if content == "" {
+            self.isErrorCreatingComment = true
+            self.errorText = "Please enter your comment"
+            return
+        }
+        
+        if content.count > 300 {
+            self.isErrorCreatingComment = true
+            self.errorText = "Your comment is too long, please shorten it"
+            return
+        } else {
+            self.isErrorCreatingComment = false
+            self.errorText = ""
+        }
         
         let comment = ForumPostComment(postID: postID, authorID: authorID, authorUsername: authorUsername, date: Date.now, commentCategory: category, content: content, likes: [authorID], reportCount: 0, isCommentLikedByCurrentUser: nil)
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: category)
