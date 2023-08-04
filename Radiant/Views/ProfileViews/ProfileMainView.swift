@@ -60,11 +60,20 @@ struct ProfileMainView: View {
                 }.padding(.bottom, 40)
                 
                 HStack(alignment: .center, spacing: 10) {
-                    Image("default_prof_pic")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .clipShape(Circle())
-                        .padding(.trailing, 30)
+                    if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                        Image(profPic)
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                            .padding(.trailing, 30)
+                    } else {
+                        Image("default_prof_pic")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                            .padding(.trailing, 30)
+                    }
+                    
                     
                     if let displayName = profileStateManager.userProfile?.displayName {
                         if profileStateManager.isForumAnon == true {

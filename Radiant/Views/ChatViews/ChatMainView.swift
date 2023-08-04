@@ -63,8 +63,15 @@ struct ChatMainView: View {
                             ForEach(messages, id: \.id) { message in
                                 if message.id != nil {
                                     if (message.isMessageFromUser!) {
-                                        MessageFromYou(text: message.content)
-                                            .id(message.id)
+                                        if let userPhoto = profileStateManager.userProfile?.userPhotoNonPremium {
+                                            MessageFromYou(text: message.content, profilePhoto: Image(userPhoto))
+                                                .id(message.id)
+                                        } else {
+                                            MessageFromYou(text: message.content, profilePhoto: Image("default_prof_pic"))
+                                                .id(message.id)
+                                        }
+//                                        MessageFromYou(text: message.content)
+//                                            .id(message.id)
                                     } else {
                                         MessageFromBot(text: message.content)
                                             .id(message.id)
@@ -178,6 +185,7 @@ struct ChatMainView_Previews: PreviewProvider {
 
 struct MessageFromYou : View {
     let text: String?
+    let profilePhoto: Image?
     var body: some View {
         
         HStack {
@@ -196,7 +204,7 @@ struct MessageFromYou : View {
             .cornerRadius(20)
             .padding(.leading, 60)
             
-            Image("default_prof_pic")
+            profilePhoto!
                 .resizable()
                 .frame(width: 40, height: 40)
                 .clipShape(Circle())

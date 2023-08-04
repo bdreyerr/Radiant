@@ -31,12 +31,24 @@ struct ForumMainView: View {
                     VStack(alignment: .center) {
                         
                         HStack {
-                            Image("default_prof_pic")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
+                            if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                Image(profPic)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            } else {
+                                Image("default_prof_pic")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            }
                             
-                            Text("southxx")
+                            if let displayName = profileStateManager.userProfile?.displayName {
+                                Text(displayName)
+                            } else {
+                                Text("user")
+                            }
+                            
                             //                            .foregroundColor(.white)
                         }
                         .padding(.bottom, 15)
@@ -167,7 +179,7 @@ struct MyPosts: View {
                 // look up the username with their id
                 ForEach(posts, id: \.id) { post in
                     if post.id != nil {
-                        Post(postID: post.id!, category: post.category!, userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                        Post(postID: post.id!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
                             .id(post.id)
                     } else {
                         Text("Unable to retrieve post")
@@ -181,6 +193,7 @@ struct MyPosts: View {
         .onAppear {
             retrieveMyPosts()
         }
+        .padding(.bottom, 40)
         
     }
     
@@ -216,6 +229,8 @@ struct MyPosts: View {
                     let post = ForumPost(
                         id: document.documentID,
                         authorID: document.data()["authorID"] as? String,
+                        authorUsername: document.data()["authorUsername"] as? String,
+                        authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         category: document.data()["category"] as? String,
                         date: document.data()["date"] as? Date,
                         content: document.data()["content"] as? String,
@@ -242,10 +257,11 @@ struct MyComments: View {
             .padding(.bottom, 15)
             ScrollView {
                 ForEach(comments) { comment in
-                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: "username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "author", userPhoto: comment.authorProfilePhoto ?? "default_prof_pic", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
                     Divider()
                 }
             }
+            .padding(.bottom, 40)
         }
         .onAppear {
             retrieveMyComments()
@@ -283,6 +299,8 @@ struct MyComments: View {
                         id: document.documentID,
                         postID: document.data()["postID"] as? String,
                         authorID: document.data()["authorID"] as? String,
+                        authorUsername: document.data()["authorUsername"] as? String,
+                        authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         date: document.data()["date"] as? Date,
                         commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
@@ -313,7 +331,7 @@ struct LikedPosts: View {
                 // look up the username with their id
                 ForEach(posts, id: \.id) { post in
                     if post.id != nil {
-                        Post(postID: post.id!, category: post.category!, userPhoto: "", username: post.authorID!, datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                        Post(postID: post.id!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
                             .id(post.id)
                     } else {
                         Text("Unable to retrieve post")
@@ -327,6 +345,7 @@ struct LikedPosts: View {
         .onAppear {
             retrieveLikedPosts()
         }
+        .padding(.bottom, 40)
     }
     
     func retrieveLikedPosts() {
@@ -358,6 +377,8 @@ struct LikedPosts: View {
                     let post = ForumPost(
                         id: document.documentID,
                         authorID: document.data()["authorID"] as? String,
+                        authorUsername: document.data()["authorUsername"] as? String,
+                        authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         category: document.data()["category"] as? String,
                         date: document.data()["date"] as? Date,
                         content: document.data()["content"] as? String,

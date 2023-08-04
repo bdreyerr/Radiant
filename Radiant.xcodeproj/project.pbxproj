@@ -20,7 +20,6 @@
 		1A57BB6D2A65AEE50016901D /* CirclularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */; };
 		1A57BB6F2A66378B0016901D /* CheckInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A57BB6E2A66378B0016901D /* CheckInManager.swift */; };
 		1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */; };
-		1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */; };
 		1A6585E42A29091E00B4DE6D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E32A29091E00B4DE6D /* Message.swift */; };
 		1A6585E62A29104B00B4DE6D /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E52A29104B00B4DE6D /* ChatManager.swift */; };
 		1A6C47972A5A1F85006DB377 /* HomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6C47962A5A1F85006DB377 /* HomeManager.swift */; };
@@ -76,7 +75,6 @@
 		1A57BB6C2A65AEE50016901D /* CirclularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclularSlider.swift; sourceTree = "<group>"; };
 		1A57BB6E2A66378B0016901D /* CheckInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInManager.swift; sourceTree = "<group>"; };
 		1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCategoriesView.swift; sourceTree = "<group>"; };
-		1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadiantBotChatView.swift; sourceTree = "<group>"; };
 		1A6585E32A29091E00B4DE6D /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1A6585E52A29104B00B4DE6D /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		1A6C47962A5A1F85006DB377 /* HomeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeManager.swift; sourceTree = "<group>"; };
@@ -172,7 +170,6 @@
 				1AB0B81D2A1BD7C100DF1571 /* ForumDetailedView.swift */,
 				1A195C8E2A229D4A00749695 /* ForumSinglePostView.swift */,
 				1A6585DF2A2669B800B4DE6D /* ForumCategoriesView.swift */,
-				1A6585E12A266B7100B4DE6D /* RadiantBotChatView.swift */,
 				1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */,
 				1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */,
 				1A7621AD2A48E1E60078D480 /* SideBarStack.swift */,
@@ -450,7 +447,6 @@
 				1A98C45F2A0ABE9E00BB3203 /* ProfileStatusManager.swift in Sources */,
 				1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */,
 				1AB0B81E2A1BD7C100DF1571 /* ForumDetailedView.swift in Sources */,
-				1A6585E22A266B7100B4DE6D /* RadiantBotChatView.swift in Sources */,
 				1A8CCE0B2A7837E1001D5D55 /* CharacterAchetypeManager.swift in Sources */,
 				1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */,
 				1AC990692A018B1000851A14 /* Constants.swift in Sources */,
