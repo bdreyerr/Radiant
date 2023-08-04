@@ -13,6 +13,7 @@ struct ForumPost: Codable, Identifiable {
     var id: String?
     var authorID: String?
     var authorUsername: String?
+    var authorProfilePhoto: String?
     var category: String?
     var date: Date?
     var content: String?

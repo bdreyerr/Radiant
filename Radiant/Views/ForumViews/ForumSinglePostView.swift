@@ -44,7 +44,6 @@ struct ForumSinglePostView: View {
                         
                         HStack(alignment: .top) {
                             // Author profile picture
-                            // TODO: Add storage for profile pictures and a lookup function based on userID
                             Image(post.userPhoto)
                                 .resizable()
                                 .frame(width: 40, height: 40)
@@ -156,7 +155,7 @@ struct ForumSinglePostView: View {
                             ScrollView {
                                 ForEach(comments) { comment in
                                     
-                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
                                     
                                 }
                             }
@@ -184,7 +183,12 @@ struct ForumSinglePostView: View {
 //                print("Document data: \(dataDescription)")
                 self.post?.postID = forumManager.focusedPostID
                 self.post?.category = forumManager.focusedPostCategoryName
-                self.post?.userPhoto = "default_prof_pic"
+                if let authorProfilePhoto = document.data()?["authorProfilePhoto"] as? String {
+                    self.post?.userPhoto = authorProfilePhoto
+                } else {
+                    self.post?.userPhoto = "default_prof_pic"
+                }
+//                self.post?.userPhoto = document.data()!["authorProfilePhoto"] as! String
                 self.post?.username = document.data()!["authorUsername"] as! String
 //                self.post?.datePosted = document.data()!["date"] as! Date
                 self.post?.postContent = document.data()!["content"] as! String
@@ -226,6 +230,7 @@ struct ForumSinglePostView: View {
                         parentCommentID: document.data()["parentCommentID"] as? String,
                         authorID: document.data()["authorID"] as? String,
                         authorUsername: document.data()["authorUsername"] as? String,
+                        authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         date: document.data()["date"] as? Date,
                         commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
@@ -265,6 +270,7 @@ struct Comment: View {
     let commentID: String
     let authorID: String
     let username: String
+    let userPhoto: String?
     let datePosted: Date
     let commentCategory: String
     let commentContent: String
@@ -278,7 +284,7 @@ struct Comment: View {
         VStack(alignment: .leading) {
             HStack {
                 // Author profile picture
-                Image("Selection Mix II")
+                Image(userPhoto ?? "Selection Mix II")
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())

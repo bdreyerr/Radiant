@@ -30,7 +30,7 @@ struct ForumCreateCommentView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             // Author profile picture
-                            Image("Selection Mix II")
+                            Image(post.userPhoto)
                                 .resizable()
                                 .frame(width: 40, height: 40)
                                 .clipShape(Circle())
@@ -95,7 +95,7 @@ struct ForumCreateCommentView: View {
 //                            }
                             if forumManager.focusedPostID != "" {
                                 if forumManager.focusedPostCategoryName != "" {
-                                    forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
+                                    forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "Selection Mix II", category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
                                     if forumManager.isErrorCreatingComment == false {
                                         forumManager.isCreateCommentPopupShowing = false
                                     }

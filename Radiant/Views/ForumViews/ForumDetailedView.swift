@@ -63,7 +63,7 @@ struct ForumDetailedView: View {
                         // look up the username with their id
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
-                                Post(postID: post.id!, category: self.title ?? "General" , userPhoto: "", username: post.authorUsername ?? "Username missing", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
+                                Post(postID: post.id!, category: self.title ?? "General", userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "Username missing", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
                                     .id(post.id)
                             } else {
                                 Text("Unable to retrieve post")
@@ -102,6 +102,7 @@ struct ForumDetailedView: View {
                         id: document.documentID,
                         authorID: document.data()["authorID"] as? String,
                         authorUsername: document.data()["authorUsername"] as? String,
+                        authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         category: document.data()["category"] as? String,
                         date: document.data()["date"] as? Date,
                         content: document.data()["content"] as? String,
@@ -148,7 +149,7 @@ struct Post: View {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
                         // User profile picture
-                        Image("default_prof_pic")
+                        Image(userPhoto)
                             .resizable()
                             .frame(width: 40, height: 40)
                             .clipShape(Circle())

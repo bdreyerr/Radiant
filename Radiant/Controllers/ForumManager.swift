@@ -41,7 +41,7 @@ class ForumManager: ObservableObject {
     // TODO: Find a way to limit the number of posts loaded, and load more when the user scrolls down
     
     
-    func publishPost(authorID: String, authorUsername: String, category: String, content: String) {
+    func publishPost(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, content: String) {
         print("User wanted to publish a post")
         
         print("The post length is: \(content.count)")
@@ -62,7 +62,7 @@ class ForumManager: ObservableObject {
         }
         
         // Create the Post Object and save it to the corresponding firestore collection
-        let post = ForumPost(authorID: authorID, authorUsername: authorUsername, category: category, date: Date.now, content: content, reportCount: 0, likes: [authorID])
+        let post = ForumPost(authorID: authorID, authorUsername: authorUsername, authorProfilePhoto: authorProfilePhoto, category: category, date: Date.now, content: content, reportCount: 0, likes: [authorID])
         // TODO: Add if let category = post.category to make sure the post has a corresponding cateogry to post to
         
         let collectionName = getFstoreForumCategoryCollectionName(category: category)
@@ -112,7 +112,7 @@ class ForumManager: ObservableObject {
         }
     }
     
-    func publishComment(authorID: String, authorUsername: String, category: String, postID: String, content: String) {
+    func publishComment(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, postID: String, content: String) {
         print("User wanted to publish a comment on a post")
         
         if content == "" {
@@ -130,7 +130,7 @@ class ForumManager: ObservableObject {
             self.errorText = ""
         }
         
-        let comment = ForumPostComment(postID: postID, authorID: authorID, authorUsername: authorUsername, date: Date.now, commentCategory: category, content: content, likes: [authorID], reportCount: 0, isCommentLikedByCurrentUser: nil)
+        let comment = ForumPostComment(postID: postID, authorID: authorID, authorUsername: authorUsername, authorProfilePhoto: authorProfilePhoto, date: Date.now, commentCategory: category, content: content, likes: [authorID], reportCount: 0, isCommentLikedByCurrentUser: nil)
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: category)
         
         var ref: DocumentReference? = nil
