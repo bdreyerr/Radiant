@@ -58,6 +58,6 @@ class HealthyRelationshipManager: ObservableObject {
         default: result = -1
         }
         
-        print("total sum = \(totalSum)")
+//        print("total sum = \(totalSum)")
     }
 }

@@ -41,24 +41,24 @@ struct HomeMainView: View {
                             .frame(width: 60, height: 60, alignment: .leading)
                             .clipShape(Circle())
                             .padding(.trailing, 10)
-                       
-
+                        
+                        
                         Text ("Hi, \(homeManager.userFirstName)!")
                             .foregroundColor(.black)
                             .font(.system(size: 18, design: .serif))
                             .animation(.easeInOut(duration: 1.0))
                         
                         // Notifcation Bell
-//                        Image(systemName: "bell.fill")
-//                            .resizable()
-//                            .frame(width: 24, height: 26, alignment: .leading)
-//                            .padding(.leading, 180)
-//                            .foregroundColor(.black)
-//
-//                        Circle()
-//                            .frame(width: 10, height: 10)
-//                            .foregroundColor(.red)
-//                            .offset(x: -20, y:-10)
+                        //                        Image(systemName: "bell.fill")
+                        //                            .resizable()
+                        //                            .frame(width: 24, height: 26, alignment: .leading)
+                        //                            .padding(.leading, 180)
+                        //                            .foregroundColor(.black)
+                        //
+                        //                        Circle()
+                        //                            .frame(width: 10, height: 10)
+                        //                            .foregroundColor(.red)
+                        //                            .offset(x: -20, y:-10)
                         
                         // Radiant Icon
                         Image("home_lotus")
@@ -84,138 +84,118 @@ struct HomeMainView: View {
                     
                     
                     ScrollView {
-                        // Daily Affirmation
-                        Text(homeManager.quoteOfTheDay)
-                            .foregroundColor(.black)
-                            .italic()
-                            .font(.system(size: 16, design: .serif))
-                            .padding(.leading, 25)
-                            .padding(.trailing, 25)
-                            .padding(.top, 20)
-                            .padding(.bottom, 20)
-                            .frame(alignment: .center)
-                        
-                        // Check In
-//                        Text("Check In")
-//                            .bold()
-//                            .font(.system(size: 22, design: .serif))
-//                            .offset(x: -140)
-//                            .padding(.leading, 20)
-//                            .foregroundColor(.white)
-                        
-                        if homeManager.hasUserCheckedInToday == false {
-                            Button(action: {
-                                print("User wanted to check in")
-                                homeManager.isCheckInPopupShowing = true
-                            }) {
-                                RoundedRectangle(cornerRadius: 40)
-                                    .frame(maxWidth: 300, minHeight: 50, maxHeight: 200)
-                                    .overlay {
-                                        ZStack {
-                                            Text("Check In")
-                                                .foregroundColor(.black)
-                                                .font(.system(size: 15, design: .serif))
-                                        }
-                                    }
-                            }
-                            .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
-                                CheckInView()
-                                    .onDisappear {
-                                        if let user = Auth.auth().currentUser?.uid {
-                                            homeManager.userInit(userID: user)
-                                        } else {
-                                            print("no user yet")
-                                        }
-                                    }
-                            }
-                            //                    .padding(10)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 20)
-                            
-                            
-                            
-                        } else {
-                            Text("User has already checked in family.")
-                        }
-                        
-                        // Goals
-                        
-                        HStack {
-                            Text("Goals")
-                                .bold()
-                                .font(.system(size: 22, design: .serif))
-                                .foregroundColor(.white)
-                            
-                            //TODO: replace this date with the date of the last checkin
-                            Text("Set on 7/26")
-                                .font(.system(size: 20, design: .serif))
-                                .foregroundColor(.white)
-                                .padding(.leading, 180)
-                        }
-                        .padding(.leading, 20)
-                        .padding(.trailing, 20)
-                        
-                        
-                        // Goals
                         VStack {
-                            // Goal one
-                            GoalView(goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
-                            
-                            
-                            // Goal two
-                            GoalView(goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
-                            
-                            // Goal three
-                            GoalView(goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
-                        }
-                        .padding(.bottom, 20)
-                        
-                        
-                        // Gratitude
-                        VStack {
-                            Text("Gratitude")
-                                .bold()
-                                .font(.system(size: 22, design: .serif))
-                                .offset(x: -130)
-                                .foregroundColor(.white)
-                            
-                            
-                            Text(homeManager.gratitude)
-                                .font(.system(size: 18, design: .serif))
-                                .foregroundColor(.white)
+                            // Daily Affirmation
+                            Text(homeManager.quoteOfTheDay)
+                                .foregroundColor(.black)
                                 .italic()
-                                .padding(.top, 10)
+                                .font(.system(size: 16, design: .serif))
+                                .padding(.leading, 25)
+                                .padding(.trailing, 25)
+                                .padding(.top, 20)
+                                .padding(.bottom, 20)
+                                .frame(alignment: .center)
+                        
+                            
+                            if homeManager.hasUserCheckedInToday == false {
+                                Button(action: {
+                                    print("User wanted to check in")
+                                    homeManager.isCheckInPopupShowing = true
+                                }) {
+                                    RoundedRectangle(cornerRadius: 40)
+                                        .frame(maxWidth: 300, minHeight: 50, maxHeight: 200)
+                                        .overlay {
+                                            ZStack {
+                                                Text("Check In")
+                                                    .foregroundColor(.black)
+                                                    .font(.system(size: 15, design: .serif))
+                                            }
+                                        }
+                                }
+                                .sheet(isPresented: $homeManager.isCheckInPopupShowing) {
+                                    CheckInView()
+                                        .onDisappear {
+                                            if let user = Auth.auth().currentUser?.uid {
+                                                homeManager.userInit(userID: user)
+                                            } else {
+                                                print("no user yet")
+                                            }
+                                        }
+                                }
+                                //                    .padding(10)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 20)
+                            } else {
+                                Text("User has already checked in family.")
+                            }
+                            
+                            // Goals
+                            HStack {
+                                Text("Goals")
+                                    .bold()
+                                    .font(.system(size: 22, design: .serif))
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                                
+                                //TODO: replace this date with the date of the last checkin
+                                Text("Set on 7/26")
+                                    .font(.system(size: 20, design: .serif))
+                                    .foregroundColor(.white)
+                                    .padding(.leading, 180)
+                            }
+                            .padding(.leading, 20)
+                            .padding(.trailing, 20)
+                            
+                            
+                            // Goals
+                            VStack(alignment: .center) {
+                                // Goal one
+                                GoalView(goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
+                                
+                                // Goal two
+                                GoalView(goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                                
+                                // Goal three
+                                GoalView(goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                            }
+                            .padding(.bottom, 20)
+                            
+                            
+                            // Gratitude
+                            VStack {
+                                
+                                HStack {
+                                    Text("Gratitude")
+                                        .bold()
+                                        .font(.system(size: 22, design: .serif))
+                                        .foregroundColor(.white)
+                                    
+                                    Spacer()
+                                }
+                                
+                                Text(homeManager.gratitude)
+                                    .font(.system(size: 18, design: .serif))
+                                    .foregroundColor(.white)
+                                    .italic()
+                                    .padding(.top, 10)
+                            }
+                            .padding(.leading, 20)
+                            
+                            
+                            ActivitiesModule()
+                                .padding(.bottom, 40)
+                            
+                            
+                            EducationModule()
+                                .padding(.bottom, 40)
+                            
+                            
                         }
-                        
-                        
-//                        // Mood Graph
-//                        VStack {
-//                            Text("Mood")
-//                                .bold()
-//                                .font(.system(size: 22, design: .serif))
-//                                .offset(x: -140)
-//                                .foregroundColor(.white)
-//                            
-//                            MoodGraphModule()
-//                        }
-//                        .padding(.top, 10)
-                        
-                        
-                        ActivitiesModule()
-                            .padding(.bottom, 40)
-                            .padding(.leading, 20)
-                        
-                        
-                        EducationModule()
-                            .padding(.bottom, 40)
-                            .padding(.leading, 20)
-                        
-                        
+                        .padding(.bottom, 10)
+                        .padding(.top, 10)
+                        .offset(y: -40)
                     }
-                    .padding(.bottom, 10)
-                    .padding(.top, 10)
-                    .offset(y: -40)
-                    
                 }
                 .padding(.bottom, 30)
                 .padding(.top, 60)
@@ -371,24 +351,29 @@ struct ActivitiesModule: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Activities")
-                .foregroundColor(.white)
-                .font(.system(size: 22, design: .serif))
-                .bold()
+            
+            HStack {
+                Text("Activities")
+                    .foregroundColor(.white)
+                    .font(.system(size: 22, design: .serif))
+                    .bold()
+                Spacer()
+            }
             
             ScrollView(.horizontal) {
                 HStack {
-//                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
+                    //                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
                     
                     CharacterAchetypeView()
                     
                     HealthyRelationshipActivityView()
                     
-                    ActivityView(bg_image: "Register_BG", title: "Personality Quiz")
+                    JournalingPromptsActivityView()
                 }
             }
             
         }
+        .padding(.leading, 20)
     }
 }
 
@@ -396,10 +381,14 @@ struct ActivitiesModule: View {
 struct EducationModule: View {
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Education")
-                .foregroundColor(.white)
-                .font(.system(size: 22, design: .serif))
-                .bold()
+            
+            HStack {
+                Text("Education")
+                    .foregroundColor(.white)
+                    .font(.system(size: 22, design: .serif))
+                    .bold()
+                Spacer()
+            }
             
             ScrollView(.horizontal) {
                 HStack {
@@ -411,5 +400,6 @@ struct EducationModule: View {
                 }
             }
         }
+        .padding(.leading, 20)
     }
 }
