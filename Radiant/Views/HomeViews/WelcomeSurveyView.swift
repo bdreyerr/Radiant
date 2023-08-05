@@ -34,7 +34,6 @@ struct WelcomeSurveyView: View {
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
                 
-                
                 ScrollView {
                     VStack {
                         // Name
@@ -58,8 +57,7 @@ struct WelcomeSurveyView: View {
                                 )
                                 .padding(.bottom, 20)
                         }
-                        .padding(.leading, 20)
-                        .padding(.trailing, 20)
+
                         .padding(.bottom, 40)
                         
                         // Photo
@@ -211,12 +209,10 @@ struct WelcomeSurveyView: View {
                             Text("What's you username?")
                                 .foregroundColor(.black)
                                 .font(.system(size: 20, design: .serif))
-                                .padding(.leading, 20)
                             
                             Text("Username is used for the communty forum")
                                 .foregroundColor(.black)
                                 .font(.system(size: 16, design: .serif))
-                                .padding(.leading, 20)
                             
                             
                             TextField("Enter text", text: $authStateManager.displayName)
@@ -232,15 +228,12 @@ struct WelcomeSurveyView: View {
                                 )
                                 .padding(.bottom, 40)
                         }
-                        .padding(.leading, 20)
-                        .padding(.trailing, 20)
                         
                         // Aspiration
                         VStack {
                             Text("What are you looking to get out of this app? (Select all)")
                                 .foregroundColor(.black)
                                 .font(.system(size: 20, design: .serif))
-                                .padding(.leading, 20)
                                 .padding(.bottom, 20)
                             
                             Aspiration(aspirationText: "Track my mood and goals", goalHue: 1.0, goalSaturation: 0.111)
@@ -251,8 +244,6 @@ struct WelcomeSurveyView: View {
                             
                             Aspiration(aspirationText: "Find help in my area", goalHue: 0.324, goalSaturation: 0.111)
                         }
-                        .padding(.leading, 40)
-                        .padding(.trailing, 20)
                         .padding(.bottom, 40)
                         
                         
@@ -282,8 +273,6 @@ struct WelcomeSurveyView: View {
                         
                     }
                     .padding(.bottom, 40)
-                    .padding(.trailing, 20)
-                    
                 }
                 .padding(.bottom, 80)
             }

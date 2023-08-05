@@ -382,7 +382,7 @@ struct ActivitiesModule: View {
                     
                     CharacterAchetypeView()
                     
-                    ActivityView(title: "Character Archtype")
+                    HealthyRelationshipActivityView()
                     
                     ActivityView(bg_image: "Register_BG", title: "Personality Quiz")
                 }

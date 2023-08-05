@@ -23,7 +23,7 @@ struct CharacterAchetypeView: View {
                     .foregroundColor(.blue)
                     .overlay {
                         ZStack {
-                            Image("CA_BG1")
+                            Image("CA_BG2")
                                 .resizable()
                                 .cornerRadius(25)
                         }
