@@ -392,7 +392,7 @@ struct EducationModule: View {
             
             ScrollView(.horizontal) {
                 HStack {
-                    EducationArticleView(bg_image: "Profile_BG", completed: true, title: "Dopamine and Cortisal")
+                    ThinkingErrorsView()
                     
                     EducationArticleView(bg_image: "Register_Email_BG", completed: false, title: "The Brain and the Prefrontal Cortex")
                     

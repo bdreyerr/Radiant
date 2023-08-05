@@ -11,6 +11,7 @@
 		1A1D6DF52A7DBED700A23807 /* HealthyRelationshipActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DF42A7DBED700A23807 /* HealthyRelationshipActivityView.swift */; };
 		1A1D6DF72A7DD44B00A23807 /* HealthyRelationshipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DF62A7DD44B00A23807 /* HealthyRelationshipManager.swift */; };
 		1A1D6DF92A7EF38200A23807 /* JournalingPromptsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DF82A7EF38200A23807 /* JournalingPromptsActivityView.swift */; };
+		1A1D6DFC2A7EFD4000A23807 /* ThinkingErrorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */; };
 		1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */; };
 		1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */; };
 		1A541A3D2A40FB8000B1EE11 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */; };
@@ -69,6 +70,7 @@
 		1A1D6DF42A7DBED700A23807 /* HealthyRelationshipActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthyRelationshipActivityView.swift; sourceTree = "<group>"; };
 		1A1D6DF62A7DD44B00A23807 /* HealthyRelationshipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthyRelationshipManager.swift; sourceTree = "<group>"; };
 		1A1D6DF82A7EF38200A23807 /* JournalingPromptsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalingPromptsActivityView.swift; sourceTree = "<group>"; };
+		1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingErrorsView.swift; sourceTree = "<group>"; };
 		1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreatePostView.swift; sourceTree = "<group>"; };
 		1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInView.swift; sourceTree = "<group>"; };
 		1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardGuardian.swift; sourceTree = "<group>"; };
@@ -148,6 +150,14 @@
 			path = HealthyRelationship;
 			sourceTree = "<group>";
 		};
+		1A1D6DFA2A7EFD2A00A23807 /* EducationViews */ = {
+			isa = PBXGroup;
+			children = (
+				1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */,
+			);
+			path = EducationViews;
+			sourceTree = "<group>";
+		};
 		1A56F3D72A06CFB60057A6D6 /* NavigationViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +178,7 @@
 		1A56F3DD2A06DF230057A6D6 /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
+				1A1D6DFA2A7EFD2A00A23807 /* EducationViews */,
 				1A8CCE042A78377E001D5D55 /* ActivityViews */,
 				1A56F3DE2A06DF310057A6D6 /* HomeMainView.swift */,
 				1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */,
@@ -455,6 +466,7 @@
 				1AB0B8202A1D2B5300DF1571 /* ForumPost.swift in Sources */,
 				1A56F3E22A06DF7B0057A6D6 /* ForumMainView.swift in Sources */,
 				1A56F3E42A08316A0057A6D6 /* UserProfile.swift in Sources */,
+				1A1D6DFC2A7EFD4000A23807 /* ThinkingErrorsView.swift in Sources */,
 				1A1D6DF92A7EF38200A23807 /* JournalingPromptsActivityView.swift in Sources */,
 				1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */,
 				1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */,
