@@ -109,7 +109,7 @@ struct ForumMainView: View {
             NavigationView {
                 ZStack {
                     // This is the background image.
-                    Image("Forum_BG3")
+                    Image("Dark_Hills_BG")
                         .resizable()
                         .scaledToFill()
                         .edgesIgnoringSafeArea(.all)

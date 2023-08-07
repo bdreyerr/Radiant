@@ -13,7 +13,7 @@ struct ThinkingErrorsView: View {
             // BG
             VStack {
                 Text("Thinking Errors")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))
                 
                 RoundedRectangle(cornerRadius: 25)

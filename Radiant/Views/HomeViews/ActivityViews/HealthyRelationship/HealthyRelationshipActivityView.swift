@@ -13,7 +13,7 @@ struct HealthyRelationshipActivityView: View {
             // BG
             VStack {
                 Text("Healthy Relationship Quiz")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))
                 
                 RoundedRectangle(cornerRadius: 25)

@@ -27,7 +27,7 @@ struct HomeMainView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Image("White_Lotus_Field")
+                Image("Radiant_Home_BG")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
@@ -80,7 +80,7 @@ struct HomeMainView: View {
                         
                         
                     }
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 10)
                     
                     
                     ScrollView {
@@ -134,14 +134,14 @@ struct HomeMainView: View {
                                 Text("Goals")
                                     .bold()
                                     .font(.system(size: 22, design: .serif))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black)
                                 
                                 Spacer()
                                 
                                 //TODO: replace this date with the date of the last checkin
                                 Text("Set on 7/26")
                                     .font(.system(size: 20, design: .serif))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black)
                                     .padding(.leading, 180)
                             }
                             .padding(.leading, 20)
@@ -169,14 +169,14 @@ struct HomeMainView: View {
                                     Text("Gratitude")
                                         .bold()
                                         .font(.system(size: 22, design: .serif))
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.black)
                                     
                                     Spacer()
                                 }
                                 
                                 Text(homeManager.gratitude)
                                     .font(.system(size: 18, design: .serif))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black)
                                     .italic()
                                     .padding(.top, 10)
                             }
@@ -188,16 +188,13 @@ struct HomeMainView: View {
                             
                             
                             EducationModule()
-                                .padding(.bottom, 40)
                             
                             
                         }
-                        .padding(.bottom, 10)
                         .padding(.top, 10)
-                        .offset(y: -40)
                     }
+                    .padding(.bottom, 100)
                 }
-                .padding(.bottom, 30)
                 .padding(.top, 60)
                 
             }
@@ -354,7 +351,7 @@ struct ActivitiesModule: View {
             
             HStack {
                 Text("Activities")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 22, design: .serif))
                     .bold()
                 Spacer()
@@ -384,7 +381,7 @@ struct EducationModule: View {
             
             HStack {
                 Text("Education")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 22, design: .serif))
                     .bold()
                 Spacer()

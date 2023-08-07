@@ -12,38 +12,27 @@ struct EducationArticleView: View {
     var completed: Bool = true
     var title: String
     
-    
     var body: some View {
-        RoundedRectangle(cornerRadius: 25)
-            .frame(minWidth: 250, maxWidth: 300, minHeight: 200, maxHeight: 200)
-            .foregroundColor(.blue)
-            .overlay {
-                ZStack {
-                    Image(bg_image)
-                        .resizable()
-                        .cornerRadius(25)
-                    
-                    VStack {
-//                        if completed {
-//                            Image(systemName: "checkmark.circle.fill")
-//                                .resizable()
-//                                .frame(width: 28, height: 28)
-//                                .foregroundColor(.green)
-////                                .offset(y: -10)
-////                                .offset(x: 140)
-//                        }
-                        
-                        Text(title)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 40)
-                            .font(.system(size: 18, design: .serif))
-                        
-                        
-                        Text("")
-                            .padding(.top, 60)
+        NavigationLink(destination: ThinkingErrorsInfoView()) {
+            // BG
+            VStack {
+                Text("Thinking Errors")
+                    .foregroundColor(.black)
+                    .font(.system(size: 18, design: .serif))
+                
+                RoundedRectangle(cornerRadius: 25)
+                    .frame(minWidth: 300, maxWidth: 300, minHeight: 240, maxHeight: 240)
+                    .foregroundColor(.blue)
+                    .overlay {
+                        ZStack {
+                            Image("Home_Welcome_BG")
+                                .resizable()
+                                .cornerRadius(25)
+                        }
                     }
-                }
             }
+            
+        }
     }
 }
 

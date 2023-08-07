@@ -13,7 +13,7 @@ struct JournalingPromptsActivityView: View {
             // BG
             VStack {
                 Text("Journaling Prompts")
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))
                 
                 RoundedRectangle(cornerRadius: 25)

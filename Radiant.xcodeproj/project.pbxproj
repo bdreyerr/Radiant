@@ -12,6 +12,7 @@
 		1A1D6DF72A7DD44B00A23807 /* HealthyRelationshipManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DF62A7DD44B00A23807 /* HealthyRelationshipManager.swift */; };
 		1A1D6DF92A7EF38200A23807 /* JournalingPromptsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DF82A7EF38200A23807 /* JournalingPromptsActivityView.swift */; };
 		1A1D6DFC2A7EFD4000A23807 /* ThinkingErrorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */; };
+		1A1D6DFE2A805DE500A23807 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DFD2A805DE500A23807 /* MapManager.swift */; };
 		1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */; };
 		1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */; };
 		1A541A3D2A40FB8000B1EE11 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */; };
@@ -71,6 +72,7 @@
 		1A1D6DF62A7DD44B00A23807 /* HealthyRelationshipManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthyRelationshipManager.swift; sourceTree = "<group>"; };
 		1A1D6DF82A7EF38200A23807 /* JournalingPromptsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalingPromptsActivityView.swift; sourceTree = "<group>"; };
 		1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingErrorsView.swift; sourceTree = "<group>"; };
+		1A1D6DFD2A805DE500A23807 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreatePostView.swift; sourceTree = "<group>"; };
 		1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInView.swift; sourceTree = "<group>"; };
 		1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardGuardian.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				1A98C4592A0AB7CE00BB3203 /* Project_Fonts */,
 				1A92F9B52A056A3A000C2AE3 /* Radiant.entitlements */,
 				1AC990642A017FDB00851A14 /* Info.plist */,
+				1A1D6DFD2A805DE500A23807 /* MapManager.swift */,
 				1AC9905D2A01776D00851A14 /* Controllers */,
 				1AC9905C2A01776500851A14 /* Views */,
 				1AC9905B2A01770000851A14 /* Models */,
@@ -460,6 +463,7 @@
 				1A541A3D2A40FB8000B1EE11 /* KeyboardGuardian.swift in Sources */,
 				1AAF79FF2A6E0E12005AA26B /* EducationArticleView.swift in Sources */,
 				1AB0B8222A1D2C2B00DF1571 /* ForumPostComment.swift in Sources */,
+				1A1D6DFE2A805DE500A23807 /* MapManager.swift in Sources */,
 				1AAF7A012A748C5F005AA26B /* BetaTestValidationView.swift in Sources */,
 				1A195C8F2A229D4A00749695 /* ForumSinglePostView.swift in Sources */,
 				1A6585E62A29104B00B4DE6D /* ChatManager.swift in Sources */,
