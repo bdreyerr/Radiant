@@ -12,15 +12,6 @@ struct MapMainView: View {
     
     @StateObject var mapManager = MapManager()
     
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(
-            latitude: 37.80341200169129,
-            longitude:  -122.40623140737449),
-        span: MKCoordinateSpan(
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03)
-    )
-    
     var body: some View {
         ZStack {
             Map(coordinateRegion: $mapManager.region, annotationItems: mapManager.locations) { location in
@@ -28,9 +19,7 @@ struct MapMainView: View {
                     Button(action: {
                         mapManager.isDetailedPopupShowing = true
                     }) {
-                        Circle()
-                            .frame(width: 60, height: 60)
-                            .foregroundColor(.blue)
+                        MapPinAnnotation(icon: "heart")
                     }.sheet(isPresented: $mapManager.isDetailedPopupShowing) {
                         Text("You clicked on a doctor brother")
                     }
@@ -41,30 +30,16 @@ struct MapMainView: View {
             
             VStack {
                 //Bubbles
-                HStack {
-                    Button(action: {
-                        print("user changed to therapist")
-                    }) {
-                        RoundedRectangle(cornerRadius: 30)
-                            .frame(width: 120, height: 40)
-                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.845))
-                            .overlay {
-                                Text("Therapists")
-                                    .foregroundColor(.black)
-                            }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        MapFilterBubble(text: "Therapists", icon: "heart.text.square", isSelected: true, filterNumber: 0)
+                        MapFilterBubble(text: "Primary Care", icon: "heart", isSelected: false, filterNumber: 1)
+                        MapFilterBubble(text: "Pyshcology", icon: "heart.text.square", isSelected: false, filterNumber: 2)
+                        MapFilterBubble(text: "Fitness Facilities", icon: "heart.text.square", isSelected: false, filterNumber: 3)
+                        MapFilterBubble(text: "Rehabilitation Centers", icon: "heart.text.square", isSelected: false, filterNumber: 4)
                     }
-                    
-                    Button(action: {
-                        print("user changed to therapist")
-                    }) {
-                        RoundedRectangle(cornerRadius: 30)
-                            .frame(width: 120, height: 40)
-                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.845))
-                            .overlay {
-                                Text("Psychologists")
-                                    .foregroundColor(.black)
-                            }
-                    }
+                    .padding(.top, 20)
+                    .padding(.leading, 20)
                 }
                 
                 switch mapManager.locationManager.authorizationStatus {
@@ -91,5 +66,90 @@ struct MapMainView_Previews: PreviewProvider {
     static var previews: some View {
         MapMainView()
             .environmentObject(MapManager())
+    }
+}
+
+
+struct MapFilterBubble: View {
+    
+    @EnvironmentObject var mapManager: MapManager
+    
+    let text: String?
+    let icon: String?
+    @State var isSelected: Bool?
+    let filterNumber: Int?
+    
+    var body: some View {
+        Button(action: {
+            print("user selected ", text!)
+            mapManager.focusedFilter = self.filterNumber!
+        }) {
+            
+            if self.filterNumber! == mapManager.focusedFilter {
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(minWidth: 160, maxHeight: 40)
+                    .foregroundColor(.white)
+                    .overlay {
+                        ZStack {
+                            HStack {
+                                Image(systemName: icon!)
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.black)
+                                
+                                Text(text!)
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 18, design: .serif))
+                            }
+                            
+                            
+//                            Image(systemName: "check")
+//                                .resizable()
+//                                .frame(width: 40, height: 40)
+//                                .foregroundColor(.green)
+//                                .offset(x: 20, y: -20)
+                        }
+                    }
+                    .padding(.bottom, 10)
+                    .animation(.easeInOut(duration: 1.0))
+            } else {
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(minWidth: 160, maxHeight: 40)
+                    .foregroundColor(.white)
+                    .overlay {
+                        HStack {
+                            Image(systemName: icon!)
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(.black)
+                            
+                            Text(text!)
+                                .foregroundColor(.black)
+                                .font(.system(size: 18, design: .serif))
+                        }
+                    }
+                    .animation(.easeInOut(duration: 1.0))
+            }
+        }
+    }
+}
+
+struct MapPinAnnotation: View {
+    
+    let icon: String?
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .frame(width: 40, height: 40)
+                .foregroundColor(.white)
+                .shadow(radius: 10)
+            
+            Image(systemName: icon!)
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundColor(.black)
+        }
+        
     }
 }

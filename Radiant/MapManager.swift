@@ -14,11 +14,14 @@ class MapManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var authorizationStatus: CLAuthorizationStatus?
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
-            latitude: -37.80341200169129,
+            latitude: 37.80341200169129,
             longitude:  -122.40623140737449),
         span: MKCoordinateSpan(
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03))
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.04))
+    
+    // Filter Bubbles
+    @Published var focusedFilter: Int = 0
     
     @Published var isDetailedPopupShowing: Bool = false
     @Published var focusedDoctor: Int = 0
@@ -28,7 +31,9 @@ class MapManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var locations = [
         Location(name: "Ferry Building", coordinate: CLLocationCoordinate2D(latitude: 37.796154530569595, longitude: -122.3923854711943)),
-        Location(name: "Coit Tower", coordinate: CLLocationCoordinate2D(latitude: 37.80381187785741, longitude: -122.44520093694825))
+        Location(name: "Coit Tower", coordinate: CLLocationCoordinate2D(latitude: 37.80381187785741, longitude: -122.44520093694825)),
+        Location(name: "Tenderloin", coordinate: CLLocationCoordinate2D(latitude: 37.786, longitude: -122.41520093694825)),
+        Location(name: "Sum", coordinate: CLLocationCoordinate2D(latitude: 37.80081187785741, longitude: -122.41520093694825))
     ]
     
     override init() {
