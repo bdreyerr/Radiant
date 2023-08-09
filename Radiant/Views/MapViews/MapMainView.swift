@@ -33,10 +33,10 @@ struct MapMainView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         MapFilterBubble(text: "Therapists", icon: "heart.text.square", isSelected: true, filterNumber: 0)
-                        MapFilterBubble(text: "Primary Care", icon: "heart", isSelected: false, filterNumber: 1)
-                        MapFilterBubble(text: "Pyshcology", icon: "heart.text.square", isSelected: false, filterNumber: 2)
-                        MapFilterBubble(text: "Fitness Facilities", icon: "heart.text.square", isSelected: false, filterNumber: 3)
-                        MapFilterBubble(text: "Rehabilitation Centers", icon: "heart.text.square", isSelected: false, filterNumber: 4)
+                        MapFilterBubble(text: "Primary Care", icon: "cross", isSelected: false, filterNumber: 1)
+                        MapFilterBubble(text: "Pyshcology", icon: "person.wave.2", isSelected: false, filterNumber: 2)
+                        MapFilterBubble(text: "Fitness", icon: "figure.run.circle", isSelected: false, filterNumber: 3)
+                        MapFilterBubble(text: "Rehabilitation", icon: "bandage", isSelected: false, filterNumber: 4)
                     }
                     .padding(.top, 20)
                     .padding(.leading, 20)
@@ -99,15 +99,8 @@ struct MapFilterBubble: View {
                                 
                                 Text(text!)
                                     .foregroundColor(.green)
-                                    .font(.system(size: 18, design: .serif))
+                                    .font(.system(size: 16, design: .serif))
                             }
-                            
-                            
-//                            Image(systemName: "check")
-//                                .resizable()
-//                                .frame(width: 40, height: 40)
-//                                .foregroundColor(.green)
-//                                .offset(x: 20, y: -20)
                         }
                     }
                     .padding(.bottom, 10)
@@ -125,7 +118,7 @@ struct MapFilterBubble: View {
                             
                             Text(text!)
                                 .foregroundColor(.black)
-                                .font(.system(size: 18, design: .serif))
+                                .font(.system(size: 16, design: .serif))
                         }
                     }
                     .animation(.easeInOut(duration: 1.0))

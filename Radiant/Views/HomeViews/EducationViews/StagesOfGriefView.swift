@@ -1,18 +1,18 @@
 //
-//  ThinkingErrorsView.swift
+//  StagesOfGriefView.swift
 //  Radiant
 //
-//  Created by Ben Dreyer on 8/5/23.
+//  Created by Ben Dreyer on 8/8/23.
 //
 
 import SwiftUI
 
-struct ThinkingErrorsView: View {
+struct StagesOfGriefView: View {
     var body: some View {
-        NavigationLink(destination: ThinkingErrorsInfoView()) {
+        NavigationLink(destination: StagesOfGriefInfoView()) {
             // BG
             VStack(alignment: .leading) {
-                Text("Thinking Errors")
+                Text("The Stages of Grief")
                     .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))
                 
@@ -21,7 +21,7 @@ struct ThinkingErrorsView: View {
                     .foregroundColor(.blue)
                     .overlay {
                         ZStack {
-                            Image("ThinkingErrors_BG")
+                            Image("Grief_BG")
                                 .resizable()
                                 .cornerRadius(25)
                         }
@@ -32,7 +32,7 @@ struct ThinkingErrorsView: View {
     }
 }
 
-struct ThinkingErrorsView_Previews: PreviewProvider {
+struct StagesOfGriefView_Previews: PreviewProvider {
     static var previews: some View {
         HomeMainView()
             .environmentObject(HomeManager())
@@ -40,21 +40,23 @@ struct ThinkingErrorsView_Previews: PreviewProvider {
     }
 }
 
-struct ThinkingErrorsInfoView: View {
+
+struct StagesOfGriefInfoView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .center) {
                 
                 HStack {
-                    Text("Thinking Errors")
+                    Text("The Stages of Grief")
                         .font(.system(size: 30, design: .serif))
                         .bold()
                         .padding(20)
                         .offset(y: -100)
+                    
                     Spacer()
                 }
                 
-                Text("Thinking errors, also known as cognitive distoritions, are a type of mental shortcut that can lead to faulty thinking. They can be caused by a variety of factors including stress, anxiety and depression. Please take a look at the following thinking errors and see where they show up in your life.")
+                Text("Grief is a natural and normal human response to loss. It is a process that everyone goes through, and one which is important to be aware of its mind altering affects. There is no right or wrong way to grieve, the process is dynamic and different for everyone. There are five core stages to grief, the stages are non-linear, and vary greatly for each person.")
                     .font(.system(size: 18, design: .serif))
                     .padding(20)
                     .offset(y: -100)
@@ -62,7 +64,7 @@ struct ThinkingErrorsInfoView: View {
                 
                 
                 
-                NavigationLink(destination: ThinkingErrorsDetailedView()) {
+                NavigationLink(destination: StagesOfGriefDetailedView()) {
                     RoundedRectangle(cornerRadius: 40)
                         .frame(maxWidth: 300, minHeight: 50, maxHeight: 50)
                         .overlay {
@@ -78,159 +80,165 @@ struct ThinkingErrorsInfoView: View {
     }
 }
 
-struct ThinkingErrorsDetailedView: View {
+
+struct StagesOfGriefDetailedView: View {
     var body: some View {
         ZStack {
             VStack {
                 
                 ScrollView {
-                    // Mind Reading
+                    // Denial
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "brain.head.profile")
+                            Image(systemName: "eye.slash")
                                 .resizable()
-                                .frame(width: 40, height: 40)
+                                .frame(width: 40, height: 30)
                             
-                            Text("Mind Reading")
+                            Text("Denial")
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("Believing you know what someone else is thinking, or why they are doing something, without having enough information.")
+                        Text("The refusal to accept the recent loss. Those in denial may behave as if the loss has not occurred, and refuse to discuss it or picture it.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
-                        Text("Examples: ")
+                        Text("Synonyms: ")
                             .font(.system(size: 20, design: .serif))
                             .bold()
-                        Text("- ''People are looking at me. They all know I didn't brush my teeth this morning''.")
+                        Text("- Shock")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Numbness")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Confusion")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Shutting down")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 5)
-                        
-                        Text("- ''Emma didn't invite me to her birthday party, she must think I'm so weird.''")
+                        Text("Denial is a common defense mechanism, and we shouldn't feel guilty about being in denial. This stage of grief can lead to procrastination, being distracted easily and impulsive behavior.")
                             .font(.system(size: 20, design: .serif))
                     }
                     .padding(.bottom, 40)
-                    // Negative Labeling
+                    // Anger
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "tag.slash")
+                            Image(systemName: "shared.with.you.slash")
                                 .resizable()
                                 .frame(width: 40, height: 40)
                             
-                            Text("Negative Labeling")
+                            Text("Anger")
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("Having a negative belief about yourself and thinking it applies to everything you do.")
+                        Text("The rage, resentment, and bitterness that comes with a recent loss. Those in this stage of grief or frustrated by the loss, and are often easily irritated and may act in a volatile manner.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
-                        Text("Examples: ")
+                        Text("Synonyms: ")
                             .font(.system(size: 20, design: .serif))
                             .bold()
-                        Text("- ''I think I'm a loser, so there's no way I could ever make great art''.")
+                        Text("- Frustration")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Impatience")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Resentment")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 5)
-                        
-                        Text("- ''I'm really dumb, everything I say is so stupid.''")
+                        Text("Anger is a natural human reaction, especially to things out of our control. Those basking in anger are often masking their pain with their aggresive behavior. This stage is dangerous as it causes us to lash out, get in arguments, and in the worst case turn to substances to ease the pain.")
                             .font(.system(size: 20, design: .serif))
                     }
                     .padding(.bottom, 40)
-                    // Setting the Bar Too High
+                    // Bargaining
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "trophy")
+                            Image(systemName: "dollarsign.circle")
                                 .resizable()
                                 .frame(width: 40, height: 40)
                             
-                            Text("Setting the Bar Too High")
+                            Text("Bargaining")
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("Thinking that you must be perfect in everything you do, otherwise you're no good.")
+                        Text("The desire to make a deal with the universe to either reverse the loss or make ammends for the loss in some way. People in this stage have trouble with the reality of the situation, and believe that they can somehow make things right.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
-                        Text("Examples: ")
+                        Text("Synonyms: ")
                             .font(.system(size: 20, design: .serif))
                             .bold()
-                        Text("- ''If I don't get an A on every test, I'm not smart.''.")
+                        Text("- Guilt")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Shame")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Blame")
+                            .font(.system(size: 20, design: .serif))
+                        Text("- Insecurity")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 5)
-                        
-                        Text("- ''I have to win every tennis match I ply, otherwise I'm worthless.''")
+                        Text("While bargaining, one is often stuck ruminating on the past, often in a state of delusion that they could have changed things. One often worries obsessively about the future, judging themselves for not making things right.")
                             .font(.system(size: 20, design: .serif))
                     }
                     .padding(.bottom, 40)
-                    // Self Blaming
+                    // Depression
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "hand.point.right")
+                            Image(systemName: "person.and.background.dotted")
                                 .resizable()
                                 .frame(width: 40, height: 40)
                             
-                            Text("Self Blaming")
+                            Text("Depression")
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("Blaming yourself for anything that goes wrong around you, even if you had nothing to do with it.")
+                        Text("The state of sadness, hopelessness and despair that follows the loss. In this stage, often one has fully realized the loss, often struggling with the permanence of its impact.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
-                        Text("Examples: ")
+                        Text("Synonyms: ")
                             .font(.system(size: 20, design: .serif))
                             .bold()
-                        Text("- When your basketball team loses a game, you think it's entirely your fault.")
+                        Text("- Sadness")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Despair")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Helpless")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 5)
-                        
-                        Text("- ''Alicia is sad today. I probably did something to upset her.''")
+                        Text("Depression brings many side effects with it, including reduced energy, reduced apetite, withrawl from social life, trouble sleeping, and low motivation. This is often the hardest stage of grief seeing as depression is an extremely strong force to battle.")
                             .font(.system(size: 20, design: .serif))
                     }
                     .padding(.bottom, 40)
-                    // Feelings as Facts
+                    // Acceptance
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "heart")
+                            Image(systemName: "figure.wave.circle")
                                 .resizable()
                                 .frame(width: 40, height: 40)
                             
-                            Text("Feelings as Facts")
+                            Text("Acceptance")
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("Believing that if you feel something, it must be true.")
+                        Text("The final stage of grief, where one finally comes to term with the loss and the reality of the impact of change. Those in this stage still feel the effects and sadness of the loss, but have begun to return the normal state of life.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
-                        Text("Examples: ")
+                        Text("Synonyms: ")
                             .font(.system(size: 20, design: .serif))
                             .bold()
-                        Text("- ''I feel ugly, so I must be ugly''.")
+                        Text("- Courage")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Pride")
+                            .font(.system(size: 20, design: .serif))
+                        
+                        Text("- Validation")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 5)
-                        
-                        Text("- ''I feel like I'm a bad friend, so I must be a bad friend''")
-                            .font(.system(size: 20, design: .serif))
-                    }
-                    .padding(.bottom, 40)
-                    // "Should" Statements
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Image(systemName: "xmark.seal")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                            
-                            Text("''Should'' Statements")
-                                .font(.system(size: 20, design: .serif))
-                                .bold()
-                        }
-                        Text("Believing things have to be a certain way.")
-                            .font(.system(size: 20, design: .serif))
-                            .padding(.bottom, 10)
-                        Text("Examples: ")
-                            .font(.system(size: 20, design: .serif))
-                            .bold()
-                        Text("''People should always be nice to me''.")
-                            .font(.system(size: 20, design: .serif))
-                            .padding(.bottom, 5)
-                        
-                        Text("- ''I should always be happy. I should never be sad.''")
+                        Text("Only after one has begun to accept the loss can they return to reality. Awareness returns to those accepting the reality of the loss, often understanding their own vulnerability and adapting to life after loss.")
                             .font(.system(size: 20, design: .serif))
                     }
                     .padding(.bottom, 40)

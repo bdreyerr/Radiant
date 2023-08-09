@@ -13,7 +13,7 @@ struct CharacterAchetypeView: View {
     var body: some View {
         NavigationLink(destination: CharacterArchetypeInfoView()) {
             // BG
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Character Archetype Quiz")
                     .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))

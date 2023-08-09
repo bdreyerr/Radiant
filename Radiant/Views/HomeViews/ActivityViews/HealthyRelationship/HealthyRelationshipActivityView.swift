@@ -11,7 +11,7 @@ struct HealthyRelationshipActivityView: View {
     var body: some View {
         NavigationLink(destination: HealthyRelationshipInfoView()) {
             // BG
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Healthy Relationship Quiz")
                     .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))

@@ -22,6 +22,7 @@ class MapManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     // Filter Bubbles
     @Published var focusedFilter: Int = 0
+    // Filters = [Therapists (0), Primary Care (1), Pyschology (2), Fitness (3), Rehabilitation (4)]
     
     @Published var isDetailedPopupShowing: Bool = false
     @Published var focusedDoctor: Int = 0

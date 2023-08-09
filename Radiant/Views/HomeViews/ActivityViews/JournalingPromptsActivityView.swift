@@ -11,7 +11,7 @@ struct JournalingPromptsActivityView: View {
     var body: some View {
         NavigationLink(destination: JournalingPromptsInfoView()) {
             // BG
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Journaling Prompts")
                     .foregroundColor(.black)
                     .font(.system(size: 18, design: .serif))

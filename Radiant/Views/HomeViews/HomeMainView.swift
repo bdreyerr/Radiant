@@ -391,7 +391,7 @@ struct EducationModule: View {
                 HStack {
                     ThinkingErrorsView()
                     
-                    EducationArticleView(bg_image: "Register_Email_BG", completed: false, title: "The Brain and the Prefrontal Cortex")
+                    StagesOfGriefView()
                     
                     EducationArticleView(bg_image: "Register_BG", title: "Linked Thought Patterns & Nuerons")
                 }
