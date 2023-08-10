@@ -102,33 +102,151 @@ struct CheckInView: View {
                         
                         // Mood sliders
                         VStack {
-                            // Happiness
-                            Text("How happy are you today? ")
-                                .foregroundColor(.white)
-                                .padding(.bottom, 20)
-                                .font(.system(size: 18, design: .serif))
-                                .bold()
-                                .padding(10)
-                            CirclularSlider(sliderValue: $checkInManager.happinessSliderVal)
                             
-                            // Depression
-                            Text("Please rate your depression today: ")
+                            Text("Please tell us how you're feeling today")
                                 .foregroundColor(.white)
                                 .padding(.bottom, 20)
                                 .font(.system(size: 18, design: .serif))
                                 .bold()
                                 .padding(10)
-                            CirclularSlider(sliderValue: $checkInManager.depressionSliderVal)
                             
-                            // Anxiety
-                            Text("Please rate your anxiety today: ")
-                                .foregroundColor(.white)
-                                .padding(.bottom, 20)
-                                .font(.system(size: 18, design: .serif))
-                                .bold()
-                                .padding(10)
-                            CirclularSlider(sliderValue: $checkInManager.anxeitySliderVal)
-                                .padding(.bottom, 40)
+                            
+                            HStack {
+                                // Happiness
+                                VStack(alignment: .center) {
+                                    Text("Happiness")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 18, design: .serif))
+                                    CirclularSlider(sliderValue: $checkInManager.happinessSliderVal)
+                                    
+                                    switch checkInManager.happinessSliderVal {
+                                    case 0...4:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.red)
+                                    case 4...7:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.yellow)
+                                    case 7...10:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.green)
+                                    default:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.white)
+                                    }
+                                    
+                                }
+                                .padding(.trailing, 20)
+                                
+                                // Depression
+                                VStack(alignment: .center) {
+                                    Text("Depression")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 18, design: .serif))
+                                    CirclularSlider(sliderValue: $checkInManager.depressionSliderVal)
+                                    switch checkInManager.depressionSliderVal {
+                                    case 0...4:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.green)
+                                    case 4...7:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.yellow)
+                                    case 7...10:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.red)
+                                    default:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                                .padding(.trailing, 20)
+                                
+                                // Anxiety
+                                VStack(alignment: .center) {
+                                    Text("Anxiety")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 18, design: .serif))
+                                    CirclularSlider(sliderValue: $checkInManager.anxeitySliderVal)
+                                    switch checkInManager.anxeitySliderVal {
+                                    case 0...4:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.green)
+                                    case 4...7:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.yellow)
+                                    case 7...10:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.red)
+                                    default:
+                                        Image(systemName: "face.smiling.inverse")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                            .foregroundColor(.white)
+                                    }
+                                }
+                            }
+                            .padding(.bottom, 40)
+                            
+                            
+                            // Journal Prompt
+                            VStack {
+                                
+                                HStack {
+                                    Text("Journal Entry")
+                                        .foregroundColor(.white)
+                                        .padding(.bottom, 20)
+                                        .font(.system(size: 18, design: .serif))
+                                        .bold()
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "pencil.circle")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(.white)
+                                        .padding(.bottom, 15)
+                                }
+                                
+                                TextField("Enter text", text: $checkInManager.journalEntry, axis: .vertical)
+                                    .font(.system(size: 20, design: .serif))
+                                    .padding(.leading, 10)
+                                    .padding(.trailing, 10)
+                                    .padding(.top, 10)
+                                    .padding(.bottom, 10)
+                                    .lineLimit(5...10)
+//                                    .frame(width: 300)
+                                    .foregroundColor(.white)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.white, lineWidth: 1)
+                                            .frame(minWidth: 200, minHeight: 100, maxHeight: 300)
+                                    )
+                                
+                            }
+                            .padding(.leading, 20)
+                            .padding(.trailing, 20)
+                            .padding(.bottom, 60)
                             
                             
                             if checkInManager.isErrorInCheckIn {
@@ -147,8 +265,20 @@ struct CheckInView: View {
                                     homeManager.isCheckInPopupShowing = false
                                 }
                             }) {
-                                Text("Finish Check In")
-                                    .font(.system(size: 20, design: .serif))
+//                                Text("Finish Check In")
+//                                    .font(.system(size: 20, design: .serif))
+                                
+                                RoundedRectangle(cornerRadius: 40)
+                                    .frame(maxWidth: 300, minHeight: 50, maxHeight: 50)
+                                    .overlay {
+                                        ZStack {
+                                            Text("Finish Check in")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 15, design: .serif))
+                                        }
+                                    }
+                                
+                                
                             }
                             .padding(.bottom, 40)
                         }

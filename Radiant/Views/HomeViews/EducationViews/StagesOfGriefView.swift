@@ -131,7 +131,7 @@ struct StagesOfGriefDetailedView: View {
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("The rage, resentment, and bitterness that comes with a recent loss. Those in this stage of grief or frustrated by the loss, and are often easily irritated and may act in a volatile manner.")
+                        Text("The rage, resentment, and bitterness that comes with a recent loss. Those in this stage of grief are frustrated by the loss, and are often easily irritated and may act in a volatile manner.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
                         Text("Synonyms: ")
@@ -223,7 +223,7 @@ struct StagesOfGriefDetailedView: View {
                                 .font(.system(size: 20, design: .serif))
                                 .bold()
                         }
-                        Text("The final stage of grief, where one finally comes to term with the loss and the reality of the impact of change. Those in this stage still feel the effects and sadness of the loss, but have begun to return the normal state of life.")
+                        Text("The final stage of grief, where one finally comes to terms with the loss and the reality of the impact of change. Those in this stage still feel the effects and sadness of the loss, but have begun to return the normal state of life.")
                             .font(.system(size: 20, design: .serif))
                             .padding(.bottom, 10)
                         Text("Synonyms: ")

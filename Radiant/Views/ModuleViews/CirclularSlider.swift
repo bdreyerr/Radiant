@@ -36,7 +36,7 @@ struct SliderControlView: View {
     
     var radiusVal: CGFloat?
     
-    let config = Config(minimumValue: 0.0, maximumValue: 10.0, totalValue: 10.0, knobRadius: 15.0, radius: 125.0)
+    let config = Config(minimumValue: 0.0, maximumValue: 10.0, totalValue: 10.0, knobRadius: 10.0, radius: 45.0)
     
     var body: some View {
         ZStack {
@@ -70,7 +70,7 @@ struct SliderControlView: View {
                                             }))
             
             Text("\(String.init(format: "%.0f", sliderValue))")
-                .font(.system(size: 60))
+                .font(.system(size: 40))
                 .foregroundColor(.white)
                 
         }

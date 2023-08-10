@@ -20,6 +20,8 @@ class CheckInManager: ObservableObject {
     
     @Published var gratitude: String = ""
     
+    @Published var journalEntry: String = ""
+    
     @Published var isErrorInCheckIn: Bool = false
     @Published var errorText: String = ""
     
@@ -60,7 +62,8 @@ class CheckInManager: ObservableObject {
         // store new data
         documentRef.updateData([
             "goals": FieldValue.arrayUnion([goalOne, goalTwo, goalThree]),
-            "gratitude": gratitude,
+            "gratitudeEntries": FieldValue.arrayUnion([gratitude]),
+            "journalEntries": FieldValue.arrayUnion([journalEntry]),
             "happinessScores": FieldValue.arrayUnion([happinessSliderVal]),
             "depressionScores": FieldValue.arrayUnion([depressionSliderVal]),
             "anxietyScores": FieldValue.arrayUnion([anxeitySliderVal]),

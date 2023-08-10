@@ -24,8 +24,9 @@ struct UserProfile: Codable {
     
     var lastCheckinDate: Date?
     var goals: [String]?
-    var gratitude: String?
-    // Store 
+    var gratitudeEntries: [String]?
+    var journalEntries: [String]?
+    // Mood Scores
     var anxietyScores: [Double]?
     var depressionScores: [Double]?
     var happinessScores: [Double]?

@@ -174,6 +174,8 @@ struct HomeMainView: View {
                                     Spacer()
                                 }
                                 
+                                
+                                
                                 Text(homeManager.gratitude)
                                     .font(.system(size: 18, design: .serif))
                                     .foregroundColor(.black)
@@ -361,10 +363,9 @@ struct ActivitiesModule: View {
                 HStack {
                     //                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
                     
-                    CharacterAchetypeView()
                     
                     HealthyRelationshipActivityView()
-                    
+                    CharacterAchetypeView()
                     JournalingPromptsActivityView()
                 }
             }
@@ -390,9 +391,7 @@ struct EducationModule: View {
             ScrollView(.horizontal) {
                 HStack {
                     ThinkingErrorsView()
-                    
                     StagesOfGriefView()
-                    
                     EducationArticleView(bg_image: "Register_BG", title: "Linked Thought Patterns & Nuerons")
                 }
             }
