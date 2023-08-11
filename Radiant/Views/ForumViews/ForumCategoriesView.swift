@@ -14,10 +14,6 @@ struct ForumCategoriesView: View {
             
             VStack {
                 
-                Text("Radiant Community")
-                    .font(.system(size: 24))
-                
-                
                 // This is the scroll view.
                 ScrollView {
                     // Tab to switch to chat

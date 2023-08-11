@@ -120,24 +120,36 @@ struct ForumCreateCommentView: View {
                         .foregroundColor(.red)
                 }
                 
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.blue, lineWidth: 4)
-                    .frame(maxWidth: 350, maxHeight: 100)
-                    .overlay(
-                        TextField("Enter comment here", text: $text)
-                            .padding(.leading, 20)
-                    )
+//                RoundedRectangle(cornerRadius: 16)
+//                    .stroke(Color.blue, lineWidth: 4)
+//                    .frame(maxWidth: 350, maxHeight: 100)
+//                    .overlay(
+//                        TextField("Enter comment here", text: $text)
+//                            .padding(.leading, 20)
+//                    )
                     
-        
-//                RoundedRectangle(cornerRadius: 200)
-//                    .frame(maxWidth: 350, maxHeight: 200)
-//                    .background(Color.gray)
-//                    .foregroundColor(.gray)
-//                    .overlay(TextField("Enter text here", text: $text).foregroundColor(.white).cornerRadius(200)
-//                        .padding(.all, 8))
+                TextField("Enter text", text: $text, axis: .vertical)
+                    .font(.system(size: 20, design: .serif))
+                    .padding(.leading, 10)
+                    .padding(.trailing, 10)
+                    .padding(.top, 10)
+                    .padding(.bottom, 10)
+                    .lineLimit(5...10)
+//                                    .frame(width: 300)
+                    .foregroundColor(.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white, lineWidth: 1)
+                            .frame(minWidth: 200, minHeight: 100, maxHeight: 300)
+                    )
+                
+                Spacer()
                 
             }
-            .offset(y: -200)
+            .padding(.top, 100)
+            .padding(.leading, 20)
+            .padding(.trailing, 20)
+            .scrollDismissesKeyboard(.immediately)
             
         }
         .onDisappear {

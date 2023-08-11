@@ -155,6 +155,9 @@ struct ForumMainView: View {
 struct ForumMainView_Previews: PreviewProvider {
     static var previews: some View {
         ForumMainView()
+            .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
+            .environmentObject(ForumManager())
     }
 }
 

@@ -59,7 +59,7 @@ struct ForumCreatePostView: View {
                             forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "default_prof_pic", category: title!, content: text)
                         }
                     }) {
-                        Text("Submit Post")
+                        Text("Submit")
                             .foregroundColor(.blue)
                             .font(.system(size: 20))
                     }
@@ -68,22 +68,41 @@ struct ForumCreatePostView: View {
                     
                     
                 }
+                .padding(.top, 300)
                 
                 if forumManager.isErrorCreatingPost {
                     Text(forumManager.errorText)
                         .foregroundColor(.red)
                 }
                 
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.blue, lineWidth: 4)
-                    .frame(maxWidth: 350, maxHeight: 100)
+//                RoundedRectangle(cornerRadius: 16)
+//                    .stroke(Color.blue, lineWidth: 4)
+//                    .frame(maxWidth: 350, maxHeight: 100)
+//                    .overlay(
+//                        TextField("Enter post here", text: $text)
+//                            .padding(.leading, 20)
+//                    )
+                TextField("Enter text", text: $text, axis: .vertical)
+                    .font(.system(size: 20, design: .serif))
+                    .padding(.leading, 10)
+                    .padding(.trailing, 10)
+                    .padding(.top, 10)
+                    .padding(.bottom, 10)
+                    .lineLimit(5...10)
+//                                    .frame(width: 300)
+                    .foregroundColor(.white)
                     .overlay(
-                        TextField("Enter post here", text: $text)
-                            .padding(.leading, 20)
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.white, lineWidth: 1)
+                            .frame(minWidth: 200, minHeight: 100, maxHeight: 300)
                     )
                 
+                Spacer()
+                
             }
-            .offset(y: -200)
+            .padding(.leading, 20)
+            .padding(.trailing, 20)
+            .scrollDismissesKeyboard(.immediately)
             
         }
         .onDisappear {

@@ -283,6 +283,7 @@ struct CheckInView: View {
                             .padding(.bottom, 40)
                         }
                     }
+                    .scrollDismissesKeyboard(.immediately)
                 }
                 .padding(.top, 140)
                 .padding(.bottom, 40)
