@@ -55,7 +55,7 @@ struct ForumDetailedView: View {
                 .padding(.top, 1)
                 
                 Text(title ?? "Category Title")
-                    .font(.system(size: 24))
+                    .font(.system(size: 24, design: .serif))
                     .padding(.bottom, 20)
                 
                 ScrollView {
@@ -157,18 +157,18 @@ struct Post: View {
                         VStack(alignment: .leading) {
                             // username
                             Text(username)
-                                .font(.system(size: 14))
+                                .font(.system(size: 14, design: .serif))
                                 .bold()
                             // date posted
                             Text(datePosted.description)
-                                .font(.system(size: 14))
+                                .font(.system(size: 14, design: .serif))
                         }
                         
                     }
                     // post content
                     Text(postContent)
                         .padding(.bottom, 5)
-                        .font(.system(size: 12))
+                        .font(.system(size: 12, design: .serif))
                     // interact buttons
                     HStack {
                         // Like post

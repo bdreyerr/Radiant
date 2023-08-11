@@ -32,19 +32,37 @@ struct ChatMainView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {                
-                Button(action: {
-                    self.messages = []
-                    if let user = profileStateManager.userProfile {
-                        chatManager.clearMessages(userID: user.id!)
+            VStack {
+                
+                HStack {
+//                    Image("RadiantBotPic")
+//                        .resizable()
+//                        .frame(width: 100, height: 100)
+//                    
+                    Spacer()
+                    
+                    Button(action: {
+                        self.messages = []
+                        if let user = profileStateManager.userProfile {
+                            chatManager.clearMessages(userID: user.id!)
+                        }
+                    }) {
+                        
+                        Text("Reset Chat")
+                            .foregroundColor(.white)
+                            .font(.system(size: 16, design: .serif))
+                        
+                        Image(systemName: "arrow.clockwise")
+                            .resizable()
+                            .frame(maxWidth: 20, maxHeight: 20, alignment: .trailing)
+                            .foregroundColor(.white)
                     }
-                }) {
-                    Image(systemName: "arrow.clockwise")
-                        .resizable()
-                        .frame(maxWidth: 20, maxHeight: 20, alignment: .trailing)
-                        .padding(.leading, 250)
-                        .foregroundColor(.white)
+                    .padding(.top, 60)
                 }
+                .padding(.leading, 20)
+                .padding(.trailing, 30)
+                
+                
                 
                 ScrollViewReader { value in
                     // This is the scroll view.

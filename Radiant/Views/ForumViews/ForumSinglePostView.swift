@@ -54,15 +54,18 @@ struct ForumSinglePostView: View {
                                 
                                 // Author Name
                                 Text(post.username)
+                                    .font(.system(size: 16, design: .serif))
                                 
                                 // Date posted
                                 Text("\(post.datePosted)")
+                                    .font(.system(size: 16, design: .serif))
                             }
                             
                         }
                         
                         // Post content
                         Text(post.postContent)
+                            .font(.system(size: 14, design: .serif))
                         
                         VStack(alignment: .center) {
                             // TODO: Make this same width as the HStack
@@ -293,15 +296,15 @@ struct Comment: View {
                 VStack(alignment: .leading) {
                     // Author Name
                     Text(self.username)
-                        .font(.system(size: 14))
+                        .font(.system(size: 14, design: .serif))
                     
                     // Date posted
                     Text("\(self.datePosted)")
-                        .font(.system(size: 14))
+                        .font(.system(size: 14, design: .serif))
                 }
             }
             Text(self.commentContent)
-                .font(.system(size: 14))
+                .font(.system(size: 13, design: .serif))
             
             HStack {
                 // Like comment

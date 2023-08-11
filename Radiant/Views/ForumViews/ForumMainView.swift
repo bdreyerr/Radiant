@@ -45,8 +45,10 @@ struct ForumMainView: View {
                             
                             if let displayName = profileStateManager.userProfile?.displayName {
                                 Text(displayName)
+                                    .font(.system(size: 18, design: .serif))
                             } else {
                                 Text("user")
+                                    .font(.system(size: 18, design: .serif))
                             }
                             
                             //                            .foregroundColor(.white)
@@ -63,6 +65,7 @@ struct ForumMainView: View {
                                     .overlay() {
                                         Text("My Posts")
                                             .foregroundColor(.white)
+                                            .font(.system(size: 18, design: .serif))
                                     }
                             })
                             .padding(.bottom, 15)
@@ -77,6 +80,7 @@ struct ForumMainView: View {
                                     .overlay() {
                                         Text("My Comments")
                                             .foregroundColor(.white)
+                                            .font(.system(size: 18, design: .serif))
                                     }
                             })
                             .padding(.bottom, 15)
@@ -91,6 +95,7 @@ struct ForumMainView: View {
                                     .overlay() {
                                         Text("Liked Posts")
                                             .foregroundColor(.white)
+                                            .font(.system(size: 18, design: .serif))
                                     }
                             })
                             .padding(.bottom, 15)
@@ -174,6 +179,7 @@ struct MyPosts: View {
         
         HStack {
             Text("My Posts")
+                .font(.system(size: 18, design: .serif))
         }
         .padding(.bottom, 15)
         
