@@ -38,7 +38,7 @@ struct ChatMainView: View {
 //                    Image("RadiantBotPic")
 //                        .resizable()
 //                        .frame(width: 100, height: 100)
-//                    
+//
                     Spacer()
                     
                     Button(action: {
@@ -57,7 +57,7 @@ struct ChatMainView: View {
                             .frame(maxWidth: 20, maxHeight: 20, alignment: .trailing)
                             .foregroundColor(.white)
                     }
-                    .padding(.top, 60)
+                    .padding(.top, 10)
                 }
                 .padding(.leading, 20)
                 .padding(.trailing, 30)

@@ -20,7 +20,6 @@ struct ForumDetailedView: View {
     @State var posts: [ForumPost] = []
     
     let db = Firestore.firestore()
-
     
     var body: some View {
         
@@ -63,7 +62,7 @@ struct ForumDetailedView: View {
                         // look up the username with their id
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
-                                Post(postID: post.id!, category: self.title ?? "General", userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "Username missing", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
+                                Post(postID: post.id!, category: self.title ?? "General", userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "Username missing", datePosted: post.date!, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: self.title)
                                     .id(post.id)
                             } else {
                                 Text("Unable to retrieve post")
@@ -98,15 +97,19 @@ struct ForumDetailedView: View {
                 print("Error retrieving posts: \(err.localizedDescription)")
             } else if let querySnapshot = querySnapshot {
                 for document in querySnapshot.documents {
-                    let post = ForumPost(
+                    var post = ForumPost(
                         id: document.documentID,
                         authorID: document.data()["authorID"] as? String,
                         authorUsername: document.data()["authorUsername"] as? String,
                         authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         category: document.data()["category"] as? String,
-                        date: document.data()["date"] as? Date,
+//                        date: document.data()["date"] as? Date,
+                        timestamp: document.data()["date"] as? Timestamp,
                         content: document.data()["content"] as? String,
                         likes: document.data()["likes"] as? [String])
+                    
+                    // Date
+                    post.date = post.timestamp?.dateValue()
                     posts.append(post)
                 }
             }
@@ -138,6 +141,8 @@ struct Post: View {
     
     let title: String?
     
+    let dateFormatter = DateFormatter()
+    
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
 
@@ -160,7 +165,7 @@ struct Post: View {
                                 .font(.system(size: 14, design: .serif))
                                 .bold()
                             // date posted
-                            Text(datePosted.description)
+                            Text(datePosted.formatted(date: .complete, time: .omitted))
                                 .font(.system(size: 14, design: .serif))
                         }
                         

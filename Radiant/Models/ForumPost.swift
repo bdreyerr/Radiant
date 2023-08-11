@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct ForumPost: Codable, Identifiable {
@@ -16,6 +18,8 @@ struct ForumPost: Codable, Identifiable {
     var authorProfilePhoto: String?
     var category: String?
     var date: Date?
+    // Var used to read the date Timestamp in firestore
+    var timestamp: Timestamp?
     var content: String?
     var reportCount: Int?
     var likes: [String]?

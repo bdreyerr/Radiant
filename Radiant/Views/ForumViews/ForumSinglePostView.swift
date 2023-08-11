@@ -25,7 +25,9 @@ struct ForumSinglePostView: View {
     
     @State var comments: [ForumPostComment] = []
     
+    
     let db = Firestore.firestore()
+
     
     var body: some View {
         
@@ -57,7 +59,7 @@ struct ForumSinglePostView: View {
                                     .font(.system(size: 16, design: .serif))
                                 
                                 // Date posted
-                                Text("\(post.datePosted)")
+                                Text(post.datePosted.formatted(date: .complete, time: .omitted))
                                     .font(.system(size: 16, design: .serif))
                             }
                             
@@ -194,6 +196,8 @@ struct ForumSinglePostView: View {
 //                self.post?.userPhoto = document.data()!["authorProfilePhoto"] as! String
                 self.post?.username = document.data()!["authorUsername"] as! String
 //                self.post?.datePosted = document.data()!["date"] as! Date
+                let timestamp = document.data()!["date"] as! Timestamp
+                self.post?.datePosted = timestamp.dateValue()
                 self.post?.postContent = document.data()!["content"] as! String
                 self.post?.likes = document.data()!["likes"] as! [String]
                 self.post?.commentCount = 1
@@ -227,6 +231,7 @@ struct ForumSinglePostView: View {
                 print("Error retrieving comments: \(err.localizedDescription)")
             } else if let querySnapshot = querySnapshot {
                 for document in querySnapshot.documents {
+                    let timestamp = document.data()["date"] as? Timestamp
                     var comment = ForumPostComment(
                         id: document.documentID,
                         postID: document.data()["postID"] as? String,
@@ -234,7 +239,7 @@ struct ForumSinglePostView: View {
                         authorID: document.data()["authorID"] as? String,
                         authorUsername: document.data()["authorUsername"] as? String,
                         authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
-                        date: document.data()["date"] as? Date,
+                        date: timestamp?.dateValue(),
                         commentCategory: document.data()["commentCategory"] as? String,
                         content: document.data()["content"] as? String,
                         likes: document.data()["likes"] as? [String],
@@ -299,7 +304,7 @@ struct Comment: View {
                         .font(.system(size: 14, design: .serif))
                     
                     // Date posted
-                    Text("\(self.datePosted)")
+                    Text(self.datePosted.formatted(date: .complete, time: .omitted))
                         .font(.system(size: 14, design: .serif))
                 }
             }
