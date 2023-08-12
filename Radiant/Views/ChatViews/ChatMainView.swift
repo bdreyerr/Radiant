@@ -43,6 +43,7 @@ struct ChatMainView: View {
                     
                     Button(action: {
                         self.messages = []
+                        print("user hit reset chat, outside of ")
                         if let user = profileStateManager.userProfile {
                             chatManager.clearMessages(userID: user.id!)
                         }
@@ -133,6 +134,7 @@ struct ChatMainView: View {
                     } else {
                         Button(action: {
                             if let user = profileStateManager.userProfile {
+                                print("user pressed send message button")
                                 chatManager.sendMessage(userID: user.id!, content: self.text)
                                 self.retrieveMessages(userID: user.id!)
                             }

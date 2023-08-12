@@ -22,12 +22,6 @@ struct UserProfile: Codable {
     var height: Double?
     var userPhotoNonPremium: String?
     
-    var lastCheckinDate: Date?
-    var goals: [String]?
-    var gratitudeEntries: [String]?
-    var journalEntries: [String]?
-    // Mood Scores
-    var anxietyScores: [Double]?
-    var depressionScores: [Double]?
-    var happinessScores: [Double]?
+    var lastCheckinDate: String?
+    var checkIns: [String: CheckIn]?
 }

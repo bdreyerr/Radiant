@@ -85,7 +85,7 @@ class ChatManager: ObservableObject {
     }
     
     func clearMessages(userID: String) {
-        
+        print("user wanted to reset chat")
         // lookup and delete all messages where the userID = userID
         let collectionRef = self.db.collection(Constants.FStore.messageCollectionName)
         let query = collectionRef.whereField("userID", isEqualTo: userID)

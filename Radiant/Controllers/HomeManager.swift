@@ -37,31 +37,11 @@ class HomeManager: ObservableObject {
     let db = Firestore.firestore()
     let storage = Storage.storage()
     
-
+    // TODO(bendreyer): We're doing this read of the signed in userProfile twice, once here and once in the profileStatus manager. We can consolidate.
+    let userProfile: UserProfile? = nil
     
     // initiate variables in the HomeManager on appear
     func userInit(userID: String) {
-        
-        // Get users profile photo
-//        let Ref = storage.reference(forURL: "profile_pictures/RadiantBotPic.png")
-//        // Download photo in memory
-//        Ref.getData(maxSize: 1 * 1024 * 1024) { data, error in
-//            if let error = error {
-//                print(error.localizedDescription)
-//            } else {
-//                self.userProfilePhoto = UIImage(data: data!)
-//            }
-//        }
-        
-        let userDocRef = db.collection("users").document(userID)
-        
-        // Get last check in date
-        
-        // retrieve user mood scores
-        
-        // get goals and gratitude
-//        self.goals = []
-        
         // Get the day of the month for the quote of the day
         let day = Calendar.current.component(.day, from: Date())
         print("day of the month: \(day)")
@@ -74,111 +54,33 @@ class HomeManager: ObservableObject {
             }
         }
         
+        let userDocRef = db.collection("users").document(userID)
         
-        userDocRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                // Get first name
-                if let firstName = document.data()!["name"] as? String {
-                    self.userFirstName = firstName
-                }
+        
+        userDocRef.getDocument(as: UserProfile.self) { result in
+            switch result {
+            case .success(let user):
+                print("we sucessfully got the user in homeManager")
+                print("user id: ", user.id!)
+                self.userFirstName = user.name!
+                self.userProfilePhoto = user.userPhotoNonPremium!
                 
-                // Get photo
-                if let userProfilePhoto = document.data()!["userPhotoNonPremium"] as? String {
-                    self.userProfilePhoto = userProfilePhoto
-                    print(self.userProfilePhoto)
+                
+                // Read today's checkIn data
+                let today = Date().formatted(date: .abbreviated, time: .omitted)
+                self.goals = (user.checkIns![today]?.goals)!
+                self.gratitude = (user.checkIns![today]?.gratitude)!
+                
+                // Set has user checked in today boolean
+                if today == user.lastCheckinDate {
+                    self.hasUserCheckedInToday = true
+                    print("user has already checked in today")
                 } else {
-                    print("no profile photo")
+                    self.hasUserCheckedInToday = false
+                    print("user has not checked in today")
                 }
-                
-                // get last check in date
-                if let lastCheckinDate = document.data()!["lastCheckinDate"] as? String {
-                    
-                    print(lastCheckinDate)
-                    // Figure out how to check how long ago this is
-//                    let day = lastCheckinDate.dateValue().formatted(date: .abbreviated, time: .omitted)
-                    if lastCheckinDate == Date().formatted(date: .abbreviated, time: .omitted) {
-                        self.hasUserCheckedInToday = true
-                        print("user has already checked in!")
-                    } else {
-                        self.hasUserCheckedInToday = false
-                        print("user hasn't checked in today!")
-                    }
-                    
-                } else {
-                    print("last check in date doesn't exist")
-                }
-
-                // get happiness scores
-                if let happinessScores = document.data()!["happinessScores"] as? [Double] {
-                    self.totalHappinessScores = happinessScores
-                    
-                    // if < 7 values in the array, or if exactly 7, do nothing
-                    if self.totalHappinessScores.count <= 7 {
-                        self.visibleHappinessScores = self.totalHappinessScores
-                    }
-                    
-                    
-                    // if more than 7 values, get the 7 latest values
-                    if self.totalHappinessScores.count > 7 {
-                        self.visibleHappinessScores = self.totalHappinessScores.reversed().suffix(7)
-                    }
-                }
-                
-                // get depression scores
-                if let depressionScores = document.data()!["depressionScores"] as? [Double] {
-                    self.totalDepressionScores = depressionScores
-                    
-                    // if < 7 values in the array, or if exactly 7, do nothing
-                    if self.totalDepressionScores.count < 7 || self.totalDepressionScores.count == 7{
-                        self.visibleDepressionScores = self.totalDepressionScores
-                    }
-                    
-                    
-                    // if more than 7 values, get the 7 latest values
-                    if self.totalDepressionScores.count > 7 {
-                        self.visibleDepressionScores = self.totalDepressionScores.reversed().suffix(7)
-                    }
-                }
-                
-                // get anxiety scores
-                if let anxietyScores = document.data()!["anxietyScores"] as? [Double] {
-                    self.totalAnxietyScores = anxietyScores
-                    
-                    // if < 7 values in the array, or if exactly 7, do nothing
-                    if self.totalAnxietyScores.count < 7 || self.totalAnxietyScores.count == 7{
-                        self.visibleAnxietyScores = self.totalAnxietyScores
-                    }
-                    
-                    
-                    // if more than 7 values, get the 7 latest values
-                    if self.totalAnxietyScores.count > 7 {
-                        self.visibleAnxietyScores = self.totalAnxietyScores.reversed().suffix(7)
-                    }
-                }
-                
-                
-                // get goals
-                if let goals = document.data()!["goals"] as? [String] {
-                    if goals.count >= 1 {
-                        self.goals[0] = goals[0]
-                    }
-                    if goals.count >= 2 {
-                        self.goals[1] = goals[1]
-                    }
-                    if goals.count >= 3 {
-                        self.goals[2] = goals[2]
-                    }
-//                    self.goals = goals
-                }
-                
-                // get gratitude
-                if let gratitude = document.data()!["gratitude"] as? String {
-                    self.gratitude = gratitude
-                }
-                
-                
-            } else {
-                print("User doc does not exist")
+            case .failure(let error):
+                print("error getting the user in the home manger: ", error.localizedDescription)
             }
         }
     }

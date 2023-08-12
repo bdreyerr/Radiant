@@ -121,7 +121,7 @@ class AuthStatusManager: ObservableObject {
             UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
             
             // Create the user profile in Firestore
-            let userProf = UserProfile(email: self.email, displayName: self.email, anonDisplayName: nil, birthday: nil, weight: nil, height: nil, goals: nil)
+            let userProf = UserProfile(email: self.email, displayName: self.email)
             let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
             do {
                 try collectionRef.document(user.uid).setData(from: userProf)
@@ -195,7 +195,7 @@ class AuthStatusManager: ObservableObject {
                     UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
                     
                     // Create the user profile in Firestore
-                    let userProf = UserProfile(email: self.email, displayName: self.email, birthday: nil, weight: nil, height: nil, goals: nil)
+                    let userProf = UserProfile(email: self.email, displayName: self.email)
                     let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
                     do {
                         try collectionRef.document(user.uid).setData(from: userProf)
