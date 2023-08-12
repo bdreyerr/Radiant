@@ -99,15 +99,16 @@ struct ListItem: View {
                 VStack(alignment: .leading) {
                     Text(title)
                         .bold()
-                        .font(.system(size: 18, design: .serif))
+                        .font(.system(size: 16, design: .serif))
                     Text(description)
-                        .font(.system(size: 14, design: .serif))
+                        .font(.system(size: 12, design: .serif))
                         .multilineTextAlignment(.leading)
                         .frame(alignment: .leading)
                 }
             }
             .contentShape(Rectangle())
             .padding(.leading, 20)
+            .padding(.trailing, 20)
             .padding(.bottom, 10)
     }
 }

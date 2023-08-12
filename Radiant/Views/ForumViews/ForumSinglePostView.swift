@@ -156,15 +156,20 @@ struct ForumSinglePostView: View {
                                 .background(Color.white)
                         }
                         // List of comments
-                        VStack {
-                            ScrollView {
-                                ForEach(comments) { comment in
-                                    
-                                    Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
-                                    
+                        
+                            VStack() {
+                                ScrollView {
+                                        ForEach(comments) { comment in
+                                            HStack {
+                                                Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                                
+                                                Spacer()
+                                            }
+                                        }
                                 }
+                                .padding(.bottom, 100)
                             }
-                        }
+                        
                     }
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
@@ -263,7 +268,7 @@ struct ForumSinglePostView: View {
 
 //struct ForumSinglePostView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ForumSinglePostView(post: Post(postID: "23", category: "General", userPhoto: "default_prof_pic", username: "south", datePosted: Date.now, postContent: "This is the post content", likes: ["asdsad2"], commentCount: 1, title: "General"), postID: "23", categoryName: "General", profileStateManager: ProfileStatusManager(), forumManager: ForumManager(), )
+//        ForumSinglePostView(post: nil, likeCount: 0, postID: "1", categoryName: "eh")
 //            .environmentObject(ProfileStatusManager())
 //            .environmentObject(ForumManager())
 //    }
@@ -375,5 +380,6 @@ struct Comment: View {
             
         }
         .padding(.leading, 10)
+        .padding(.trailing, 40)
     }
 }
