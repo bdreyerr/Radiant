@@ -125,9 +125,8 @@ struct HomeMainView: View {
                                 //                    .padding(10)
                                 .foregroundColor(.white)
                                 .padding(.bottom, 20)
-                            } else {
-                                Text("User has already checked in family.")
-                            }
+                            } // else
+                            // Else the user has already checked in, don't display anything
                             
                             // Goals
                             HStack {

@@ -91,10 +91,18 @@ class HomeManager: ObservableObject {
                 }
                 
                 // get last check in date
-                if let lastCheckinDate = document.data()!["lastCheckinDate"] as? Timestamp {
+                if let lastCheckinDate = document.data()!["lastCheckinDate"] as? String {
                     
                     print(lastCheckinDate)
                     // Figure out how to check how long ago this is
+//                    let day = lastCheckinDate.dateValue().formatted(date: .abbreviated, time: .omitted)
+                    if lastCheckinDate == Date().formatted(date: .abbreviated, time: .omitted) {
+                        self.hasUserCheckedInToday = true
+                        print("user has already checked in!")
+                    } else {
+                        self.hasUserCheckedInToday = false
+                        print("user hasn't checked in today!")
+                    }
                     
                 } else {
                     print("last check in date doesn't exist")

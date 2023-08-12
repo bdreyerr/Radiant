@@ -134,13 +134,13 @@ struct MapPinAnnotation: View {
     var body: some View {
         ZStack {
             Circle()
-                .frame(width: 40, height: 40)
+                .frame(width: 30, height: 30)
                 .foregroundColor(.white)
                 .shadow(radius: 10)
             
             Image(systemName: icon!)
                 .resizable()
-                .frame(width: 20, height: 20)
+                .frame(width: 15, height: 15)
                 .foregroundColor(.black)
         }
         

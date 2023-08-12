@@ -59,15 +59,23 @@ class CheckInManager: ObservableObject {
             }
         } 
         
-        // store new data
+        
+        let date = Date()
+        let formattedDate = date.formatted(date: .abbreviated, time: .omitted)
+        let checkIn = CheckIn(date: date, goals: [self.goalOne, self.goalTwo, self.goalThree], gratitude: self.gratitude, happinessScore: self.happinessSliderVal, depressionScore: self.depressionSliderVal, anxietyScore: self.anxeitySliderVal, journalEntry: self.journalEntry)
+        
         documentRef.updateData([
-            "goals": FieldValue.arrayUnion([goalOne, goalTwo, goalThree]),
-            "gratitudeEntries": FieldValue.arrayUnion([gratitude]),
-            "journalEntries": FieldValue.arrayUnion([journalEntry]),
-            "happinessScores": FieldValue.arrayUnion([happinessSliderVal]),
-            "depressionScores": FieldValue.arrayUnion([depressionSliderVal]),
-            "anxietyScores": FieldValue.arrayUnion([anxeitySliderVal]),
-            "lastCheckinDate": Date()
+            "checkIns": [
+                formattedDate: [
+                    "goals": [self.goalOne, self.goalTwo, self.goalThree],
+                    "gratitude": self.gratitude,
+                    "happinessScore": self.happinessSliderVal,
+                    "depressionScore": self.depressionSliderVal,
+                    "anxietyScore": self.anxeitySliderVal,
+                    "journalEntry": self.journalEntry
+                ],
+            ],
+            "lastCheckinDate": formattedDate
         ]) { err in
             if let err = err {
                 print("error updating userProfile after checkin: \(err.localizedDescription)")
