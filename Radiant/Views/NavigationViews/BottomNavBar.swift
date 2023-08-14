@@ -42,9 +42,10 @@ struct BottomNavBar: View {
                                 }
                         }
                     
-                    MapMainView()
+//                    MapMainView()
+                    HistoryMainView()
                         .tabItem {
-                            Image(systemName: "map")
+                            Image(systemName: "clock.fill")
                                 .background(Color.white)
                                 .foregroundColor(Color.blue)
                                 .onAppear {

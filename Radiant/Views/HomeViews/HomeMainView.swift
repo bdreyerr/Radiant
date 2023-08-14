@@ -138,10 +138,10 @@ struct HomeMainView: View {
                                 Spacer()
                                 
                                 //TODO: replace this date with the date of the last checkin
-                                Text("Set on 7/26")
-                                    .font(.system(size: 20, design: .serif))
+                                Text("Set \(homeManager.lastCheckInDate)")
+                                    .font(.system(size: 14, design: .serif))
                                     .foregroundColor(.black)
-                                    .padding(.leading, 180)
+//                                    .padding(.leading, 180)
                             }
                             .padding(.leading, 20)
                             .padding(.trailing, 20)
@@ -150,13 +150,13 @@ struct HomeMainView: View {
                             // Goals
                             VStack(alignment: .center) {
                                 // Goal one
-                                GoalView(goalText: homeManager.goals[0], goalHue: 1.0, goalSaturation: 0.111)
+                                GoalView(goalText: homeManager.todaysCheckIn!.goals![0], goalHue: 1.0, goalSaturation: 0.111)
                                 
                                 // Goal two
-                                GoalView(goalText: homeManager.goals[1], goalHue: 0.797, goalSaturation: 0.111)
+                                GoalView(goalText: homeManager.todaysCheckIn!.goals![1], goalHue: 0.797, goalSaturation: 0.111)
                                 
                                 // Goal three
-                                GoalView(goalText: homeManager.goals[2], goalHue: 0.542, goalSaturation: 0.226)
+                                GoalView(goalText: homeManager.todaysCheckIn!.goals![2], goalHue: 0.542, goalSaturation: 0.226)
                             }
                             .padding(.bottom, 20)
                             
@@ -175,7 +175,7 @@ struct HomeMainView: View {
                                 
                                 
                                 
-                                Text(homeManager.gratitude)
+                                Text(homeManager.todaysCheckIn!.gratitude!)
                                     .font(.system(size: 18, design: .serif))
                                     .foregroundColor(.black)
                                     .italic()
@@ -268,81 +268,6 @@ struct GoalView: View {
     }
 }
 
-struct MoodData: Identifiable {
-    let id = UUID()
-    let day: String
-    let val: Double
-}
-
-struct MoodGraphModule: View {
-    @EnvironmentObject var homeManager: HomeManager
-    
-    var body: some View {
-        VStack {
-            RoundedRectangle(cornerRadius: 25)
-                .foregroundColor(Color(hue: 0.686, saturation: 0.707, brightness: 0.165))
-                .frame(minWidth: 360, maxWidth: 360, minHeight: 160, maxHeight: 160)
-                .overlay {
-                    HStack {
-                        Text("Happiness")
-                            .foregroundColor(.blue)
-                            .padding(10)
-                        
-                        Text("Depression")
-                            .foregroundColor(.orange)
-                            .padding(10)
-                        
-                        Text("Anxiety")
-                            .foregroundColor(.green)
-                            .padding(10)
-                    }
-                    .offset(y: -50)
-                    
-                    Group {
-                        Chart(0..<self.homeManager.visibleHappinessScores.count, id: \.self)
-                        { nr in
-                            LineMark(
-                                x: .value("X values", nr),
-                                y: .value("Y values", self.homeManager.visibleHappinessScores[nr])
-                            )
-                        }
-                        .foregroundColor(.blue)
-                        .padding(20)
-                        .chartXAxis(.hidden)
-                        .chartYAxis(.hidden)
-                        
-                        Chart(0..<self.homeManager.visibleDepressionScores.count, id: \.self)
-                        { nr in
-                            LineMark(
-                                x: .value("X values", nr),
-                                y: .value("Y values", self.homeManager.visibleDepressionScores[nr])
-                            )
-                        }
-                        .foregroundColor(.orange)
-                        .padding(20)
-                        .chartXAxis(.hidden)
-                        .chartYAxis(.hidden)
-                        
-                        Chart(0..<self.homeManager.visibleAnxietyScores.count, id: \.self)
-                        { nr in
-                            LineMark(
-                                x: .value("X values", nr),
-                                y: .value("Y values", self.homeManager.visibleAnxietyScores[nr])
-                            )
-                        }
-                        .foregroundColor(.green)
-                        .padding(20)
-                        .chartXAxis(.hidden)
-                        .chartYAxis(.hidden)
-                    }
-                    .offset(y: 40)
-                    
-                }
-        }
-        .padding(.leading, 20)
-        .padding(.trailing, 20)
-    }
-}
 
 struct ActivitiesModule: View {
     var activities = ["Quiz1", "Quiz2", "Quiz3"]

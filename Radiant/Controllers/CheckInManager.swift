@@ -46,41 +46,36 @@ class CheckInManager: ObservableObject {
             self.errorText = ""
         }
         
-        let documentRef = db.collection("users").document(userID)
-        
-        // delete old goals
-        documentRef.updateData([
-            "goals": FieldValue.delete(),
-        ]) { err in
-            if let err = err {
-                print("Error clearing goals: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        } 
-        
+        let userDocumentRef = db.collection("users").document(userID)
         
         let date = Date()
         let formattedDate = date.formatted(date: .abbreviated, time: .omitted)
-        let checkIn = CheckIn(date: date, goals: [self.goalOne, self.goalTwo, self.goalThree], gratitude: self.gratitude, happinessScore: self.happinessSliderVal, depressionScore: self.depressionSliderVal, anxietyScore: self.anxeitySliderVal, journalEntry: self.journalEntry)
         
-        documentRef.updateData([
-            "checkIns": [
-                formattedDate: [
-                    "goals": [self.goalOne, self.goalTwo, self.goalThree],
-                    "gratitude": self.gratitude,
-                    "happinessScore": self.happinessSliderVal,
-                    "depressionScore": self.depressionSliderVal,
-                    "anxietyScore": self.anxeitySliderVal,
-                    "journalEntry": self.journalEntry
-                ],
-            ],
-            "lastCheckinDate": formattedDate
+        userDocumentRef.updateData([
+            "lastCheckinDate": formattedDate,
         ]) { err in
             if let err = err {
-                print("error updating userProfile after checkin: \(err.localizedDescription)")
+                print("Error updating document: \(err)")
             } else {
-                print("user goals added")
+                print("Document successfully updated")
+            }
+        }
+        
+        let checkInsRef = db.collection("checkIns")
+        checkInsRef.addDocument(data: [
+            "userId": userID,
+            "date": formattedDate,
+            "goals": [self.goalOne, self.goalTwo, self.goalThree],
+            "gratitude": self.gratitude,
+            "happinessScore": self.happinessSliderVal,
+            "depressionScore": self.depressionSliderVal,
+            "anxietyScore": self.anxeitySliderVal,
+            "journalEntry": self.journalEntry
+        ]) { err in
+            if let err = err {
+                print("Error adding checkin: \(err.localizedDescription)")
+            } else {
+                print("Check in added successfully")
             }
         }
     }

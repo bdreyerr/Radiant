@@ -23,5 +23,5 @@ struct UserProfile: Codable {
     var userPhotoNonPremium: String?
     
     var lastCheckinDate: String?
-    var checkIns: [String: CheckIn]?
+//    var checkIns: [CheckIn]?
 }

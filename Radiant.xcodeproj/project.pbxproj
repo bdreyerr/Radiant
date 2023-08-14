@@ -29,6 +29,8 @@
 		1A6585E62A29104B00B4DE6D /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6585E52A29104B00B4DE6D /* ChatManager.swift */; };
 		1A667F892A83379000186F05 /* StagesOfGriefView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A667F882A83379000186F05 /* StagesOfGriefView.swift */; };
 		1A667F8B2A8721EA00186F05 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A667F8A2A8721EA00186F05 /* CheckIn.swift */; };
+		1A667F8E2A8813BB00186F05 /* HistoryMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A667F8D2A8813BB00186F05 /* HistoryMainView.swift */; };
+		1A667F902A88185F00186F05 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A667F8F2A88185F00186F05 /* HistoryManager.swift */; };
 		1A6C47972A5A1F85006DB377 /* HomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6C47962A5A1F85006DB377 /* HomeManager.swift */; };
 		1A7621AE2A48E1E60078D480 /* SideBarStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7621AD2A48E1E60078D480 /* SideBarStack.swift */; };
 		1A8C6C182A0202F200676E5F /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */; };
@@ -91,6 +93,8 @@
 		1A6585E52A29104B00B4DE6D /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		1A667F882A83379000186F05 /* StagesOfGriefView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StagesOfGriefView.swift; sourceTree = "<group>"; };
 		1A667F8A2A8721EA00186F05 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
+		1A667F8D2A8813BB00186F05 /* HistoryMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryMainView.swift; sourceTree = "<group>"; };
+		1A667F8F2A88185F00186F05 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
 		1A6C47962A5A1F85006DB377 /* HomeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeManager.swift; sourceTree = "<group>"; };
 		1A7621AD2A48E1E60078D480 /* SideBarStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarStack.swift; sourceTree = "<group>"; };
 		1A8C6C172A0202F200676E5F /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
@@ -208,6 +212,14 @@
 				1A7621AD2A48E1E60078D480 /* SideBarStack.swift */,
 			);
 			path = ForumViews;
+			sourceTree = "<group>";
+		};
+		1A667F8C2A8813AB00186F05 /* HistoryViews */ = {
+			isa = PBXGroup;
+			children = (
+				1A667F8D2A8813BB00186F05 /* HistoryMainView.swift */,
+			);
+			path = HistoryViews;
 			sourceTree = "<group>";
 		};
 		1A8C6C1D2A02E29800676E5F /* ModuleViews */ = {
@@ -335,6 +347,7 @@
 		1AC9905C2A01776500851A14 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A667F8C2A8813AB00186F05 /* HistoryViews */,
 				1AE12E7C2A40D52D0020F7E3 /* ChatViews */,
 				1A98C4542A08458500BB3203 /* MapViews */,
 				1A56F3E02A06DF610057A6D6 /* ForumViews */,
@@ -358,6 +371,7 @@
 				1A6585E52A29104B00B4DE6D /* ChatManager.swift */,
 				1A6C47962A5A1F85006DB377 /* HomeManager.swift */,
 				1A57BB6E2A66378B0016901D /* CheckInManager.swift */,
+				1A667F8F2A88185F00186F05 /* HistoryManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -497,6 +511,7 @@
 				1A7621AE2A48E1E60078D480 /* SideBarStack.swift in Sources */,
 				1A8C6C1A2A02122800676E5F /* RegisterView.swift in Sources */,
 				1AC9905F2A01794F00851A14 /* WelcomeView.swift in Sources */,
+				1A667F902A88185F00186F05 /* HistoryManager.swift in Sources */,
 				1A6C47972A5A1F85006DB377 /* HomeManager.swift in Sources */,
 				1A56F3D92A06CFD50057A6D6 /* BottomNavBar.swift in Sources */,
 				1A57BB6D2A65AEE50016901D /* CirclularSlider.swift in Sources */,
@@ -509,6 +524,7 @@
 				1A56F3DC2A06D5C80057A6D6 /* ProfileMainView.swift in Sources */,
 				1A98C4612A0AC75700BB3203 /* ProfileSettingsView.swift in Sources */,
 				1A8CCE092A7837D2001D5D55 /* CharacterAchetypeView.swift in Sources */,
+				1A667F8E2A8813BB00186F05 /* HistoryMainView.swift in Sources */,
 				1AC990472A01703B00851A14 /* RadiantApp.swift in Sources */,
 				1A92F9B42A0411BE000C2AE3 /* AuthStatusManager.swift in Sources */,
 				1A8CCE112A7B4767001D5D55 /* FirebaseImage.swift in Sources */,

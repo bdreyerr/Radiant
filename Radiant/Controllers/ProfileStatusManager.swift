@@ -25,18 +25,18 @@ class ProfileStatusManager: ObservableObject {
     let db = Firestore.firestore()
     @Published var userProfile: UserProfile?
     
-//    init() {
-//
-//        if let userID = Auth.auth().currentUser?.uid {
-//            self.retrieveUserProfile(userID: userID)
-//            if let user = self.userProfile {
-//                self.generateAnonUsernameForForum()
-//            } else {
-//                print("User didn't save into ProfileStateManager")
-//            }
-//
-//        }
-//    }
+    //    init() {
+    //
+    //        if let userID = Auth.auth().currentUser?.uid {
+    //            self.retrieveUserProfile(userID: userID)
+    //            if let user = self.userProfile {
+    //                self.generateAnonUsernameForForum()
+    //            } else {
+    //                print("User didn't save into ProfileStateManager")
+    //            }
+    //
+    //        }
+    //    }
     
     
     func retrieveUserProfile(userID: String) {
@@ -80,8 +80,8 @@ class ProfileStatusManager: ObservableObject {
     
     func generateAnonUsernameForForum(numWords: Int = 150) {
         let words = ["apple", "banana", "cat", "dog", "elephant", "fish", "goat", "horse", "iguana", "jellyfish",
-                      "key", "lemon", "monkey", "noodle", "orange", "pen", "queen", "rabbit", "snake", "turtle",
-                      "umbrella", "violin", "watermelon", "xylophone", "yacht", "zebra"]
+                     "key", "lemon", "monkey", "noodle", "orange", "pen", "queen", "rabbit", "snake", "turtle",
+                     "umbrella", "violin", "watermelon", "xylophone", "yacht", "zebra"]
         
         let word1 = words.randomElement()!
         let word2 = words.randomElement()!

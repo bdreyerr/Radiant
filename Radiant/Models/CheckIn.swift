@@ -8,8 +8,9 @@
 import Foundation
 
 
-struct CheckIn: Codable {
-    var date: Date?
+public struct CheckIn: Codable {
+    var userId: String?
+    var date: String?
     var goals: [String]?
     var gratitude: String?
     var happinessScore: Double?

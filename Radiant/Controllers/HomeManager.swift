@@ -16,20 +16,13 @@ class HomeManager: ObservableObject {
     @Published var isCheckInPopupShowing: Bool = false
     
     @Published var hasUserCheckedInToday: Bool = false
+    @Published var lastCheckInDate: String = "2/29"
     @Published var userFirstName: String = "User"
     @Published var userProfilePhoto: String = "default_prof_pic"
     
-    @Published var goals: [String] = ["Please check-in to set your goals", "", ""]
-    @Published var gratitude: String = "I'm grateful for you!"
     
+    @Published var todaysCheckIn: CheckIn? = CheckIn(userId: nil, date: "", goals: ["Please check-in to set your goals", "", ""], gratitude: "I'm grateful for you, user!", happinessScore: -1, depressionScore: -1, anxietyScore: -1, journalEntry: "")
     
-    var totalDepressionScores: [Double] = []
-    var totalAnxietyScores: [Double] = []
-    var totalHappinessScores: [Double] = []
-    
-    @Published var visibleDepressionScores: [Double] = []
-    @Published var visibleAnxietyScores: [Double] = []
-    @Published var visibleHappinessScores: [Double] = []
     
     @Published var quoteOfTheDay: String = ""
     
@@ -39,6 +32,7 @@ class HomeManager: ObservableObject {
     
     // TODO(bendreyer): We're doing this read of the signed in userProfile twice, once here and once in the profileStatus manager. We can consolidate.
     let userProfile: UserProfile? = nil
+    
     
     // initiate variables in the HomeManager on appear
     func userInit(userID: String) {
@@ -65,12 +59,9 @@ class HomeManager: ObservableObject {
                 self.userFirstName = user.name!
                 self.userProfilePhoto = user.userPhotoNonPremium!
                 
-                
-                // Read today's checkIn data
+
                 let today = Date().formatted(date: .abbreviated, time: .omitted)
-                self.goals = (user.checkIns![today]?.goals)!
-                self.gratitude = (user.checkIns![today]?.gratitude)!
-                
+                self.lastCheckInDate = user.lastCheckinDate!
                 // Set has user checked in today boolean
                 if today == user.lastCheckinDate {
                     self.hasUserCheckedInToday = true
@@ -83,5 +74,29 @@ class HomeManager: ObservableObject {
                 print("error getting the user in the home manger: ", error.localizedDescription)
             }
         }
+        
+        // Get today's checkIn Data
+        db.collection("checkIns").whereField("userId", isEqualTo: userID).whereField("date", isEqualTo: Date().formatted(date: .abbreviated, time: .omitted))
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("error retrievign user's checkins: ", err.localizedDescription)
+                } else {
+                    print("retrieved checkins sucessfully!")
+                    for document in querySnapshot!.documents {
+                        
+                        let userId = document.data()["userId"] as? String
+                        let date = document.data()["date"] as? String
+                        let goals = document.data()["goals"] as? [String]
+                        let gratitude = document.data()["gratitude"] as? String
+                        let happinessScore = document.data()["happinessScore"] as? Double
+                        let depressionScore = document.data()["depressionScore"] as? Double
+                        let anxietyScore = document.data()["anxietyScore"] as? Double
+                        let journalEntry = document.data()["journalEntry"] as? String
+                        let newCheckIn: CheckIn = CheckIn(userId: userId, date: date, goals: goals, gratitude: gratitude, happinessScore: happinessScore, depressionScore: depressionScore, anxietyScore: anxietyScore, journalEntry: journalEntry)
+                        self.todaysCheckIn = newCheckIn
+                    }
+//                    print(self.todaysCheckIn)
+                }
+            }
     }
 }
