@@ -41,6 +41,7 @@ class HistoryManager: ObservableObject {
             
             curDay += 86400
         }
+        self.focusedDay = self.days[self.days.count-1]
     }
     
     func crossCheckDaysWithCheckInsFromFirstore(userId: String) {
@@ -87,7 +88,14 @@ class HistoryManager: ObservableObject {
 }
 
 
-struct Day: Identifiable {
+struct Day: Identifiable, Equatable {
+    static func == (lhs: Day, rhs: Day) -> Bool {
+        if lhs.id == rhs.id {
+            return true
+        }
+        return false
+    }
+    
     // Variables populated during generateDays()
     var id = UUID()
     var dayOfMonth: Int
