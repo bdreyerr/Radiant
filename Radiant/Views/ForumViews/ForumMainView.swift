@@ -150,7 +150,6 @@ struct ForumMainView: View {
                     }
                 }
             }
-            .navigationViewStyle(.stack)
             .foregroundColor(Color(uiColor: .white))
             .environmentObject(forumManager)
         }.edgesIgnoringSafeArea(.all)

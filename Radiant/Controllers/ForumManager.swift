@@ -30,7 +30,7 @@ class ForumManager: ObservableObject {
     // Firestore
     let db = Firestore.firestore()
     
-    @Published var isSinglePostFocused: Bool = false
+//    @Published var isSinglePostFocused: Bool = false
     @Published var focusedPostID: String = ""
     @Published var focusedPostCategoryName: String = ""
     @Published var isFocusedPostLikedByCurrentUser: Bool = false
@@ -80,7 +80,7 @@ class ForumManager: ObservableObject {
         }
     }
     
-    func deletePost(postID: String, postCategory: String, authorID: String, commentList: [ForumPostComment]) {
+    func deletePost(postID: String, postCategory: String, commentList: [ForumPostComment]) {
         print("user wanted to delete their post")
         let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
         
@@ -168,6 +168,20 @@ class ForumManager: ObservableObject {
             print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
         } catch {
             print("Error adding comment to the post")
+        }
+    }
+    
+    func deleteComment(commentID: String, commentCategory: String, authorID: String) {
+        print("user wanted to delete their comment")
+        let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
+        
+        // Delete post
+        db.collection(collectionName).document(commentID).delete() { err in
+            if let err = err {
+                print("Error removing comment: \(err.localizedDescription)")
+            } else {
+                print("Comment successfully deleted!")
+            }
         }
     }
     

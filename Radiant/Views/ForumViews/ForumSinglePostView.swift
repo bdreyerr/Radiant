@@ -169,11 +169,10 @@ struct ForumSinglePostView: View {
                                         }
                                         .alert("Are you sure you want to delete your post?", isPresented: $forumManager.isDeletePostPopupAlertShowing) {
                                             Button("Yes", action: {
-                                                forumManager.deletePost(postID: post.postID, postCategory: post.category, authorID: user, commentList: self.comments)
-                                                forumManager.isSinglePostFocused = false
+                                                forumManager.deletePost(postID: post.postID, postCategory: post.category, commentList: self.comments)
                                             })
                                             Button("Cancel", action: {
-                                                forumManager.isReportPostAlertShowing = false
+                                                forumManager.isDeletePostPopupAlertShowing = false
                                             })
                                         }
                                     }
@@ -405,6 +404,28 @@ struct Comment: View {
                     Button("Cancel", action: {
                         forumManager.isReportCommentAlertShowing = false
                     })
+                }
+                
+                if let user = Auth.auth().currentUser?.uid {
+                    if user == self.authorID {
+                        Button(action: {
+                            forumManager.isDeleteCommentPopupAlertShowing = true
+                        }) {
+                            Image(systemName: "trash")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .padding(.trailing, 10)
+                                .foregroundColor(.red)
+                        }
+                        .alert("Are you sure you want to delete your post?", isPresented: $forumManager.isDeleteCommentPopupAlertShowing) {
+                            Button("Yes", action: {
+                                forumManager.deleteComment(commentID: self.commentID, commentCategory: self.commentCategory, authorID: user)
+                            })
+                            Button("Cancel", action: {
+                                forumManager.isDeleteCommentPopupAlertShowing = false
+                            })
+                        }
+                    }
                 }
             }
             

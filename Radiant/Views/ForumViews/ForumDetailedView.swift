@@ -151,7 +151,7 @@ struct Post: View {
     var body: some View {
         // Post
         
-        NavigationLink(destination: ForumSinglePostView(post: Post(postID: "0", authorID: "1", category: "0", userPhoto: "default_prof_pic", username: "0", datePosted: Date.now, postContent: "0", likes: [], commentCount: 1, title: "1"), likeCount: 0, postID: nil, categoryName: nil), isActive: $forumManager.isSinglePostFocused) {
+        NavigationLink(destination: ForumSinglePostView(post: Post(postID: "0", authorID: "1", category: "0", userPhoto: "default_prof_pic", username: "0", datePosted: Date.now, postContent: "0", likes: [], commentCount: 1, title: "1"), likeCount: 0, postID: nil, categoryName: nil)) {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
                         // User profile picture
@@ -229,7 +229,6 @@ struct Post: View {
             print("The post ID that was clicked on: \(self.postID)")
             forumManager.focusedPostID = self.postID
             forumManager.focusedPostCategoryName = self.category
-            forumManager.isSinglePostFocused = true
         })
 
         
