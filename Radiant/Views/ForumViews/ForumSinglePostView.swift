@@ -71,10 +71,10 @@ struct ForumSinglePostView: View {
                         
                         VStack(alignment: .center) {
                             // TODO: Make this same width as the HStack
-                            Divider()
-                                .background(Color.white)
+//                            Divider()
+//                                .background(Color.white)
                             
-                            
+                            // Post Action Button
                             HStack(alignment: .center) {
                                 
                                 Button(action: {
@@ -169,7 +169,7 @@ struct ForumSinglePostView: View {
                                 }
                                 .padding(.bottom, 100)
                             }
-                        
+                
                     }
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
@@ -379,7 +379,6 @@ struct Comment: View {
             }
             
         }
-        .padding(.leading, 10)
         .padding(.trailing, 40)
     }
 }

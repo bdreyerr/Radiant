@@ -56,12 +56,19 @@ class HomeManager: ObservableObject {
             case .success(let user):
                 print("we sucessfully got the user in homeManager")
                 print("user id: ", user.id!)
-                self.userFirstName = user.name!
+                if let name = user.name {
+                    self.userFirstName = name
+                }
+                
                 self.userProfilePhoto = user.userPhotoNonPremium!
                 
 
                 let today = Date().formatted(date: .abbreviated, time: .omitted)
-                self.lastCheckInDate = user.lastCheckinDate!
+                
+                if let lastCheckInDate = user.lastCheckinDate {
+                    self.lastCheckInDate = lastCheckInDate
+                }
+                
                 // Set has user checked in today boolean
                 if today == user.lastCheckinDate {
                     self.hasUserCheckedInToday = true

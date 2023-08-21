@@ -81,6 +81,7 @@ class HistoryManager: ObservableObject {
                         }
                         i += 1
                     }
+                    self.focusedDay = self.days[self.days.count-1]
                 }
             }
         
