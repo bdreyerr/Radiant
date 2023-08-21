@@ -24,10 +24,13 @@ class ForumManager: ObservableObject {
     
     @Published var isReportPostAlertShowing: Bool = false
     @Published var isReportCommentAlertShowing: Bool = false
+    @Published var isDeletePostPopupAlertShowing: Bool = false
+    @Published var isDeleteCommentPopupAlertShowing: Bool = false
     
     // Firestore
     let db = Firestore.firestore()
     
+    @Published var isSinglePostFocused: Bool = false
     @Published var focusedPostID: String = ""
     @Published var focusedPostCategoryName: String = ""
     @Published var isFocusedPostLikedByCurrentUser: Bool = false
@@ -74,6 +77,32 @@ class ForumManager: ObservableObject {
             isCreatePostPopupShowing = false
         } catch {
             print("error adding post to collection")
+        }
+    }
+    
+    func deletePost(postID: String, postCategory: String, authorID: String, commentList: [ForumPostComment]) {
+        print("user wanted to delete their post")
+        let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
+        
+        // Delete post
+        db.collection(collectionName).document(postID).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err.localizedDescription)")
+            } else {
+                print("Post successfully deleted!")
+            }
+        }
+        
+        // Delete associated comments
+        for comment in commentList {
+            let commentCollectionName = getFstoreForumCommentsCategoryCollectionName(category: postCategory)
+            db.collection(commentCollectionName).document(comment.id!).delete() { err in
+                if let err = err {
+                    print("error deleting comment: \(err.localizedDescription)")
+                } else {
+                    print("successfully deleted comment")
+                }
+            }
         }
     }
     

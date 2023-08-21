@@ -150,6 +150,7 @@ struct ForumMainView: View {
                     }
                 }
             }
+            .navigationViewStyle(.stack)
             .foregroundColor(Color(uiColor: .white))
             .environmentObject(forumManager)
         }.edgesIgnoringSafeArea(.all)
@@ -188,7 +189,7 @@ struct MyPosts: View {
                 // look up the username with their id
                 ForEach(posts, id: \.id) { post in
                     if post.id != nil {
-                        Post(postID: post.id!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                        Post(postID: post.id!, authorID: post.authorID!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
                             .id(post.id)
                     } else {
                         Text("Unable to retrieve post")
@@ -340,7 +341,7 @@ struct LikedPosts: View {
                 // look up the username with their id
                 ForEach(posts, id: \.id) { post in
                     if post.id != nil {
-                        Post(postID: post.id!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
+                        Post(postID: post.id!, authorID: post.authorID!, category: post.category!, userPhoto: post.authorProfilePhoto ?? "default_prof_pic", username: post.authorUsername ?? "author", datePosted: post.date ?? Date.now, postContent: post.content!, likes:post.likes ?? [], commentCount: 1, title: post.category!)
                             .id(post.id)
                     } else {
                         Text("Unable to retrieve post")

@@ -7,7 +7,9 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 import FirebaseFirestore
+
 //import FirebaseFirestoreSwift
 
 struct ForumSinglePostView: View {
@@ -119,7 +121,8 @@ struct ForumSinglePostView: View {
                                     self.retrieveComments()
                                 }) {
                                     ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
-                                }.padding(.trailing, 20)
+                                }
+                                .padding(.trailing, 20)
                                 
                                 
                                 Button(action: {
@@ -150,6 +153,32 @@ struct ForumSinglePostView: View {
                                         forumManager.isReportPostAlertShowing = false
                                     })
                                 }
+                                .padding(.trailing, 20)
+                                
+                                // Delete post if signed in user is the author
+                                if let user = Auth.auth().currentUser?.uid {
+                                    if user == self.post?.authorID {
+                                        Button(action: {
+                                            forumManager.isDeletePostPopupAlertShowing = true
+                                        }) {
+                                            Image(systemName: "trash")
+                                                .resizable()
+                                                .frame(width: 20, height: 20)
+                                                .padding(.trailing, 10)
+                                                .foregroundColor(.red)
+                                        }
+                                        .alert("Are you sure you want to delete your post?", isPresented: $forumManager.isDeletePostPopupAlertShowing) {
+                                            Button("Yes", action: {
+                                                forumManager.deletePost(postID: post.postID, postCategory: post.category, authorID: user, commentList: self.comments)
+                                                forumManager.isSinglePostFocused = false
+                                            })
+                                            Button("Cancel", action: {
+                                                forumManager.isReportPostAlertShowing = false
+                                            })
+                                        }
+                                    }
+                                }
+                                
                                 
                             }
                             Divider()
@@ -191,6 +220,7 @@ struct ForumSinglePostView: View {
             if let document = document, document.exists {
 //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
 //                print("Document data: \(dataDescription)")
+                self.post?.authorID = document.data()?["authorID"] as! String
                 self.post?.postID = forumManager.focusedPostID
                 self.post?.category = forumManager.focusedPostCategoryName
                 if let authorProfilePhoto = document.data()?["authorProfilePhoto"] as? String {
