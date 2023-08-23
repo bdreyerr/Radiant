@@ -35,40 +35,31 @@ struct ProfileSettingsView: View {
     
     var body: some View {
         ZStack {
-            Image("Profile_BG")
+            Image("Profile_BG2")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            
             VStack {
-                
                 List {
                     HStack(alignment: .center) {
                         
                         ZStack {
                             
-                            Image("default_prof_pic")
-                                .resizable()
-                                .frame(width: 80, height: 80)
-                                .clipShape(Circle())
-                                .padding(.horizontal, (UIScreen.main.bounds.width / 2))
-                            
-                            Circle()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(Color.teal)
-                                .padding(.leading, 70)
-                                .padding(.bottom, 50)
-                            
-                            
-                            Button(action: {
-                                print("change image button pressed")
-                            }) {
-                                Image(systemName: "square.and.pencil")
-                                    .padding(.leading, 70)
-                                    .padding(.bottom, 50)
-                                    .foregroundColor(.black)
+                            if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                Image(profPic)
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                                    .padding(.horizontal, (UIScreen.main.bounds.width / 2))
+                            } else {
+                                Image("default_prof_pic")
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                                    .padding(.horizontal, (UIScreen.main.bounds.width / 2))
                             }
+                                
                         }
                     }
                     
@@ -147,57 +138,30 @@ struct ProfileSettingsView: View {
                             }
                             
                         }
-                    }
-                    
-                    // Birthday
-                    HStack {
-                        Text("Birthday: ")
-                            .bold()
-                        if let bday = profileStateManager.userProfile?.birthday {
-                            Text(bday, style: .date)
-                        } else {
-                            Text(Date.now, style: .date)
+                        
+                        // Birthday
+                        HStack {
+                            Text("Birthday: ")
+                                .bold()
+                            if let bday = profileStateManager.userProfile?.birthday {
+                                Text(bday, style: .date)
+                            } else {
+                                Text(Date.now, style: .date)
+                            }
                         }
                         
-                        Button(action: {
-                            print("User wanted to change birthday")
-                        }) {
-                            Image(systemName: "info.circle")
-                        }
-                    }
-                    
-                    // Weight
-                    HStack {
-                        Text("Weight: ")
-                            .bold()
-                        if let weight = profileStateManager.userProfile?.weight {
-                            Text("\(weight)kg")
-                        } else {
-                            Text("60kg")
+                        // Name
+                        HStack {
+                            Text("Name: ")
+                                .bold()
+                            if let name = profileStateManager.userProfile?.name {
+                                Text(name)
+                            } else {
+                                Text("User")
+                            }
                         }
                         
-                        Button(action: {
-                            print("User wanted to change weight")
-                        }) {
-                            Image(systemName: "info.circle")
-                        }
-                    }
-                    
-                    // Height
-                    HStack {
-                        Text("Height: ")
-                            .bold()
-                        if let height = profileStateManager.userProfile?.height {
-                            Text("\(height)m")
-                        } else {
-                            Text("1.2m")
-                        }
                         
-                        Button(action: {
-                            print("User wanted to change height")
-                        }) {
-                            Image(systemName: "info.circle")
-                        }
                     }
                     
                     Section(header: Text("Community Forum")) {
@@ -206,22 +170,10 @@ struct ProfileSettingsView: View {
                             Text("Display Name: ")
                                 .bold()
                             if let displayName = profileStateManager.userProfile?.displayName {
-                                if profileStateManager.isForumAnon == true {
-                                    let anonDisplayName = profileStateManager.userProfile?.anonDisplayName
-                                    Text("\(anonDisplayName!)")
-                                } else {
-                                    Text("\(displayName)")
-                                }
+                                Text(displayName)
                             } else {
-                                Text("")
+                                Text("User")
                             }
-                            
-                            Button(action: {
-                                print("User wanted to change displayName")
-                            }) {
-                                Image(systemName: "info.circle")
-                            }
-                            
                         }
                         
                         Toggle(isOn: $profileStateManager.isForumAnon, label: {

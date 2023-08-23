@@ -13,6 +13,7 @@ import FirebaseFirestore
 //import FirebaseFirestoreSwift
 
 struct ForumSinglePostView: View {
+    @Environment(\.presentationMode) var presentationMode // environment object that keeps track of what is shown
     
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @EnvironmentObject var forumManager: ForumManager
@@ -170,6 +171,7 @@ struct ForumSinglePostView: View {
                                         .alert("Are you sure you want to delete your post?", isPresented: $forumManager.isDeletePostPopupAlertShowing) {
                                             Button("Yes", action: {
                                                 forumManager.deletePost(postID: post.postID, postCategory: post.category, commentList: self.comments)
+                                                self.presentationMode.wrappedValue.dismiss()
                                             })
                                             Button("Cancel", action: {
                                                 forumManager.isDeletePostPopupAlertShowing = false
@@ -305,6 +307,7 @@ struct ForumSinglePostView: View {
 
 
 struct Comment: View {
+    @Environment(\.presentationMode) var presentationMode // environment object that keeps track of what is shown
     
     @EnvironmentObject var forumManager: ForumManager
     @EnvironmentObject var profileStateManager: ProfileStatusManager
