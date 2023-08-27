@@ -154,7 +154,7 @@ struct HistoryMainView: View {
                             Spacer()
                             Image(systemName: "pencil.circle")
                                 .resizable()
-                                .frame(width: 30, height: 30)
+                                .frame(width: 25, height: 25)
                                 .foregroundColor(.black)
                                 .padding(.trailing, 10)
                         }
@@ -257,27 +257,32 @@ struct GoalCapsule: View {
         case "blue": Label(keyword, systemImage: symbol)
                 .font(.system(size: 14, design: .serif))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(16)
                 .background(.blue.opacity(0.75), in: Capsule())
         case "green": Label(keyword, systemImage: symbol)
                 .font(.system(size: 14, design: .serif))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(16)
                 .background(.green.opacity(0.75), in: Capsule())
         case "red": Label(keyword, systemImage: symbol)
                 .font(.system(size: 14, design: .serif))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(16)
                 .background(.red.opacity(0.75), in: Capsule())
         case "purple": Label(keyword, systemImage: symbol)
                 .font(.system(size: 14, design: .serif))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(16)
                 .background(.purple.opacity(0.75), in: Capsule())
+        case "white": Label(keyword, systemImage: symbol)
+                .font(.system(size: 14, design: .serif))
+                .foregroundColor(.black)
+                .padding(20)
+                .background(.white.opacity(0.75), in: Capsule())
         default: Label(keyword, systemImage: symbol)
                 .font(.system(size: 14, design: .serif))
                 .foregroundColor(.white)
-                .padding(15)
+                .padding(16)
                 .background(.blue.opacity(0.75), in: Capsule())
         }
         
@@ -289,27 +294,29 @@ struct JournalEntry: View {
     let backgroundImage = Image("notebook_paper")
     
     var body: some View {
-        backgroundImage
-            .resizable()
-            .frame(width: 360, height: 140)
-            .cornerRadius(20)
-            .blur(radius: 2)
-            .overlay {
-                VStack {
-                    HStack() {
-                        Text(journalText)
-                            .font(.system(size: 15, design: .serif))
-                            .foregroundColor(.black)
-                        Spacer()
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.leading, 30)
-                .padding(.top, 18)
-                .padding(.bottom, 10)
-                .padding(.trailing, 10)
-            }
+//        backgroundImage
+//            .resizable()
+//            .frame(width: 360, height: 140)
+//            .cornerRadius(20)
+//            .blur(radius: 2)
+//            .overlay {
+//                VStack {
+//                    HStack() {
+//                        Text(journalText)
+//                            .font(.system(size: 15, design: .serif))
+//                            .foregroundColor(.black)
+//                        Spacer()
+//                    }
+//
+//                    Spacer()
+//                }
+//                .padding(.leading, 30)
+//                .padding(.top, 18)
+//                .padding(.bottom, 10)
+//                .padding(.trailing, 10)
+//            }
+        
+        GoalCapsule(keyword: journalText, symbol: "pencil.circle", color: "white")
     }
 }
 

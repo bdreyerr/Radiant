@@ -186,20 +186,20 @@ struct HealthyRelationshipDetailedView: View {
                                         .font(.system(size: 18, design: .serif))
                                 }
                                 
-                                Button(action: {
-                                    
-                                }) {
-                                    RoundedRectangle(cornerRadius: 40)
-                                        .frame(maxWidth: 300, minHeight: 50, maxHeight: 50)
-                                        .overlay {
-                                            ZStack {
-                                                Text("Close Quiz")
-                                                    .foregroundColor(.black)
-                                                    .font(.system(size: 15, design: .monospaced))
-                                            }
-                                        }
-                                }
-                                .padding(.top, 40)
+//                                Button(action: {
+//                                    
+//                                }) {
+//                                    RoundedRectangle(cornerRadius: 40)
+//                                        .frame(maxWidth: 300, minHeight: 50, maxHeight: 50)
+//                                        .overlay {
+//                                            ZStack {
+//                                                Text("Close Quiz")
+//                                                    .foregroundColor(.black)
+//                                                    .font(.system(size: 15, design: .monospaced))
+//                                            }
+//                                        }
+//                                }
+//                                .padding(.top, 40)
                             }
                             .padding(.leading, 20)
                             .padding(.trailing, 20)

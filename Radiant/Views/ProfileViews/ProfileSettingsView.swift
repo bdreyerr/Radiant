@@ -21,10 +21,10 @@ struct ProfileSettingsView: View {
     @State private var oldEmail = ""
     @State private var newEmail = ""
     
-    @State private var presentEditBirthdayAlert = false
-    @State private var presentEditWeightAlert = false
-    @State private var presentEditHeightAlert = false
+    @State private var presentEditNameAlert = false
+    @State private var newName = ""
     @State private var presentEditDisplayNameAlert = false
+    @State private var newDisplayName = ""
     
     // Toggles for community forum
     // anon toggle
@@ -73,70 +73,6 @@ struct ProfileSettingsView: View {
                             } else {
                                 Text("TestEmail@google.com")
                             }
-                            
-                            Button(action: {
-                                presentEditEmailAlert = true
-                                print("User wanted to change email")
-                            })
-                            {
-                                Image(systemName: "info.circle")
-                            }
-                            .alert("Edit Email", isPresented: $presentEditEmailAlert) {
-                                TextField("Current Email", text: $oldEmail)
-                                TextField("New Email", text: $newEmail)
-                                HStack {
-                                    Button("Cancel", role: .cancel) {
-                                        presentEditEmailAlert = false
-                                    }.foregroundColor(.red)
-                                    Button("Save", role: .none) {
-                                        // if the entered old email = the user's current email
-                                        
-                                        // testing current email and current email input by user
-                                        print("Current email on authStateManager: \(authStateManager.email)")
-                                        print("Current email on profileStateManager: \(profileStateManager.userProfile?.email ?? "default email")")
-                                        print("Current email input by user: \(oldEmail)")
-                                        
-                                        if oldEmail == authStateManager.email && oldEmail == profileStateManager.userProfile?.email {
-                                            if profileStateManager.isValidEmailAddress(emailAddressString: newEmail) {
-                                                // Update the user's info in the 'users' collection in Firestore
-                                                if let user = profileStateManager.userProfile {
-                                                    if let error = profileStateManager.updateUserProfileEmail(newEmail: newEmail) {
-                                                        errorText = error
-                                                        presentErrorAlert = true
-                                                    } else {
-                                                        print("Email updated on the profileStateManager.userProfile")
-                                                    }
-                                                }
-                                                
-                                                // Update the user's auth email stored in the Auth table in Firebase
-                                                if let e = authStateManager.updateAuthEmail(newEmail: newEmail) {
-//                                                    print("ERROR UPDATING EMAIL IN AUTH TABLE: \(e)")
-                                                    errorText = e
-                                                    presentErrorAlert = true
-                                                } else {
-                                                    print("UPDATING EMAIL WAS SUCCESSFUL")
-                                                }
-                                            } else {
-//                                                print("The new email address is not a valid email")
-                                                errorText = "The new email address is not a valid email"
-                                                presentErrorAlert = true
-                                            }
-                                        } else {
-                                            errorText = "Please enter the correct current email address"
-                                            presentErrorAlert = true
-                                        }
-                                        presentEditEmailAlert = false
-                                    }.foregroundColor(.blue)
-                                }
-                                
-                            }
-                            .alert("\(errorText)", isPresented: $presentErrorAlert) {
-                                Button("OK", role: .none) {
-                                    print(errorText)
-                                    presentErrorAlert = false
-                                }
-                            }
-                            
                         }
                         
                         // Birthday
@@ -159,6 +95,35 @@ struct ProfileSettingsView: View {
                             } else {
                                 Text("User")
                             }
+                            
+                            Button(action: {
+                                presentEditNameAlert = true
+                                print("User wanted to change name")
+                            })
+                            {
+                                Image(systemName: "info.circle")
+                            }
+                            .alert("Edit Name", isPresented: $presentEditNameAlert) {
+                                TextField("New Name", text: $newName)
+                                HStack {
+                                    Button("Cancel", role: .cancel) {
+                                        presentEditNameAlert = false
+                                    }.foregroundColor(.red)
+                                    Button("Save", role: .none) {
+                                        
+                                        if newName != "" {
+                                            if let err = profileStateManager.updateUserName(newName: newName) {
+                                                print("error changing name: \(err)")
+                                            } else {
+                                                print("name change success")
+                                            }
+                                        }
+                                        presentEditNameAlert = false
+                                    }.foregroundColor(.blue)
+                                }
+                                
+                            }
+                            
                         }
                         
                         
@@ -174,14 +139,42 @@ struct ProfileSettingsView: View {
                             } else {
                                 Text("User")
                             }
+                            
+                            Button(action: {
+                                presentEditDisplayNameAlert = true
+                                print("User wanted to change display name")
+                            })
+                            {
+                                Image(systemName: "info.circle")
+                            }
+                            .alert("Edit Dispaly Name", isPresented: $presentEditDisplayNameAlert) {
+                                TextField("New Dispaly Name", text: $newDisplayName)
+                                HStack {
+                                    Button("Cancel", role: .cancel) {
+                                        presentEditDisplayNameAlert = false
+                                    }.foregroundColor(.red)
+                                    Button("Save", role: .none) {
+                                        
+                                        if newDisplayName != "" {
+                                            if let err = profileStateManager.updateUserDisplayName(newName: newDisplayName) {
+                                                print("error changing name: \(err)")
+                                            } else {
+                                                print("name change success")
+                                            }
+                                        }
+                                        presentEditDisplayNameAlert = false
+                                    }.foregroundColor(.blue)
+                                }
+                                
+                            }
                         }
                         
-                        Toggle(isOn: $profileStateManager.isForumAnon, label: {
-                            Text("Appear anonymous on the forum")
-                        })
-                        Toggle(isOn: $profileStateManager.isProfanityFiltered, label: {
-                            Text("Filter profanity")
-                        })
+//                        Toggle(isOn: $profileStateManager.isForumAnon, label: {
+//                            Text("Appear anonymous on the forum")
+//                        })
+//                        Toggle(isOn: $profileStateManager.isProfanityFiltered, label: {
+//                            Text("Filter profanity")
+//                        })
                     }
                     
                     Section(header: Text("Account")) {

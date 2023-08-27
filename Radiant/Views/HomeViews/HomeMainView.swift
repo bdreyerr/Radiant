@@ -316,7 +316,7 @@ struct EducationModule: View {
                 HStack {
                     ThinkingErrorsView()
                     StagesOfGriefView()
-                    EducationArticleView(bg_image: "Register_BG", title: "Linked Thought Patterns & Nuerons")
+                    ImpulsivityView()
                 }
             }
         }

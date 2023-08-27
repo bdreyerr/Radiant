@@ -27,7 +27,6 @@ struct StagesOfGriefView: View {
                         }
                     }
             }
-            
         }
     }
 }

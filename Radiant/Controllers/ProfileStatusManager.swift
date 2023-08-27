@@ -18,8 +18,8 @@ class ProfileStatusManager: ObservableObject {
     @Published var isProfileSettingsPopupShowing: Bool = false
     
     // Comunity Forum vars
-    @Published var isForumAnon: Bool = true
-    @Published var isProfanityFiltered: Bool = true
+//    @Published var isForumAnon: Bool = true
+//    @Published var isProfanityFiltered: Bool = true
     
     // Firestore
     let db = Firestore.firestore()
@@ -48,7 +48,6 @@ class ProfileStatusManager: ObservableObject {
                 // A UserProfile value was successfully initalized from the DocumentSnapshot
                 self.userProfile = userProf
                 print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
-                self.generateAnonUsernameForForum()
                 
             case .failure(let error):
                 // A UserProfile value could not be initialized from the DocumentSnapshot
@@ -69,26 +68,52 @@ class ProfileStatusManager: ObservableObject {
             userProfile?.displayName = newEmail
             do {
                 try docRef.setData(from: userProfile)
-            }
-            catch {
+            } catch {
                 errorText = error.localizedDescription
             }
         }
         return errorText
     }
     
+    func updateUserName(newName: String) -> String? {
+        var errorText: String?
+        
+        if let user = userProfile {
+            if newName.count > 50 {
+                return "name too long"
+            }
+            
+            let docRef = db.collection(Constants.FStore.usersCollectionName).document(user.id!)
+            
+            userProfile?.name = newName
+            do {
+                try docRef.setData(from: userProfile)
+            } catch {
+                errorText = error.localizedDescription
+            }
+        }
+        return errorText
+    }
     
-    func generateAnonUsernameForForum(numWords: Int = 150) {
-        let words = ["apple", "banana", "cat", "dog", "elephant", "fish", "goat", "horse", "iguana", "jellyfish",
-                     "key", "lemon", "monkey", "noodle", "orange", "pen", "queen", "rabbit", "snake", "turtle",
-                     "umbrella", "violin", "watermelon", "xylophone", "yacht", "zebra"]
+    func updateUserDisplayName(newName: String) -> String? {
+        var errorText: String?
         
-        let word1 = words.randomElement()!
-        let word2 = words.randomElement()!
-        let number = Int.random(in: 1...100)
-        
-        print(word1 + "_" + word2 + String(number))
-        userProfile?.anonDisplayName = word1 + "_" + word2 + String(number)
+        if let user = userProfile {
+            
+            if newName.count > 50 {
+                return "name too long"
+            }
+            
+            let docRef = db.collection(Constants.FStore.usersCollectionName).document(user.id!)
+            
+            userProfile?.displayName = newName
+            do {
+                try docRef.setData(from: userProfile)
+            } catch {
+                errorText = error.localizedDescription
+            }
+        }
+        return errorText
     }
     
     func isValidEmailAddress(emailAddressString: String) -> Bool {
