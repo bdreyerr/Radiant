@@ -17,9 +17,10 @@ class ProfileStatusManager: ObservableObject {
     // Bool var controlling the settings popup
     @Published var isProfileSettingsPopupShowing: Bool = false
     
-    // Comunity Forum vars
-//    @Published var isForumAnon: Bool = true
-//    @Published var isProfanityFiltered: Bool = true
+    // Rate limiting
+    @Published var numActionsInLastMinute: Int = 0
+    @Published var firstActionDate: Date?
+    @Published var lastActionDate: Date?
     
     // Firestore
     let db = Firestore.firestore()
@@ -125,5 +126,40 @@ class ProfileStatusManager: ObservableObject {
         
         // Return true if the email address is valid
         return emailTest.evaluate(with: emailAddressString)
+    }
+    
+    func processFirestoreWrite() -> String? {
+        var errorText: String?
+        
+        // if firstAction Date Exists
+        if let firstD = self.firstActionDate {
+            
+            let oneMinFromFirst = firstD + 60
+            
+            // if last action date is within one minute of first action date
+            if self.lastActionDate! <= oneMinFromFirst {
+                // num actions within 1 minute greater than 5
+                if self.numActionsInLastMinute >= 5 {
+                    errorText = "Too many actions in one minute"
+                } else {
+                    // num actions within one minute less than 5
+                    self.lastActionDate = Date()
+                    self.numActionsInLastMinute += 1
+                }
+            } else {
+                // Last action date after 1 miute from first action date
+                self.firstActionDate = Date()
+                self.lastActionDate = Date()
+                self.numActionsInLastMinute = 1
+            }
+            
+        } else {
+            // First action date doesn't exist
+            self.firstActionDate = Date()
+            self.lastActionDate = Date()
+            self.numActionsInLastMinute = 1
+        }
+        
+        return errorText
     }
 }

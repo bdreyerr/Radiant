@@ -46,6 +46,12 @@ class CheckInManager: ObservableObject {
             self.errorText = ""
         }
         
+        if goalOne.count > 300 || goalTwo.count > 300 || goalThree.count > 300 || gratitude.count > 300 || journalEntry.count > 600 {
+            self.isErrorInCheckIn = true
+            self.errorText = "Please limit the length of your responses, they are too long"
+            return
+        }
+        
         let userDocumentRef = db.collection("users").document(userID)
         
         let date = Date()

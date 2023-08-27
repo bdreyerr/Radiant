@@ -89,17 +89,17 @@ struct ForumCreateCommentView: View {
                     Button(action: {
                         print("User wanted to submit a comment with the following text: \(text)")
                         if let user = profileStateManager.userProfile {
-//                            if let post = post {
-//                                forumManager.publishComment(authorID: user.id!, category: title!, postID: post.postID, content: text)
-//                                forumManager.isCreateCommentPopupShowing = false
-//                            }
                             if forumManager.focusedPostID != "" {
                                 if forumManager.focusedPostCategoryName != "" {
-                                    forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "Selection Mix II", category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
-                                    if forumManager.isErrorCreatingComment == false {
-                                        forumManager.isCreateCommentPopupShowing = false
+                                    // Rate limiting check
+                                    if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                        print(rateLimit)
+                                    } else {
+                                        forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "Selection Mix II", category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
+                                        if forumManager.isErrorCreatingComment == false {
+                                            forumManager.isCreateCommentPopupShowing = false
+                                        }
                                     }
-                                    
                                 }
                             }
                         }

@@ -42,13 +42,17 @@ struct ChatMainView: View {
                     Spacer()
                     
                     Button(action: {
-                        self.messages = []
-                        print("user hit reset chat, outside of ")
-                        if let user = profileStateManager.userProfile {
-                            chatManager.clearMessages(userID: user.id!)
+                        // rate limiting check
+                        if let rateLimit = profileStateManager.processFirestoreWrite() {
+                            print(rateLimit)
+                        } else {
+                            self.messages = []
+                            print("user hit reset chat, outside of ")
+                            if let user = profileStateManager.userProfile {
+                                chatManager.clearMessages(userID: user.id!)
+                            }
                         }
                     }) {
-                        
                         Text("Reset Chat")
                             .foregroundColor(.white)
                             .font(.system(size: 16, design: .serif))
@@ -133,12 +137,18 @@ struct ChatMainView: View {
                         }
                     } else {
                         Button(action: {
-                            if let user = profileStateManager.userProfile {
-                                print("user pressed send message button")
-                                chatManager.sendMessage(userID: user.id!, content: self.text)
-                                self.retrieveMessages(userID: user.id!)
+                            
+                            // Rate limiting check
+                            if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                print(rateLimit)
+                            } else {
+                                if let user = profileStateManager.userProfile {
+                                    print("user pressed send message button")
+                                    chatManager.sendMessage(userID: user.id!, content: self.text)
+                                    self.retrieveMessages(userID: user.id!)
+                                }
+                                self.text = ""
                             }
-                            self.text = ""
                         }) {
                             Image(systemName: "paperplane")
                                 .resizable()

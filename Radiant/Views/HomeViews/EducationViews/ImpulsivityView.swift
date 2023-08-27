@@ -86,7 +86,7 @@ struct ImpulsivityDetailedView: View {
                 ScrollView {
                     // Overview
                     VStack(alignment: .leading) {
-                        Text("The problem")
+                        Text("The Problem")
                             .font(.system(size: 20, design: .serif))
                             .bold()
                         
@@ -97,7 +97,7 @@ struct ImpulsivityDetailedView: View {
                     .padding(.bottom, 40)
                     // Coping skills
                     VStack(alignment: .leading) {
-                        Text("Coping Skills for managing impulsiveness")
+                        Text("Coping Skills for Managing Impulsiveness")
                             .font(.system(size: 20, design: .serif))
                             .bold()
                             .padding(.bottom, 10)

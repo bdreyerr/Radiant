@@ -97,8 +97,13 @@ struct ProfileSettingsView: View {
                             }
                             
                             Button(action: {
-                                presentEditNameAlert = true
-                                print("User wanted to change name")
+                                // Rate limiting check
+                                if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                    print(rateLimit)
+                                } else {
+                                    presentEditNameAlert = true
+                                    print("User wanted to change name")
+                                }
                             })
                             {
                                 Image(systemName: "info.circle")
@@ -141,8 +146,13 @@ struct ProfileSettingsView: View {
                             }
                             
                             Button(action: {
-                                presentEditDisplayNameAlert = true
-                                print("User wanted to change display name")
+                                // Rate limiting check
+                                if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                    print(rateLimit)
+                                } else {
+                                    presentEditDisplayNameAlert = true
+                                    print("User wanted to change display name")
+                                }
                             })
                             {
                                 Image(systemName: "info.circle")

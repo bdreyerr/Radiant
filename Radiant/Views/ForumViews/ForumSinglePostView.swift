@@ -30,7 +30,7 @@ struct ForumSinglePostView: View {
     
     
     let db = Firestore.firestore()
-
+    
     
     var body: some View {
         
@@ -43,10 +43,7 @@ struct ForumSinglePostView: View {
             
             VStack {
                 if let post = post {
-                    
                     VStack(alignment: .leading) {
-                        
-                        
                         HStack(alignment: .top) {
                             // Author profile picture
                             Image(post.userPhoto)
@@ -74,16 +71,19 @@ struct ForumSinglePostView: View {
                         
                         VStack(alignment: .center) {
                             // TODO: Make this same width as the HStack
-//                            Divider()
-//                                .background(Color.white)
+                            //                            Divider()
+                            //                                .background(Color.white)
                             
                             // Post Action Button
                             HStack(alignment: .center) {
                                 
                                 Button(action: {
                                     if let user = profileStateManager.userProfile {
-                                        
-                                            if forumManager.isFocusedPostLikedByCurrentUser{
+                                        // Rate Limiting Check (5 actions within one minute_
+                                        if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                            print(rateLimit)
+                                        } else {
+                                            if forumManager.isFocusedPostLikedByCurrentUser {
                                                 forumManager.removeLikeFromPost(postID: post.postID, postCategory: post.category, userID: user.id!)
                                                 self.likeCount -= 1
                                             } else {
@@ -91,9 +91,9 @@ struct ForumSinglePostView: View {
                                                 self.likeCount += 1
                                             }
                                             forumManager.isFocusedPostLikedByCurrentUser = !forumManager.isFocusedPostLikedByCurrentUser
+                                        }
                                     }
                                 }) {
-                                    
                                     if (forumManager.isFocusedPostLikedByCurrentUser) {
                                         Image(systemName: "heart.fill")
                                             .resizable()
@@ -116,7 +116,7 @@ struct ForumSinglePostView: View {
                                     Image(systemName: "arrowshape.turn.up.left")
                                         .resizable()
                                         .frame(width: 20, height: 20)
-    //                                    .padding(.leading, 340)
+                                    //                                    .padding(.leading, 340)
                                 }
                                 .sheet(isPresented: $forumManager.isCreateCommentPopupShowing, onDismiss: {
                                     self.retrieveComments()
@@ -127,15 +127,21 @@ struct ForumSinglePostView: View {
                                 
                                 
                                 Button(action: {
-                                    print("User wanted to report the post")
-                                    print("The post that the user wanted to report: \(self.postID ?? "1")")
-                                    forumManager.isReportPostAlertShowing = true
+                                    
+                                    // Rate Limiting check
+                                    if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                        print(rateLimit)
+                                    } else {
+                                        print("User wanted to report the post")
+                                        print("The post that the user wanted to report: \(self.postID ?? "1")")
+                                        forumManager.isReportPostAlertShowing = true
+                                    }
                                 }) {
                                     Image(systemName: "exclamationmark.circle")
                                         .resizable()
                                         .frame(width: 20, height: 20)
                                         .padding(.trailing, 10)
-    //                                    .padding(.leading, 340)
+                                    //                                    .padding(.leading, 340)
                                 }
                                 .alert("Reason for report", isPresented: $forumManager.isReportPostAlertShowing) {
                                     Button("Offensive", action: {
@@ -160,7 +166,12 @@ struct ForumSinglePostView: View {
                                 if let user = Auth.auth().currentUser?.uid {
                                     if user == self.post?.authorID {
                                         Button(action: {
-                                            forumManager.isDeletePostPopupAlertShowing = true
+                                            // Rate limiting check
+                                            if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                                print(rateLimit)
+                                            } else {
+                                                forumManager.isDeletePostPopupAlertShowing = true
+                                            }
                                         }) {
                                             Image(systemName: "trash")
                                                 .resizable()
@@ -187,23 +198,23 @@ struct ForumSinglePostView: View {
                         }
                         // List of comments
                         
-                            VStack() {
-                                ScrollView {
-                                        ForEach(comments) { comment in
-                                            HStack {
-                                                Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
-                                                
-                                                Spacer()
-                                            }
-                                        }
+                        VStack() {
+                            ScrollView {
+                                ForEach(comments) { comment in
+                                    HStack {
+                                        Comment(commentID: comment.id!, authorID: comment.authorID!, username: comment.authorUsername ?? "Default username", userPhoto: comment.authorProfilePhoto, datePosted: comment.date ?? Date.now, commentCategory: comment.commentCategory!, commentContent: comment.content!, likes: comment.likes!, reportCount: comment.reportCount!, likeCount: comment.likes!.count, isCommentLikedByCurrentUser: comment.isCommentLikedByCurrentUser ?? true)
+                                        
+                                        Spacer()
+                                    }
                                 }
-                                .padding(.bottom, 100)
                             }
-                
+                            .padding(.bottom, 100)
+                        }
+                        
                     }
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
-//                    .offset(y: -150)
+                    //                    .offset(y: -150)
                     .padding(.top, 150)
                 }
             }
@@ -219,8 +230,8 @@ struct ForumSinglePostView: View {
         
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-//                print("Document data: \(dataDescription)")
+                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //                print("Document data: \(dataDescription)")
                 self.post?.authorID = document.data()?["authorID"] as! String
                 self.post?.postID = forumManager.focusedPostID
                 self.post?.category = forumManager.focusedPostCategoryName
@@ -229,9 +240,9 @@ struct ForumSinglePostView: View {
                 } else {
                     self.post?.userPhoto = "default_prof_pic"
                 }
-//                self.post?.userPhoto = document.data()!["authorProfilePhoto"] as! String
+                //                self.post?.userPhoto = document.data()!["authorProfilePhoto"] as! String
                 self.post?.username = document.data()!["authorUsername"] as! String
-//                self.post?.datePosted = document.data()!["date"] as! Date
+                //                self.post?.datePosted = document.data()!["date"] as! Date
                 let timestamp = document.data()!["date"] as! Timestamp
                 self.post?.datePosted = timestamp.dateValue()
                 self.post?.postContent = document.data()!["content"] as! String
@@ -259,6 +270,7 @@ struct ForumSinglePostView: View {
     func retrieveComments() {
         self.comments = []
         let collectionName = forumManager.getFstoreForumCommentsCategoryCollectionName(category: self.post?.category ?? "General")
+        
         
         let collectionRef = self.db.collection(collectionName).whereField("postID", isEqualTo: self.post?.postID ?? "1")
         
@@ -351,20 +363,22 @@ struct Comment: View {
             HStack {
                 // Like comment
                 Button(action: {
-                    print("User liked the comment")
                     
-                    if let user = profileStateManager.userProfile {
-                        if self.isCommentLikedByCurrentUser {
-                            forumManager.removeLikeFromComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
-                            self.likeCount -= 1
-                        } else {
-                            forumManager.likeComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
-                            self.likeCount += 1
+                    if let rateLimit = profileStateManager.processFirestoreWrite() {
+                        print(rateLimit)
+                    } else {
+                        if let user = profileStateManager.userProfile {
+                            if self.isCommentLikedByCurrentUser {
+                                forumManager.removeLikeFromComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
+                                self.likeCount -= 1
+                            } else {
+                                forumManager.likeComment(commentID: self.commentID, commentCategory: self.commentCategory, userID: user.id!)
+                                self.likeCount += 1
+                            }
+                            
+                            self.isCommentLikedByCurrentUser = !self.isCommentLikedByCurrentUser
                         }
-                        
-                        self.isCommentLikedByCurrentUser = !self.isCommentLikedByCurrentUser
                     }
-                    
                 }) {
                     if self.isCommentLikedByCurrentUser {
                         Image(systemName: "heart.fill")
@@ -382,10 +396,15 @@ struct Comment: View {
                 
                 // Report
                 Button(action: {
-                    print("User wanted to report the comment")
-                    print("The comment that the user wanted to report: \(self.commentID)")
-                    forumManager.focusedCommentID = self.commentID
-                    forumManager.isReportCommentAlertShowing = true
+                    // Rate Limiting check
+                    if let rateLimit = profileStateManager.processFirestoreWrite() {
+                        print(rateLimit)
+                    } else {
+                        print("User wanted to report the comment")
+                        print("The comment that the user wanted to report: \(self.commentID)")
+                        forumManager.focusedCommentID = self.commentID
+                        forumManager.isReportCommentAlertShowing = true
+                    }
                 }) {
                     Image(systemName: "exclamationmark.circle")
                         .resizable()
@@ -412,7 +431,12 @@ struct Comment: View {
                 if let user = Auth.auth().currentUser?.uid {
                     if user == self.authorID {
                         Button(action: {
-                            forumManager.isDeleteCommentPopupAlertShowing = true
+                            // rate limiting check
+                            if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                print(rateLimit)
+                            } else {
+                                forumManager.isDeleteCommentPopupAlertShowing = true
+                            }
                         }) {
                             Image(systemName: "trash")
                                 .resizable()

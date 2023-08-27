@@ -56,7 +56,11 @@ struct ForumCreatePostView: View {
                     Button(action: {
                         print("User wanted to submit a post with the following text: \(text)")
                         if let user = profileStateManager.userProfile {
-                            forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "default_prof_pic", category: title!, content: text)
+                            if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                print(rateLimit)
+                            } else {
+                                forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "default_prof_pic", category: title!, content: text)
+                            }
                         }
                     }) {
                         Text("Submit")

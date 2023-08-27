@@ -90,7 +90,7 @@ struct ForumDetailedView: View {
         self.posts = []
         let collectionName = forumManager.getFstoreForumCategoryCollectionName(category: self.title ?? "General")
         
-        let collectionRef = self.db.collection(collectionName)
+        let collectionRef = self.db.collection(collectionName).order(by: "date", descending: true)
         
         collectionRef.getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -193,11 +193,17 @@ struct Post: View {
                         
                         // Report
                         Button(action: {
-                            print("User wanted to report the post")
-                            print("The post that the user wanted to report: \(self.postID)")
-                            forumManager.focusedPostID = self.postID
-                            forumManager.focusedPostCategoryName = self.category
-                            forumManager.isReportPostAlertShowing = true
+                            
+                            // Rate limiting check
+                            if let rateLimit = profileStateManager.processFirestoreWrite() {
+                                print(rateLimit)
+                            } else {
+                                print("User wanted to report the post")
+                                print("The post that the user wanted to report: \(self.postID)")
+                                forumManager.focusedPostID = self.postID
+                                forumManager.focusedPostCategoryName = self.category
+                                forumManager.isReportPostAlertShowing = true
+                            }
                         }) {
                             Image(systemName: "exclamationmark.circle")
                                 .resizable()

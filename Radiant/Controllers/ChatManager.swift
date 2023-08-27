@@ -30,7 +30,12 @@ class ChatManager: ObservableObject {
                      "The stars are twinkling in the night sky."]
     
     func sendMessage(userID: String, content: String) {
-        print("User sent a message")
+        
+        if content.count > 300 {
+            print("Message length too long")
+            return
+        }
+        
         let message = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
         
         let collectionName = Constants.FStore.messageCollectionName
