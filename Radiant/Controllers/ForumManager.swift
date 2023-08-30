@@ -42,7 +42,12 @@ class ForumManager: ObservableObject {
     @Published var errorText: String = ""
 
     // TODO: Find a way to limit the number of posts loaded, and load more when the user scrolls down
+    @Published var lastDoc: QueryDocumentSnapshot?
+    @Published var lastComment: QueryDocumentSnapshot?
     
+    @Published var lastPostMyPosts: QueryDocumentSnapshot?
+    @Published var lastCommentMyComments: QueryDocumentSnapshot?
+    @Published var lastPostLikedPosts: QueryDocumentSnapshot?
     
     func publishPost(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, content: String) {
         print("User wanted to publish a post")
@@ -346,6 +351,28 @@ class ForumManager: ObservableObject {
 //
 //        return posts
 //    }
+    
+    func fillPostArray(snapshot: QuerySnapshot) -> [ForumPost] {
+        var posts: [ForumPost] = []
+        for document in snapshot.documents {
+            var post = ForumPost(
+                id: document.documentID,
+                authorID: document.data()["authorID"] as? String,
+                authorUsername: document.data()["authorUsername"] as? String,
+                authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
+                category: document.data()["category"] as? String,
+//                        date: document.data()["date"] as? Date,
+                timestamp: document.data()["date"] as? Timestamp,
+                content: document.data()["content"] as? String,
+                likes: document.data()["likes"] as? [String])
+
+            // Date
+            post.date = post.timestamp?.dateValue()
+            posts.append(post)
+            
+        }
+        return posts
+    }
     
 }
 

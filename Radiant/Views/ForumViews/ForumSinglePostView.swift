@@ -22,6 +22,7 @@ struct ForumSinglePostView: View {
     //       Then use firebase to look up the info from that post
     @State var post: Post?
     @State var likeCount: Int
+    @State var shouldLoadMoreCommentsButtonBeVisible: Bool = false
     
     let postID: String?
     let categoryName: String?
@@ -119,7 +120,7 @@ struct ForumSinglePostView: View {
                                     //                                    .padding(.leading, 340)
                                 }
                                 .sheet(isPresented: $forumManager.isCreateCommentPopupShowing, onDismiss: {
-                                    self.retrieveComments()
+                                    self.retrieveCommentsInit()
                                 }) {
                                     ForumCreateCommentView(title: "ToDO: Add title", post: self.post)
                                 }
@@ -207,6 +208,17 @@ struct ForumSinglePostView: View {
                                         Spacer()
                                     }
                                 }
+                                // Load more comments button
+                                if self.shouldLoadMoreCommentsButtonBeVisible {
+                                    Button(action: {
+                                        retrieveNextTwentyComments()
+                                    }) {
+                                        Image(systemName: "arrow.down.circle")
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(.white)
+                                    }
+                                }
                             }
                             .padding(.bottom, 100)
                         }
@@ -260,19 +272,18 @@ struct ForumSinglePostView: View {
                     }
                 }
                 
-                self.retrieveComments()
+                self.retrieveCommentsInit()
             } else {
                 print("Document does not exist")
             }
         }
     }
     
-    func retrieveComments() {
+    func retrieveCommentsInit() {
         self.comments = []
         let collectionName = forumManager.getFstoreForumCommentsCategoryCollectionName(category: self.post?.category ?? "General")
-        
-        
-        let collectionRef = self.db.collection(collectionName).whereField("postID", isEqualTo: self.post?.postID ?? "1")
+
+        let collectionRef = self.db.collection(collectionName).whereField("postID", isEqualTo: self.post?.postID ?? "1").limit(to: 20)
         
         collectionRef.getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -304,7 +315,64 @@ struct ForumSinglePostView: View {
                     
                     comments.append(comment)
                 }
+                forumManager.lastComment = querySnapshot.documents.last
+                if self.comments.count >= 20 {
+                    self.shouldLoadMoreCommentsButtonBeVisible = true
+                }
             }
+        }
+    }
+    
+    func retrieveNextTwentyComments() {
+        var numCommentsInCurrentBatch = 0
+        let collectionName = forumManager.getFstoreForumCommentsCategoryCollectionName(category: self.post?.category ?? "General")
+        
+        let next = db.collection(collectionName).whereField("postID", isEqualTo: self.post?.postID ?? "1").start(afterDocument: forumManager.lastComment!).limit(to: 20)
+        
+        next.addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot else {
+                print("Error retrieving next batch of comments")
+                return
+            }
+            
+            for document in snapshot.documents {
+                let timestamp = document.data()["date"] as? Timestamp
+                var comment = ForumPostComment(
+                    id: document.documentID,
+                    postID: document.data()["postID"] as? String,
+                    parentCommentID: document.data()["parentCommentID"] as? String,
+                    authorID: document.data()["authorID"] as? String,
+                    authorUsername: document.data()["authorUsername"] as? String,
+                    authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
+                    date: timestamp?.dateValue(),
+                    commentCategory: document.data()["commentCategory"] as? String,
+                    content: document.data()["content"] as? String,
+                    likes: document.data()["likes"] as? [String],
+                    reportCount: document.data()["reportCount"] as? Int,
+                    isCommentLikedByCurrentUser: false)
+                
+                if let user = profileStateManager.userProfile {
+                    if ((comment.likes!.contains(user.id!)) == true) {
+                        comment.isCommentLikedByCurrentUser = true
+                    } else {
+                        comment.isCommentLikedByCurrentUser = false
+                    }
+                }
+                
+                comments.append(comment)
+                numCommentsInCurrentBatch += 1
+            }
+            
+            // No more comments
+            if numCommentsInCurrentBatch < 20 {
+                self.shouldLoadMoreCommentsButtonBeVisible = false
+            }
+            
+            guard let lastDocument = snapshot.documents.last else {
+                // the collection is empty
+                return
+            }
+            forumManager.lastComment = lastDocument
         }
     }
 }

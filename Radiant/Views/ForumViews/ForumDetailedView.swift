@@ -18,6 +18,7 @@ struct ForumDetailedView: View {
     @EnvironmentObject var forumManager: ForumManager
     
     @State var posts: [ForumPost] = []
+    @State var shouldLoadMorePostsButtonBeVisible: Bool = false
     
     let db = Firestore.firestore()
     
@@ -46,7 +47,7 @@ struct ForumDetailedView: View {
                     .sheet(isPresented: $forumManager.isCreatePostPopupShowing) {
                         ForumCreatePostView(title: title)
                             .onDisappear(perform: {
-                                retrievePosts()
+                                retrievePostsInit()
                             })
                     }
                 }
@@ -72,6 +73,20 @@ struct ForumDetailedView: View {
                     .padding(.trailing, 30)
                     .padding(.leading, 20)
                     .padding(.bottom, 1)
+                    
+
+                    // Load more posts button
+                    if self.shouldLoadMorePostsButtonBeVisible {
+                        Button(action: {
+                            retrieveNextTwentyPosts()
+                        }) {
+                            Image(systemName: "arrow.down.circle")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.white)
+                        }
+                    }
+                    
                 }
                 .padding(.bottom, 40)
                 .offset(y: -60)
@@ -81,16 +96,16 @@ struct ForumDetailedView: View {
         }
         .foregroundColor(Color(uiColor: .white))
         .onAppear {
-            retrievePosts()
+            retrievePostsInit()
         }
     }
     
     
-    func retrievePosts(/*postCategory: String*/) {
+    func retrievePostsInit() {
         self.posts = []
         let collectionName = forumManager.getFstoreForumCategoryCollectionName(category: self.title ?? "General")
         
-        let collectionRef = self.db.collection(collectionName).order(by: "date", descending: true)
+        let collectionRef = self.db.collection(collectionName).order(by: "date", descending: true).limit(to: 20)
         
         collectionRef.getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -103,16 +118,64 @@ struct ForumDetailedView: View {
                         authorUsername: document.data()["authorUsername"] as? String,
                         authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
                         category: document.data()["category"] as? String,
-//                        date: document.data()["date"] as? Date,
+                        //                        date: document.data()["date"] as? Date,
                         timestamp: document.data()["date"] as? Timestamp,
                         content: document.data()["content"] as? String,
                         likes: document.data()["likes"] as? [String])
                     
                     // Date
                     post.date = post.timestamp?.dateValue()
-                    posts.append(post)
+                    self.posts.append(post)
+                }
+                forumManager.lastDoc = querySnapshot.documents.last
+                if self.posts.count >= 20 {
+                    self.shouldLoadMorePostsButtonBeVisible = true
                 }
             }
+        }
+    }
+    
+    func retrieveNextTwentyPosts() {
+        var numPostsInCurrentBatch = 0
+        let collectionName = forumManager.getFstoreForumCategoryCollectionName(category: self.title ?? "General")
+        
+        let next = db.collection(collectionName).order(by: "date", descending: true).start(afterDocument: forumManager.lastDoc!).limit(to: 20)
+        
+        next.addSnapshotListener { (snapshot, error) in
+            guard let snapshot = snapshot else {
+                print("error retrieving next set of posts: \(error?.localizedDescription ?? "x")")
+                return
+            }
+            
+            for document in snapshot.documents {
+                var post = ForumPost(
+                    id: document.documentID,
+                    authorID: document.data()["authorID"] as? String,
+                    authorUsername: document.data()["authorUsername"] as? String,
+                    authorProfilePhoto: document.data()["authorProfilePhoto"] as? String,
+                    category: document.data()["category"] as? String,
+                    //                        date: document.data()["date"] as? Date,
+                    timestamp: document.data()["date"] as? Timestamp,
+                    content: document.data()["content"] as? String,
+                    likes: document.data()["likes"] as? [String])
+                
+                // Date
+                post.date = post.timestamp?.dateValue()
+                self.posts.append(post)
+                numPostsInCurrentBatch += 1
+            }
+            
+            // No more posts
+            if numPostsInCurrentBatch < 20 {
+                self.shouldLoadMorePostsButtonBeVisible = false
+            }
+            
+            guard let lastDocument = snapshot.documents.last else {
+                // The collection is empty
+                return
+            }
+            
+            forumManager.lastDoc = lastDocument
         }
     }
 }
