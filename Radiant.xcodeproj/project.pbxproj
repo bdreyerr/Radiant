@@ -14,6 +14,7 @@
 		1A1D6DFC2A7EFD4000A23807 /* ThinkingErrorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */; };
 		1A1D6DFE2A805DE500A23807 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D6DFD2A805DE500A23807 /* MapManager.swift */; };
 		1A1D90A52A9AF9B8006E1062 /* ImpulsivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D90A42A9AF9B8006E1062 /* ImpulsivityView.swift */; };
+		1A1D90A72AA15C58006E1062 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1D90A62AA15C58006E1062 /* Secrets.swift */; };
 		1A4A21D02A323D0C007C6792 /* ForumCreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */; };
 		1A53FEA42A5B5AD000F0AFB0 /* CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */; };
 		1A541A3D2A40FB8000B1EE11 /* KeyboardGuardian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */; };
@@ -79,6 +80,7 @@
 		1A1D6DFB2A7EFD4000A23807 /* ThinkingErrorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingErrorsView.swift; sourceTree = "<group>"; };
 		1A1D6DFD2A805DE500A23807 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		1A1D90A42A9AF9B8006E1062 /* ImpulsivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpulsivityView.swift; sourceTree = "<group>"; };
+		1A1D90A62AA15C58006E1062 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		1A4A21CF2A323D0C007C6792 /* ForumCreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreatePostView.swift; sourceTree = "<group>"; };
 		1A53FEA32A5B5AD000F0AFB0 /* CheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInView.swift; sourceTree = "<group>"; };
 		1A541A3C2A40FB8000B1EE11 /* KeyboardGuardian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardGuardian.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 				1AC9904C2A01703C00851A14 /* Preview Content */,
 				1AC990682A018B1000851A14 /* Constants.swift */,
 				1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */,
+				1A1D90A62AA15C58006E1062 /* Secrets.swift */,
 			);
 			path = Radiant;
 			sourceTree = "<group>";
@@ -501,6 +504,7 @@
 				1A6585E02A2669B800B4DE6D /* ForumCategoriesView.swift in Sources */,
 				1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */,
 				1A56F3DF2A06DF310057A6D6 /* HomeMainView.swift in Sources */,
+				1A1D90A72AA15C58006E1062 /* Secrets.swift in Sources */,
 				1A8C6C1C2A02E15E00676E5F /* RegisterWithEmailView.swift in Sources */,
 				1A6585E42A29091E00B4DE6D /* Message.swift in Sources */,
 				1AAF79FD2A6E0D85005AA26B /* ActivityView.swift in Sources */,
