@@ -326,4 +326,4 @@ class ForumManager: ObservableObject {
 }
 
 
-// test change
+// test change - secret file should be hidden
