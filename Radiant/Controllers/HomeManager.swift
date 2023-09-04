@@ -16,7 +16,7 @@ class HomeManager: ObservableObject {
     @Published var isCheckInPopupShowing: Bool = false
     
     @Published var hasUserCheckedInToday: Bool = false
-    @Published var lastCheckInDate: String = "2/29"
+    @Published var lastCheckInDate: String = ""
     @Published var userFirstName: String = "User"
     @Published var userProfilePhoto: String = "default_prof_pic"
     
@@ -50,7 +50,7 @@ class HomeManager: ObservableObject {
         
         let userDocRef = db.collection("users").document(userID)
         
-        
+        // Todo: Understand why we're doing this in homeManager?
         userDocRef.getDocument(as: UserProfile.self) { result in
             switch result {
             case .success(let user):
@@ -60,7 +60,7 @@ class HomeManager: ObservableObject {
                     self.userFirstName = name
                 }
                 
-                self.userProfilePhoto = user.userPhotoNonPremium!
+                self.userProfilePhoto = user.userPhotoNonPremium ?? "default_prof_pic"
                 
 
                 let today = Date().formatted(date: .abbreviated, time: .omitted)

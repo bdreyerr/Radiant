@@ -24,6 +24,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             print("User login status on app launch finish: \( loginStatus )")
         } else {
             print("User login status on app launch finish: \( String(describing: UserDefaults.standard.object(forKey: loginStatusKey)) ))")
+            UserDefaults.standard.set(false, forKey: loginStatusKey)
         }
         
         return true

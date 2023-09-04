@@ -39,6 +39,11 @@ struct ChatMainView: View {
 //                        .resizable()
 //                        .frame(width: 100, height: 100)
 //
+                    Text("Powered by OpenAI")
+                        .foregroundColor(.white)
+                        .font(.system(size: 14, design: .serif))
+                        .padding(.leading, 10)
+                        .padding(.top, 10)
                     Spacer()
                     
                     Button(action: {
@@ -75,7 +80,7 @@ struct ChatMainView: View {
                         // Messages
                         VStack(alignment: .leading) {
                             MessageFromBot(text: welcomeMessage)
-                            ForEach(messages, id: \.id) { message in
+                            ForEach(chatManager.messages, id: \.id) { message in
                                 if message.id != nil {
                                     if (message.isMessageFromUser!) {
                                         if let userPhoto = profileStateManager.userProfile?.userPhotoNonPremium {
@@ -92,7 +97,7 @@ struct ChatMainView: View {
                                             .id(message.id)
                                     }
                                 } else {
-                                    Text("Messages would be here!")
+                                    Text("")
                                 }
                             }
                         }
@@ -145,7 +150,8 @@ struct ChatMainView: View {
                                 if let user = profileStateManager.userProfile {
                                     print("user pressed send message button")
                                     chatManager.sendMessage(userID: user.id!, content: self.text)
-                                    self.retrieveMessages(userID: user.id!)
+//                                    chatManager.generateRadiantBotResponse(prompt: self.text)
+//                                    self.retrieveMessages(userID: user.id!)
                                 }
                                 self.text = ""
                             }
@@ -170,34 +176,34 @@ struct ChatMainView: View {
         .environmentObject(chatManager)
         .onAppear {
             if let user = profileStateManager.userProfile {
-                retrieveMessages(userID: user.id!)
+                chatManager.retrieveMessages(userID: user.id!)
             }
         }
     }
     
     
-    func retrieveMessages(userID: String) {
-        self.messages = []
-        
-        let collectionRef = self.db.collection(Constants.FStore.messageCollectionName).whereField("userID", isEqualTo: userID).order(by: "date", descending: false)
-        
-        collectionRef.getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error retrieving comments: \(err.localizedDescription)")
-            } else if let querySnapshot = querySnapshot {
-                for document in querySnapshot.documents {
-                    let message = Message(
-                        id: document.documentID,
-                        userID: document.data()["userID"] as? String,
-                        isMessageFromUser: document.data()["isMessageFromUser"] as? Bool,
-                        content: document.data()["content"] as? String,
-                        date: document.data()["date"] as? Date)
-                    self.messages.append(message)
-                    print("Message was retrieved, messageID: \(document.documentID), message content: \(document.data()["content"] as? String ?? "No Content")")
-                }
-            }
-        }
-    }
+//    func retrieveMessages(userID: String) {
+//        self.messages = []
+//
+//        let collectionRef = self.db.collection(Constants.FStore.messageCollectionName).whereField("userID", isEqualTo: userID).order(by: "date", descending: false)
+//
+//        collectionRef.getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Error retrieving comments: \(err.localizedDescription)")
+//            } else if let querySnapshot = querySnapshot {
+//                for document in querySnapshot.documents {
+//                    let message = Message(
+//                        id: document.documentID,
+//                        userID: document.data()["userID"] as? String,
+//                        isMessageFromUser: document.data()["isMessageFromUser"] as? Bool,
+//                        content: document.data()["content"] as? String,
+//                        date: document.data()["date"] as? Date)
+//                    self.messages.append(message)
+//                    print("Message was retrieved, messageID: \(document.documentID), message content: \(document.data()["content"] as? String ?? "No Content")")
+//                }
+//            }
+//        }
+//    }
     
 }
 

@@ -11,8 +11,8 @@ import PhotosUI
 
 struct WelcomeSurveyView: View {
     
-//    @StateObject var welcomeSurveyManager = WelcomeSurveyManager()
     @EnvironmentObject var authStateManager: AuthStatusManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
     
     @State var selectedProfilePhoto: Int = 0
     
@@ -27,17 +27,18 @@ struct WelcomeSurveyView: View {
                 Text("Welcome to Radiant")
                     .font(.system(size: 24, design: .serif))
                     .padding(.bottom, 40)
+                    .foregroundColor(.black)
                 
                 Text("Please answer a few questions so we can know you better")
                     .font(.system(size: 18, design: .serif))
                     .padding(.bottom, 40)
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
+                    .foregroundColor(.black)
                 
                 ScrollView {
                     VStack {
                         // Name
-                        
                         VStack {
                             Text("What's your name?")
                                 .foregroundColor(.black)
@@ -48,7 +49,7 @@ struct WelcomeSurveyView: View {
                                 .font(.system(size: 20, design: .serif))
                                 .padding(.leading, 40)
                                 .foregroundColor(.black)
-//                                .padding(20)
+                            //                                .padding(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.black, lineWidth: 1)
@@ -57,7 +58,7 @@ struct WelcomeSurveyView: View {
                                 )
                                 .padding(.bottom, 20)
                         }
-
+                        
                         .padding(.bottom, 40)
                         
                         // Photo
@@ -203,7 +204,7 @@ struct WelcomeSurveyView: View {
                             .padding(.trailing, 140)
                             .padding(.bottom, 20)
                         }
-
+                        
                         // Display Name
                         VStack {
                             Text("What's you username?")
@@ -256,7 +257,11 @@ struct WelcomeSurveyView: View {
                         Button(action: {
                             print("User wanted to finish their welcome survey")
                             if let user = Auth.auth().currentUser?.uid {
+                                // Complete welcome survey
                                 authStateManager.completeWelcomeSurvey(user: user, userPhotoSelection: self.selectedProfilePhoto)
+                                // Update user profile with new info
+                                //    This may not work because the completeWelcomeSurvey function is async and may take some time to update
+                                profileStateManager.retrieveUserProfile(userID: user)
                             }
                         }) {
                             
@@ -286,6 +291,7 @@ struct WelcomeSurveyView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeSurveyView()
             .environmentObject(AuthStatusManager())
+            .environmentObject(ProfileStatusManager())
     }
 }
 

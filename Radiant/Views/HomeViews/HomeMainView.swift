@@ -61,7 +61,7 @@ struct HomeMainView: View {
                         //                            .offset(x: -20, y:-10)
                         
                         // Radiant Icon
-                        Image("home_lotus")
+                        Image("Radiant_App_Icon_Transparent")
                             .resizable()
                             .frame(width: 80, height: 80)
                             .padding(.leading, 120)
@@ -137,11 +137,12 @@ struct HomeMainView: View {
                                 
                                 Spacer()
                                 
-                                //TODO: replace this date with the date of the last checkin
-                                Text("Set \(homeManager.lastCheckInDate)")
-                                    .font(.system(size: 14, design: .serif))
-                                    .foregroundColor(.black)
-//                                    .padding(.leading, 180)
+                                if homeManager.lastCheckInDate != "" {
+                                    Text("Set \(homeManager.lastCheckInDate)")
+                                        .font(.system(size: 14, design: .serif))
+                                        .foregroundColor(.black)
+                                }
+                                
                             }
                             .padding(.leading, 20)
                             .padding(.trailing, 20)

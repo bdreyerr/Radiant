@@ -5,69 +5,27 @@
 //  Created by Ben Dreyer on 6/1/23.
 //
 
-import Foundation
 import AuthenticationServices
 import CryptoKit
 import Foundation
-import FirebaseCore
 import FirebaseAuth
+import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Foundation
+import OpenAI
 
 
 class ChatManager: ObservableObject {
     let db = Firestore.firestore()
     
-    let responses = ["The cat sat on the mat.",
-                     "The dog chased the ball.",
-                     "The bird flew away.",
-                     "The sun is shining brightly.",
-                     "The rain is pouring down.",
-                     "The wind is blowing fiercely.",
-                     "The flowers are blooming beautifully.",
-                     "The trees are green and lush.",
-                     "The sky is blue and cloudless.",
-                     "The stars are twinkling in the night sky."]
+    let openAI = OpenAI(apiToken: Secrets.openAiAPIKey)
     
-    func sendMessage(userID: String, content: String) {
-        
-        if content.count > 300 {
-            print("Message length too long")
-            return
-        }
-        
-        let message = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
-        
-        let collectionName = Constants.FStore.messageCollectionName
-        
-        var ref: DocumentReference? = nil
-        do {
-            try ref = db.collection(collectionName).addDocument(from: message)
-            print("successfully saved message to db")
-        } catch {
-            print("Error saving message to firestore")
-        }
-        
-        let response = generateResponse()
-        let responseMessage = Message(userID: userID, isMessageFromUser: false, content: response, date: Date.now)
-        
-        do {
-            try ref = db.collection(collectionName).addDocument(from: responseMessage)
-            print("successfully saved response message to db")
-        } catch {
-            print("Error saving response message to firestore")
-        }
-    }
+    @Published var responseReady: Bool = false
+    @Published var messages: [Message] = []
     
-    func generateResponse() -> String {
-        let response = responses[Int.random(in: 0...9)]
-        return response
-    }
-    
-    // TODO: Fill in and move into the view to load the messages into a list
     func retrieveMessages(userID: String) {
-        
-        var messages: [Message] = []
+        self.messages = []
         
         let collectionRef = self.db.collection(Constants.FStore.messageCollectionName).whereField("userID", isEqualTo: userID).order(by: "date", descending: false)
         
@@ -82,9 +40,55 @@ class ChatManager: ObservableObject {
                         isMessageFromUser: document.data()["isMessageFromUser"] as? Bool,
                         content: document.data()["content"] as? String,
                         date: document.data()["date"] as? Date)
-                    messages.append(message)
+                    self.messages.append(message)
                     print("Message was retrieved, messageID: \(document.documentID), message content: \(document.data()["content"] as? String ?? "No Content")")
                 }
+            }
+        }
+    }
+    
+    func sendMessage(userID: String, content: String) {
+        
+        if content.count > 300 {
+            print("Message length too long")
+            return
+        }
+        
+        let message = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
+        self.messages.append(message)
+        
+        let collectionName = Constants.FStore.messageCollectionName
+        
+        var ref: DocumentReference? = nil
+        do {
+            try ref = db.collection(collectionName).addDocument(from: message)
+            print("successfully saved message to db")
+        } catch {
+            print("Error saving message to firestore")
+        }
+
+                
+        // Generate OpenAI response
+        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: content)], maxTokens: 60)
+        openAI.chats(query: query) { result in
+          // Handle result here
+            switch result {
+            case .success(let result):
+                if let response = result.choices[0].message.content {
+                    print("OPENAI RESPONSE: \(response)")
+                    let responseMessage = Message(userID: userID, isMessageFromUser: false, content: response, date: Date.now)
+                    do {
+                        try ref = self.db.collection(collectionName).addDocument(from: responseMessage)
+                        print("successfully saved response message to db")
+                        self.retrieveMessages(userID: userID)
+                    } catch {
+                        print("Error saving response message to firestore")
+                    }
+                } else {
+                    print("Response from openAI empty")
+                }
+            case .failure(let error):
+                print("Error getting result: \(error.localizedDescription)")
             }
         }
     }
@@ -100,7 +104,7 @@ class ChatManager: ObservableObject {
                 print("error getting messages to delete: \(err.localizedDescription)")
                 return
             }
-                
+            
             for document in snapshot!.documents {
                 document.reference.delete() { error in
                     if let e = error {
@@ -110,6 +114,7 @@ class ChatManager: ObservableObject {
                     }
                 }
             }
+            self.messages = []
         }
     }
     

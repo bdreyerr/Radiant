@@ -17,7 +17,7 @@ struct HealthyRelationshipActivityView: View {
                     .font(.system(size: 18, design: .serif))
                 
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 300, maxWidth: 300, minHeight: 240, maxHeight: 240)
+                    .frame(minWidth: 240, maxWidth: 240, minHeight: 160, maxHeight: 160)
                     .foregroundColor(.blue)
                     .overlay {
                         ZStack {

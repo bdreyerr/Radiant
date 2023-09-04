@@ -41,40 +41,43 @@ struct RegisterWithEmailView: View {
                         .font(.system(size: 30, design: .serif))
                         .foregroundColor(.white)
                     
-                    // Email text field
-                    TextField("Email", text: $authStateManager.email)
-                        .foregroundColor(Color.white)
-                        .padding(.leading, 20)
-                        .cornerRadius(50)
-                        .frame(maxWidth: 300, minHeight: 40)
-                        .font(.system(size: 25, design: .default))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 50)
-                                .stroke(Color.white, lineWidth: 2)
-                        )
-                        .padding(.bottom, 15)
+                    VStack {
+                        // Email text field
+                        TextField("Email", text: $authStateManager.email)
+                            .foregroundColor(Color.white)
+                            .padding(.leading, 20)
+                            .cornerRadius(50)
+                            .frame(maxWidth: 300, minHeight: 40)
+                            .font(.system(size: 25, design: .default))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 50)
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .padding(.bottom, 15)
                         
-                    // Password text fields
-                    SecureField("Password", text: $authStateManager.password)
-                        .foregroundColor(Color.white)
-                        .padding(.leading, 20)
-                        .cornerRadius(50)
-                        .frame(maxWidth: 300, minHeight: 40)
-                        .font(.system(size: 25, design: .default))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 50)
-                                .stroke(Color.white, lineWidth: 2)
-                        )
-                        .padding(.bottom, 15)
-                    
-                    // Register Button
-                    Button(action: {
-                        print("From popup View: The Register button on regist with email popup was pressed")
-                        authStateManager.registerWithEmail()
-                        print("Testing async order")
-                    }) {
-                        Text("Register").foregroundColor(.white).font(.system(size: 20)).underline()
+                        // Password text fields
+                        SecureField("Password", text: $authStateManager.password)
+                            .foregroundColor(Color.white)
+                            .padding(.leading, 20)
+                            .cornerRadius(50)
+                            .frame(maxWidth: 300, minHeight: 40)
+                            .font(.system(size: 25, design: .default))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 50)
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            .padding(.bottom, 15)
+                        
+                        // Register Button
+                        Button(action: {
+                            print("From popup View: The Register button on regist with email popup was pressed")
+                            authStateManager.registerWithEmail()
+                            print("Testing async order")
+                        }) {
+                            Text("Register").foregroundColor(.white).font(.system(size: 20)).underline()
+                        }
                     }
+                    .padding(.bottom, 200)
                 }.offset(y: 80)
                 
             }

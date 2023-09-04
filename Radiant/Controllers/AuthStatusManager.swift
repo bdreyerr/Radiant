@@ -431,7 +431,6 @@ class AuthStatusManager: ObservableObject {
                 print("Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
-                
                 // Set user default for completing the welcome survey to true
                 self.hasUserCompletedSurvey = true
                 UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)

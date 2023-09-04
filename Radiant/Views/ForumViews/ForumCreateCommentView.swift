@@ -43,7 +43,7 @@ struct ForumCreateCommentView: View {
                                     .foregroundColor(.white)
                                 
                                 // Date posted
-                                Text("\(post.datePosted)")
+                                Text(post.datePosted.formatted(date: .complete, time: .omitted))
                                     .foregroundColor(.white)
                             }
                             

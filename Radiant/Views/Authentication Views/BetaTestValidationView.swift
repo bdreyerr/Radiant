@@ -35,7 +35,7 @@ struct BetaTestValidationView: View {
                 
                 
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(maxHeight: 300)
+                    .frame(maxHeight: 400)
                     .foregroundColor(Color(hue: 1.0, saturation: 0.061, brightness: 0.928))
                     .overlay {
                         VStack(alignment: .center) {
@@ -72,7 +72,7 @@ struct BetaTestValidationView: View {
                             }
                             
                         }
-                        .padding(.bottom, 60)
+                        .padding(.bottom, 180)
                     }
                 
                 

@@ -63,6 +63,8 @@ struct ContentView: View {
                 } else {
 //                    RegisterView()
                 }
+            } else {
+                Text("No user default set")
             }
         }
         .environmentObject(authStateManager)

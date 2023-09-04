@@ -69,6 +69,7 @@
 		1AC990692A018B1000851A14 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC990682A018B1000851A14 /* Constants.swift */; };
 		1AE12E7E2A40D5450020F7E3 /* ChatMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE12E7D2A40D5450020F7E3 /* ChatMainView.swift */; };
 		1AF412002AA15E99003EFF16 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF411FF2AA15E99003EFF16 /* Secrets.swift */; };
+		1AF412032AA1603C003EFF16 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AF412022AA1603C003EFF16 /* OpenAI */; };
 		1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -145,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AF412032AA1603C003EFF16 /* OpenAI in Frameworks */,
 				1AC990582A01737400851A14 /* FirebaseAuth in Frameworks */,
 				1A8CCE0D2A7AD482001D5D55 /* FirebaseStorage in Frameworks */,
 				1AC9905A2A01737400851A14 /* FirebaseFirestore in Frameworks */,
@@ -423,6 +425,7 @@
 				1AC990592A01737400851A14 /* FirebaseFirestore */,
 				1A98C4522A083AC800BB3203 /* FirebaseFirestoreSwift */,
 				1A8CCE0C2A7AD482001D5D55 /* FirebaseStorage */,
+				1AF412022AA1603C003EFF16 /* OpenAI */,
 			);
 			productName = Radiant;
 			productReference = 1AC990432A01703B00851A14 /* Radiant.app */;
@@ -455,6 +458,7 @@
 			packageReferences = (
 				1AC990562A01737400851A14 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				1AFB7B9C2A035162009467A3 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+				1AF412012AA1603C003EFF16 /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			productRefGroup = 1AC990442A01703B00851A14 /* Products */;
 			projectDirPath = "";
@@ -674,21 +678,23 @@
 				INFOPLIST_FILE = Radiant/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Radiant needs your location data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bendreyer.Radiant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -707,21 +713,23 @@
 				INFOPLIST_FILE = Radiant/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Radiant needs your location data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bendreyer.Radiant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -757,6 +765,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		1AF412012AA1603C003EFF16 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.4;
+			};
+		};
 		1AFB7B9C2A035162009467A3 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-algorithms.git";
@@ -787,6 +803,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1AC990562A01737400851A14 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		1AF412022AA1603C003EFF16 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1AF412012AA1603C003EFF16 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
