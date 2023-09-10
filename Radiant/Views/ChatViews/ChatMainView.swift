@@ -12,13 +12,15 @@ import FirebaseFirestoreSwift
 
 struct ChatMainView: View {
     
-    @ObservedObject private var kGuardian = KeyboardGuardian(textFieldCount: 1)
+//    @ObservedObject private var kGuardian = KeyboardGuardian(textFieldCount: 1)
 
-    @State var text: String
+    
     
     @EnvironmentObject var authStateManager: AuthStatusManager
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @StateObject var chatManager = ChatManager()
+    
+    @State var text: String
     
     let db = Firestore.firestore()
     
@@ -104,23 +106,21 @@ struct ChatMainView: View {
                     }
                     .padding(.top, 5)
                     .padding(.bottom, 5)
-                    .onAppear {
-                        value.scrollTo(self.messages.last?.id)
-                    }
-                    .onChange(of: self.messages.count) { _ in
-                        value.scrollTo(self.messages.last?.id)
-                    }
+//                    .onAppear {
+//                        value.scrollTo(self.messages.last?.id)
+//                    }
+//                    .onChange(of: self.messages.count) { _ in
+//                        value.scrollTo(self.messages.last?.id)
+//                    }
                     
                 }
                 // Message send bar
                 HStack {
                     TextField("Hi Radiant Bot!", text: $text, axis: .vertical)
                         .padding()
-//                        .background(RoundedRectangle(cornerRadius: 40).foregroundColor(.white)).frame(minWidth: 320, maxWidth: 400, maxHeight: 40)
                         .foregroundColor(.white)
                         .padding(.leading, 35)
                         .lineLimit(1...4)
-                        .background(GeometryGetter(rect: $kGuardian.rects[0]))
                         .font(.system(size: 16, design: .serif))
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
@@ -165,14 +165,15 @@ struct ChatMainView: View {
                         }
                     }
                 }
-                .padding(.bottom, 130)
+                .padding(.bottom, 100)
             }
-            .padding(.top, 80)
-            .offset(y: kGuardian.slide)
+            .adaptsToKeyboard()
+            .padding(.top, 100)
             .scrollDismissesKeyboard(.immediately)
             .animation(.easeInOut(duration: 1.0))
         }
         .background(Color.clear)
+//        .ignoresSafeArea(.keyboard)
         .environmentObject(chatManager)
         .onAppear {
             if let user = profileStateManager.userProfile {
@@ -437,3 +438,7 @@ struct ChatBubbleShape: Shape {
         return path
     }
 }
+
+
+
+

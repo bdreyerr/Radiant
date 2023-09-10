@@ -26,6 +26,7 @@ class AuthStatusManager: ObservableObject {
     // Variables used for the closed beta
     @Published var betaCode = ""
     @Published var isBetaCodeValid: Bool = false
+    @Published var betaErrorText: String?
     
     // Variables used for the welcome survey
     @Published var name: String = ""
@@ -347,6 +348,12 @@ class AuthStatusManager: ObservableObject {
     
     // Check if a user's beta code is valid, allowing them to continue to the app
     func checkBetaCode(code: String, user: String) {
+        
+        //check if code is empty
+        if code == "" {
+            self.betaErrorText = "Code cannot be empty"
+            return
+        }
         // check if the code exists in the db
         let docRef = db.collection("betaCodes").document(code)
 
@@ -374,13 +381,15 @@ class AuthStatusManager: ObservableObject {
                             if usedBy == user {
                                 self.isBetaCodeValid = true
                                 UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+                            } else {
+                                self.betaErrorText = "Code has been used by another user"
                             }
                         }
                     }
                 }
                 
             } else {
-//                print("Beta code is not valid")
+                self.betaErrorText = "Beta code is invalid"
             }
         }
     }
