@@ -48,11 +48,12 @@ class ProfileStatusManager: ObservableObject {
             case .success(let userProf):
                 // A UserProfile value was successfully initalized from the DocumentSnapshot
                 self.userProfile = userProf
-                print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
+//                print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
                 
             case .failure(let error):
                 // A UserProfile value could not be initialized from the DocumentSnapshot
-                print("Failure retrieving the user profile from firestore: \(error.localizedDescription)")
+//                print("Failure retrieving the user profile from firestore: \(error.localizedDescription)")
+                break
             }
         }
     }

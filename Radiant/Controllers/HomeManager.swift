@@ -38,13 +38,13 @@ class HomeManager: ObservableObject {
     func userInit(userID: String) {
         // Get the day of the month for the quote of the day
         let day = Calendar.current.component(.day, from: Date())
-        print("day of the month: \(day)")
+//        print("day of the month: \(day)")
         let quoteRef = db.collection("quotes").document("\(day)")
         quoteRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 self.quoteOfTheDay = document.data()!["quote"] as! String
             } else {
-                print("Quote of the day does exist")
+//                print("Quote of the day does exist")
             }
         }
         
@@ -54,7 +54,7 @@ class HomeManager: ObservableObject {
         userDocRef.getDocument(as: UserProfile.self) { result in
             switch result {
             case .success(let user):
-                print("we sucessfully got the user in homeManager")
+//                print("we sucessfully got the user in homeManager")
                 print("user id: ", user.id!)
                 if let name = user.name {
                     self.userFirstName = name
@@ -72,13 +72,14 @@ class HomeManager: ObservableObject {
                 // Set has user checked in today boolean
                 if today == user.lastCheckinDate {
                     self.hasUserCheckedInToday = true
-                    print("user has already checked in today")
+//                    print("user has already checked in today")
                 } else {
                     self.hasUserCheckedInToday = false
-                    print("user has not checked in today")
+//                    print("user has not checked in today")
                 }
             case .failure(let error):
-                print("error getting the user in the home manger: ", error.localizedDescription)
+//                print("error getting the user in the home manger: ", error.localizedDescription)
+                break
             }
         }
         
@@ -86,9 +87,9 @@ class HomeManager: ObservableObject {
         db.collection("checkIns").whereField("userId", isEqualTo: userID).whereField("date", isEqualTo: Date().formatted(date: .abbreviated, time: .omitted))
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
-                    print("error retrievign user's checkins: ", err.localizedDescription)
+//                    print("error retrievign user's checkins: ", err.localizedDescription)
                 } else {
-                    print("retrieved checkins sucessfully!")
+//                    print("retrieved checkins sucessfully!")
                     for document in querySnapshot!.documents {
                         
                         let userId = document.data()["userId"] as? String

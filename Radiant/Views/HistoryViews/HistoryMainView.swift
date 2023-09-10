@@ -163,6 +163,8 @@ struct HistoryMainView: View {
                         if let journalEntry = historyManager.focusedDay?.checkIn?.journalEntry {
                             JournalEntry(journalText: journalEntry)
                         }
+                    } else {
+                        // add something to indicate no check-in was logged
                     }
                 }
                 .padding(.leading, 20)

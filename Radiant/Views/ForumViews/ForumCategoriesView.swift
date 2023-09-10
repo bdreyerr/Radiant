@@ -55,7 +55,7 @@ struct ForumCategoriesView: View {
                         
                         // Sobriety
                         NavigationLink(destination: ForumDetailedView(title: "Sobriety")) {
-                            ListItem(icon: "aqi.medium", title: "Sobriety", description: "Stories, advice and motivation for reaching and living sober.")
+                            ListItem(icon: "aqi.medium", title: "Sobriety", description: "Stories, advice and motivation for reaching sobriety and living sober.")
                         }
                         
                         // Personal Stories

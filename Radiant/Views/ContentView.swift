@@ -47,12 +47,29 @@ struct ContentView: View {
                     
                     // Welcome Survey flow
                     // if this is user's first time signing into the app, show Welcome Survey
+                    
                     if let hasUserCompletedWelcomeSurvey = UserDefaults.standard.object(forKey: hasUserCompletedWelcomeSurveyKey) as? Bool {
                         if hasUserCompletedWelcomeSurvey == false {
                             WelcomeSurveyView()
                         }
                     }
                     
+                    // this might be too slow
+//                    if let hasUserCompletedWelcomeSurvey = profileStateManager.userProfile?.hasUserCompletedWelcomeSurvey {
+//                        if hasUserCompletedWelcomeSurvey == false {
+//                            WelcomeSurveyView()
+//                        }
+//                    } else {
+//                        Text("Too slow")
+//                    }
+                    
+//                    if let userProf = profileStateManager.userProfile {
+//                        if let has = userProf.hasUserCompletedWelcomeSurvey {
+//                            if has == false {
+//                                WelcomeSurveyView()
+//                            }
+//                        }
+//                    }
                     
                     // Check code for the closed beta
                     if let betaStatus = UserDefaults.standard.object(forKey: isUserValidForBetaKey) as? Bool {
@@ -69,6 +86,11 @@ struct ContentView: View {
         }
         .environmentObject(authStateManager)
         .environmentObject(profileStateManager)
+        .onAppear {
+            print("User default welcome survey: \(UserDefaults.standard.object(forKey: hasUserCompletedWelcomeSurveyKey) ?? "no key")")
+            
+            print("User default beta status: \(UserDefaults.standard.object(forKey: isUserValidForBetaKey) ?? "no key" )")
+        }
     }
 }
 

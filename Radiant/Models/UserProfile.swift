@@ -23,4 +23,8 @@ struct UserProfile: Codable {
     
     var lastCheckinDate: String?
 //    var checkIns: [CheckIn]?
+    
+    // login info
+    var hasUserCompletedWelcomeSurvey: Bool?
+    var hasUserEnteredBetaCode: Bool?
 }

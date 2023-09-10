@@ -12,12 +12,8 @@ struct ThinkingErrorsView: View {
         NavigationLink(destination: ThinkingErrorsInfoView()) {
             // BG
             VStack(alignment: .leading) {
-                Text("Thinking Errors")
-                    .foregroundColor(.black)
-                    .font(.system(size: 18, design: .serif))
-                
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 240, maxWidth: 240, minHeight: 192, maxHeight: 192)
+                    .frame(minWidth: 200, maxWidth: 200, minHeight: 150, maxHeight: 150)
                     .foregroundColor(.blue)
                     .overlay {
                         ZStack {
@@ -26,6 +22,13 @@ struct ThinkingErrorsView: View {
                                 .cornerRadius(25)
                         }
                     }
+                
+                Text("Thinking Errors")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, design: .serif))
+                Text("3 min")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, design: .serif))
             }
             
         }

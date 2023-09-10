@@ -50,9 +50,9 @@ class ForumManager: ObservableObject {
     @Published var lastPostLikedPosts: QueryDocumentSnapshot?
     
     func publishPost(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, content: String) {
-        print("User wanted to publish a post")
-        
-        print("The post length is: \(content.count)")
+//        print("User wanted to publish a post")
+//
+//        print("The post length is: \(content.count)")
         
         if content == "" {
             self.isErrorCreatingPost = true
@@ -78,23 +78,23 @@ class ForumManager: ObservableObject {
         var ref: DocumentReference? = nil
         do {
             try ref = db.collection(collectionName).addDocument(from: post)
-            print("Adding document was successful, documentID: \(ref!.documentID)")
+//            print("Adding document was successful, documentID: \(ref!.documentID)")
             isCreatePostPopupShowing = false
         } catch {
-            print("error adding post to collection")
+//            print("error adding post to collection")
         }
     }
     
     func deletePost(postID: String, postCategory: String, commentList: [ForumPostComment]) {
-        print("user wanted to delete their post")
+//        print("user wanted to delete their post")
         let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
         
         // Delete post
         db.collection(collectionName).document(postID).delete() { err in
             if let err = err {
-                print("Error removing document: \(err.localizedDescription)")
+//                print("Error removing document: \(err.localizedDescription)")
             } else {
-                print("Post successfully deleted!")
+//                print("Post successfully deleted!")
             }
         }
         
@@ -103,9 +103,9 @@ class ForumManager: ObservableObject {
             let commentCollectionName = getFstoreForumCommentsCategoryCollectionName(category: postCategory)
             db.collection(commentCollectionName).document(comment.id!).delete() { err in
                 if let err = err {
-                    print("error deleting comment: \(err.localizedDescription)")
+//                    print("error deleting comment: \(err.localizedDescription)")
                 } else {
-                    print("successfully deleted comment")
+//                    print("successfully deleted comment")
                 }
             }
         }
@@ -113,7 +113,7 @@ class ForumManager: ObservableObject {
     
     func likePost(postID: String, postCategory: String, userID: String) {
         
-        print("User: \(userID) wanted to like a post: \(postID)")
+//        print("User: \(userID) wanted to like a post: \(postID)")
         
         let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
         let documentRef = db.collection(collectionName).document(postID)
@@ -122,15 +122,15 @@ class ForumManager: ObservableObject {
             "likes": FieldValue.arrayUnion([userID])
         ]) { err in
             if let err = err {
-                print("error liking the post: \(err.localizedDescription)")
+//                print("error liking the post: \(err.localizedDescription)")
             } else {
-                print("user sucessfully liked the post")
+//                print("user sucessfully liked the post")
             }
         }
     }
     
     func removeLikeFromPost(postID: String, postCategory: String, userID: String) {
-        print("user wanted to remove their like from the post")
+//        print("user wanted to remove their like from the post")
         
         let collectionName = getFstoreForumCategoryCollectionName(category: postCategory)
         let documentRef = db.collection(collectionName).document(postID)
@@ -139,15 +139,15 @@ class ForumManager: ObservableObject {
             "likes": FieldValue.arrayRemove([userID])
         ]) { err in
             if let err = err {
-                print("error liking the post: \(err.localizedDescription)")
+//                print("error liking the post: \(err.localizedDescription)")
             } else {
-                print("user sucessfully liked the post")
+//                print("user sucessfully liked the post")
             }
         }
     }
     
     func publishComment(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, postID: String, content: String) {
-        print("User wanted to publish a comment on a post")
+//        print("User wanted to publish a comment on a post")
         
         if content == "" {
             self.isErrorCreatingComment = true
@@ -170,28 +170,28 @@ class ForumManager: ObservableObject {
         var ref: DocumentReference? = nil
         do {
             try ref = db.collection(collectionName).addDocument(from: comment)
-            print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
+//            print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
         } catch {
-            print("Error adding comment to the post")
+//            print("Error adding comment to the post")
         }
     }
     
     func deleteComment(commentID: String, commentCategory: String, authorID: String) {
-        print("user wanted to delete their comment")
+//        print("user wanted to delete their comment")
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
         
         // Delete post
         db.collection(collectionName).document(commentID).delete() { err in
             if let err = err {
-                print("Error removing comment: \(err.localizedDescription)")
+//                print("Error removing comment: \(err.localizedDescription)")
             } else {
-                print("Comment successfully deleted!")
+//                print("Comment successfully deleted!")
             }
         }
     }
     
     func likeComment(commentID: String, commentCategory: String, userID: String) {
-        print("User: \(userID) wanted to like a comment: \(commentID)")
+//        print("User: \(userID) wanted to like a comment: \(commentID)")
         
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
         let documentRef = db.collection(collectionName).document(commentID)
@@ -200,15 +200,15 @@ class ForumManager: ObservableObject {
             "likes": FieldValue.arrayUnion([userID])
         ]) { err in
             if let err = err {
-                print("error liking the post: \(err.localizedDescription)")
+//                print("error liking the post: \(err.localizedDescription)")
             } else {
-                print("user sucessfully liked the post")
+//                print("user sucessfully liked the post")
             }
         }
     }
     
     func removeLikeFromComment(commentID: String, commentCategory: String, userID: String) {
-        print("user wanted to remove their like from the comment")
+//        print("user wanted to remove their like from the comment")
         
         let collectionName = getFstoreForumCommentsCategoryCollectionName(category: commentCategory)
         let documentRef = db.collection(collectionName).document(commentID)
@@ -217,9 +217,9 @@ class ForumManager: ObservableObject {
             "likes": FieldValue.arrayRemove([userID])
         ]) { err in
             if let err = err {
-                print("error liking the post: \(err.localizedDescription)")
+//                print("error liking the post: \(err.localizedDescription)")
             } else {
-                print("user sucessfully liked the post")
+//                print("user sucessfully liked the post")
             }
         }
     }
@@ -294,22 +294,22 @@ class ForumManager: ObservableObject {
         
         let documentRef = db.collection(getFstoreForumCategoryCollectionName(category: self.focusedPostCategoryName)).document(self.focusedPostID)
         
-        print("The post being reported: \(self.focusedPostID)")
+//        print("The post being reported: \(self.focusedPostID)")
         
         let field = "reportCount"
         documentRef.updateData([
             field: FieldValue.increment(Int64(1))
         ]) { err in
             if let err = err {
-                print("There was an error updating the reportCount \(err.localizedDescription)")
+//                print("There was an error updating the reportCount \(err.localizedDescription)")
             } else {
-                print("Report count updated successfully")
+//                print("Report count updated successfully")
             }
         }
     }
     
     func reportForumComment(reasonForreport: Int) {
-        print("comment being reported: \(self.focusedCommentID)")
+//        print("comment being reported: \(self.focusedCommentID)")
         let documentRef = db.collection(getFstoreForumCommentsCategoryCollectionName(category: self.focusedPostCategoryName)).document(self.focusedCommentID)
         
         let field = "reportCount"
@@ -317,9 +317,9 @@ class ForumManager: ObservableObject {
             field: FieldValue.increment(Int64(1))
         ]) { err in
             if let err = err {
-                print("There was an error updating the report count: \(err.localizedDescription)")
+//                print("There was an error updating the report count: \(err.localizedDescription)")
             } else {
-                print("Comment report count updated successfully")
+//                print("Comment report count updated successfully")
             }
         }
     }

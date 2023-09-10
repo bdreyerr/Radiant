@@ -77,6 +77,7 @@ struct LoginWithEmailView: View {
                 
             }
             .padding(.bottom, 60)
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 }

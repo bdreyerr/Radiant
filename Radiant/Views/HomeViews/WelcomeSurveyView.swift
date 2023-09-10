@@ -280,6 +280,7 @@ struct WelcomeSurveyView: View {
                     .padding(.bottom, 40)
                 }
                 .padding(.bottom, 80)
+                .scrollDismissesKeyboard(.immediately)
             }
             .padding(.top, 140)
             

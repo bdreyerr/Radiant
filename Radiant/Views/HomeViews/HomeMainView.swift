@@ -204,7 +204,7 @@ struct HomeMainView: View {
                 if let user = Auth.auth().currentUser?.uid {
                     homeManager.userInit(userID: user)
                 } else {
-                    print("no user yet")
+                    print("from home view: no user yet")
                 }
                 
                 print("has user checked in: \(homeManager.hasUserCheckedInToday)")
@@ -284,7 +284,7 @@ struct ActivitiesModule: View {
                 Spacer()
             }
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     //                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
                     
@@ -313,7 +313,7 @@ struct EducationModule: View {
                 Spacer()
             }
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ThinkingErrorsView()
                     StagesOfGriefView()

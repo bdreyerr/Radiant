@@ -55,7 +55,7 @@ class AuthStatusManager: ObservableObject {
     
     // Log the user in with email and password
     func loginWithEmail() {
-        print("The user logged in with email and password")
+//        print("The user logged in with email and password")
         
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             if let e = error {
@@ -67,12 +67,12 @@ class AuthStatusManager: ObservableObject {
             }
             
             guard let user = authResult?.user else {
-                print("No user")
+//                print("No user")
                 return
             }
             
             
-            print("User was logged in as user, \(user.uid), with email: \(user.email ?? "no email")")
+//            print("User was logged in as user, \(user.uid), with email: \(user.email ?? "no email")")
             
             strongSelf.isLoggedIn = true
             strongSelf.isLoginPopupShowing = false
@@ -89,22 +89,23 @@ class AuthStatusManager: ObservableObject {
         }
     }
     
+    // TODO: Deprecate this function, it's no  longer used in the view (sign in only available with apple now)
     // Register the user with email and password
     func registerWithEmail() {
-        print("User wanted to register with email and password")
+//        print("User wanted to register with email and password")
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let e = error {
-                print("There was an issue when trying to register: \(e.localizedDescription)")
+//                print("There was an issue when trying to register: \(e.localizedDescription)")
                 return
             }
             
             guard let user = authResult?.user else {
-                print("No user")
+//                print("No user")
                 return
             }
             
-            print("User was registered as user, \(user.uid) with email \(user.email ?? "email null")")
+//            print("User was registered as user, \(user.uid) with email \(user.email ?? "email null")")
             self.isLoggedIn = true
             self.isRegisterPopupShowing = false
             
@@ -113,11 +114,11 @@ class AuthStatusManager: ObservableObject {
             UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
             
             // Set beta status as false after register before user enters their code
-            print("setting the user default for the beta as false")
+//            print("setting the user default for the beta as false")
             UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
             
             // Set the user default for the user completing the welcome survey to false, they will complete it after register
-            print("setting the user default for the welcome survey as false")
+//            print("setting the user default for the welcome survey as false")
             UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
             
             // Create the user profile in Firestore
@@ -125,18 +126,10 @@ class AuthStatusManager: ObservableObject {
             let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
             do {
                 try collectionRef.document(user.uid).setData(from: userProf)
-                print("User stored with new user reference: \(user.uid)")
+//                print("User stored with new user reference: \(user.uid)")
             } catch {
-                print("Error saving user to firestore: \(error.localizedDescription)")
+//                print("Error saving user to firestore: \(error.localizedDescription)")
             }
-            
-            // Retrieve the user profile from Firestore and store it in this class' userProfile var
-            //            if let userID = Auth.auth().currentUser?.uid {
-            //                self.retrieveUserProfile(userID: userID)
-            //            } else {
-            //                print("The current user could not be retrieved")
-            ////                authStateManager.logOut()
-            //            }
         }
     }
     
@@ -169,12 +162,12 @@ class AuthStatusManager: ObservableObject {
                     }
                     
                     guard let user = authResult?.user else {
-                        print("No user")
+//                        print("No user")
                         return
                     }
                     
-                    print("signed in with apple")
-                    print("\(String(describing: user.uid))")
+//                    print("signed in with apple")
+//                    print("\(String(describing: user.uid))")
                     // Careful about saving the email into UserDefaults because the user may choose to hide email address from the app with sign in
                     if let email = user.email {
                         self.email = email
@@ -186,31 +179,50 @@ class AuthStatusManager: ObservableObject {
                     // Set user defaults
                     UserDefaults.standard.set(self.isLoggedIn, forKey: loginStatusKey)
                     
-                    // Set beta status as false after register before user enters their code
-                    print("setting the user default for the beta as false")
-                    UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
                     
-                    // Set the user default for the user completing the welcome survey to false, they will complete it after register
-                    print("setting the user default for the welcome survey as false")
-                    UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
+                    // Figure out if the user already has an account or is signing up for the first time
+                    let docRef = self.db.collection(Constants.FStore.usersCollectionName).whereField("email", isEqualTo: self.email)
                     
-                    // Create the user profile in Firestore
-                    let userProf = UserProfile(email: self.email, displayName: self.email)
-                    let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
-                    do {
-                        try collectionRef.document(user.uid).setData(from: userProf)
-                        print("Apple sign in user stored with new user reference: \(user.uid)")
-                    } catch {
-                        print("Error saving user to firestore: \(error.localizedDescription)")
+                    docRef.getDocuments { (querySnapshot, err) in
+                        if let err = err {
+//                            print("Error getting documents: \(err)")
+                        } else {
+                            if querySnapshot!.documents.isEmpty {
+                                // New user is signing in
+                                // Set beta status as false after register before user enters their code
+//                                print("setting the user default for the beta as false")
+                                UserDefaults.standard.set(false, forKey: isUserValidForBetaKey)
+                                
+                                // Set the user default for the user completing the welcome survey to false, they will complete it after register
+//                                print("setting the user default for the welcome survey as false")
+                                UserDefaults.standard.set(false, forKey: hasUserCompletedWelcomeSurveyKey)
+                                
+                                // Create the user profile in Firestore
+                                let userProf = UserProfile(email: self.email, displayName: self.email)
+                                let collectionRef = self.db.collection(Constants.FStore.usersCollectionName)
+                                do {
+                                    try collectionRef.document(user.uid).setData(from: userProf)
+//                                    print("Apple sign in user stored with new user reference: \(user.uid)")
+                                } catch {
+//                                    print("Error saving user to firestore: \(error.localizedDescription)")
+                                }
+                            } else {
+                                // Existing user is signing in
+//                                print("Existing user signing in with Apple")
+                                // the userID is available in querySnapshot.documents[0].documentID
+                                print("A current user with that same email already exists: ")
+                                print(querySnapshot!.documents[0].documentID)
+                                
+                                print("But did the Auth set the userID to something different?")
+                                if let user = Auth.auth().currentUser {
+                                    print(user.uid)
+                                }
+                                
+                                // Create a new userProfile with a document ID equal to the to current Auth value
+                                
+                            }
+                        }
                     }
-                    
-                    // Retrieved the user profile from Firestore and store it in this class' userProfile var
-                    //                    if let userID = Auth.auth().currentUser?.uid {
-                    //                        self.retrieveUserProfile(userID: userID)
-                    //                    } else {
-                    //                        print("The current user could not be retrieved")
-                    //        //                authStateManager.logOut()
-                    //                    }
                 }
             default:
                 break
@@ -228,14 +240,14 @@ class AuthStatusManager: ObservableObject {
             user.updateEmail(to: newEmail) { error in
                 if let e = error {
                     // TEMPORARY FIX: WHEN THE USER IS REQUIRED TO REAUTHENTICATE BY FIREBASE, SIMPLY JUST LOG THEM OUT. IN THE FUTURE, WE NEED TO ASK FOR THEIR LOGIN CREDENTIALS AGAIN AND REAUTHENTICATE BEFORE THEY CAN CHANGE THEIR EMAIL
-                    print("There was an error updating the user's email: \(e.localizedDescription)")
+//                    print("There was an error updating the user's email: \(e.localizedDescription)")
                     returnError = e.localizedDescription
                     
                     //                    self.logOut()
                 } else {
-                    print("Successfully updated user email in the auth table, no error.")
+//                    print("Successfully updated user email in the auth table, no error.")
                     self.email = newEmail
-                    print("Email updated on authStateManager: \(self.email)")
+//                    print("Email updated on authStateManager: \(self.email)")
                 }
             }
         }
@@ -251,19 +263,19 @@ class AuthStatusManager: ObservableObject {
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-            print("Error signing out: \(signOutError.localizedDescription)")
+//            print("Error signing out: \(signOutError.localizedDescription)")
             return
         }
         self.isLoggedIn = false
         UserDefaults.standard.set(isLoggedIn, forKey: loginStatusKey)
         
-        self.isBetaCodeValid = false
-        UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+//        self.isBetaCodeValid = false
+//        UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+//        
+//        self.hasUserCompletedSurvey = false
+//        UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
         
-        self.hasUserCompletedSurvey = false
-        UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
-        
-        print("The user logged out")
+//        print("The user logged out")
     }
     
     
@@ -341,7 +353,7 @@ class AuthStatusManager: ObservableObject {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                print("Document data: \(dataDescription)")
+//                print("Document data: \(dataDescription)")
                 
                 if let isCodeUsed = document.data()!["isCodeUsed"] as? Bool {
                     if isCodeUsed == false {
@@ -356,7 +368,7 @@ class AuthStatusManager: ObservableObject {
                         ])
                         
                     } else {
-                        print("Beta code has already been used")
+//                        print("Beta code has already been used")
                         
                         if let usedBy = document.data()!["usedBy"] as? String {
                             if usedBy == user {
@@ -368,7 +380,7 @@ class AuthStatusManager: ObservableObject {
                 }
                 
             } else {
-                print("Beta code is not valid")
+//                print("Beta code is not valid")
             }
         }
     }
@@ -425,15 +437,142 @@ class AuthStatusManager: ObservableObject {
             "name": self.name,
             "birthday": self.birthday,
             "displayName": self.displayName,
-            "userPhotoNonPremium": self.userPhotoNonPremium
+            "userPhotoNonPremium": self.userPhotoNonPremium,
+            "hasUserCompletedWelcomeSurvey": true
         ]) { err in
             if let err = err {
-                print("Error writing document: \(err)")
+//                print("Error writing document: \(err)")
             } else {
-                print("Document successfully written!")
+//                print("Document successfully written!")
                 // Set user default for completing the welcome survey to true
                 self.hasUserCompletedSurvey = true
                 UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
+            }
+        }
+    }
+    
+    func deleteAccount(userID: String) {
+        print("deleting user: ", userID)
+        // Delete the firestore user
+
+        // Remove check ins with user id
+        var checkIns: [String] = []
+        db.collection("checkIns").whereField("userId", isEqualTo: userID).getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+//                        print("\(document.documentID) => \(document.data())")
+                        checkIns.append(document.documentID)
+                    }
+                    print("checkIns: ", checkIns)
+                    // Delete checkIns
+                    for checkInId in checkIns {
+                        self.db.collection("checkIns").document(checkInId).delete() { err in
+                            if let err = err {
+                                print("Error removing checkin: \(err)")
+                            } else {
+                                print("CheckIn successfully removed!")
+                            }
+                        }
+                    }
+                }
+        }
+        // Remove forum posts
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameGeneral, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameDepression, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameStressAnxiety, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameRelationships, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameRecovery, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameAddiction, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameSobriety, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNamePersonalStories, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.forumCollectionNameAdvice, userID: userID)
+
+        // Remove forum comments
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameGeneral, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameDepression, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameStressAnxiety, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameRelationships, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameRecovery, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameAddiction, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameSobriety, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNamePersonalStories, userID: userID)
+        deleteForumPostsAndComments(collectionName: Constants.FStore.commentsCollectionNameAdvice, userID: userID)
+
+
+        // remove messages
+        var messages: [String] = []
+        db.collection("messages").whereField("userID", isEqualTo: userID).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    messages.append(document.documentID)
+                }
+                print("messages: ", messages)
+                // Delete messages
+                for messageID in messages {
+                    self.db.collection("messages").document(messageID).delete() { err in
+                        if let err = err {
+                            print("Error removing message: \(err)")
+                        } else {
+                            print("Message successfully removed!")
+                        }
+                        
+                    }
+                }
+            }
+        }
+        self.isBetaCodeValid = false
+        UserDefaults.standard.set(self.isBetaCodeValid, forKey: isUserValidForBetaKey)
+
+        self.hasUserCompletedSurvey = false
+        UserDefaults.standard.set(self.hasUserCompletedSurvey, forKey: hasUserCompletedWelcomeSurveyKey)
+        
+        // Wait a few seconds for the other documents to be deleted
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.db.collection("users").document(userID).delete() { err in
+                if let err = err {
+                    print("Error removing user from firestore: \(err)")
+                } else {
+                    print("Firestore user successfully removed!")
+                    // Delete Auth user
+                    let user = Auth.auth().currentUser
+                    user?.delete { error in
+                        if let error = error {
+                            print("Error deleting auth user: ,", error)
+                        } else {
+                            print("Auth user got removed yay, now logging out")
+                            self.logOut()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteForumPostsAndComments(collectionName: String, userID: String) {
+        var objects: [String] = []
+        db.collection(collectionName).whereField("authorID", isEqualTo: userID).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    objects.append(document.documentID)
+                }
+                print("forum: ", objects)
+                // Delete objects
+                for object in objects {
+                    self.db.collection(collectionName).document(object).delete() { err in
+                        if let err = err {
+                            print("Error removing forum object: \(err)")
+                        } else {
+                            print("Forum object successfully removed!")
+                        }
+                        
+                    }
+                }
             }
         }
     }

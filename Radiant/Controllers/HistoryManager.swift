@@ -55,7 +55,7 @@ class HistoryManager: ObservableObject {
         db.collection("checkIns").whereField("userId", isEqualTo: userId)
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {
-                    print("Error getting user's checkins: ", err.localizedDescription)
+//                    print("Error getting user's checkins: ", err.localizedDescription)
                 } else {
                     for document in querySnapshot!.documents {
                         let date = document.data()["date"] as? String
@@ -74,10 +74,10 @@ class HistoryManager: ObservableObject {
                         if let daysCheckIn = self.userCheckIns[self.days[i].formattedDateForFirestore] {
                             self.days[i].doesCheckInExist = true
                             self.days[i].checkIn = daysCheckIn
-                            print("day exists for ", self.days[i].formattedDateForFirestore)
+//                            print("day exists for ", self.days[i].formattedDateForFirestore)
                         } else {
                             self.days[i].doesCheckInExist = false
-                            print("day doesn't exist for ", self.days[i].formattedDateForFirestore)
+//                            print("day doesn't exist for ", self.days[i].formattedDateForFirestore)
                         }
                         i += 1
                     }

@@ -41,7 +41,7 @@ class ChatManager: ObservableObject {
                         content: document.data()["content"] as? String,
                         date: document.data()["date"] as? Date)
                     self.messages.append(message)
-                    print("Message was retrieved, messageID: \(document.documentID), message content: \(document.data()["content"] as? String ?? "No Content")")
+//                    print("Message was retrieved, messageID: \(document.documentID), message content: \(document.data()["content"] as? String ?? "No Content")")
                 }
             }
         }
@@ -50,7 +50,7 @@ class ChatManager: ObservableObject {
     func sendMessage(userID: String, content: String) {
         
         if content.count > 300 {
-            print("Message length too long")
+//            print("Message length too long")
             return
         }
         
@@ -62,55 +62,56 @@ class ChatManager: ObservableObject {
         var ref: DocumentReference? = nil
         do {
             try ref = db.collection(collectionName).addDocument(from: message)
-            print("successfully saved message to db")
+//            print("successfully saved message to db")
         } catch {
-            print("Error saving message to firestore")
+//            print("Error saving message to firestore")
         }
 
                 
         // Generate OpenAI response
-        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: content)], maxTokens: 60)
+        let query = ChatQuery(model: .gpt3_5Turbo, messages: [.init(role: .user, content: content)] /*, maxTokens: 60*/)
         openAI.chats(query: query) { result in
           // Handle result here
             switch result {
             case .success(let result):
                 if let response = result.choices[0].message.content {
-                    print("OPENAI RESPONSE: \(response)")
+//                    print("OPENAI RESPONSE: \(response)")
                     let responseMessage = Message(userID: userID, isMessageFromUser: false, content: response, date: Date.now)
                     do {
                         try ref = self.db.collection(collectionName).addDocument(from: responseMessage)
-                        print("successfully saved response message to db")
+//                        print("successfully saved response message to db")
                         self.retrieveMessages(userID: userID)
                     } catch {
-                        print("Error saving response message to firestore")
+//                        print("Error saving response message to firestore")
                     }
                 } else {
-                    print("Response from openAI empty")
+//                    print("Response from openAI empty")
                 }
             case .failure(let error):
-                print("Error getting result: \(error.localizedDescription)")
+//                print("Error getting result: \(error.localizedDescription)")
+                break
             }
         }
     }
     
     func clearMessages(userID: String) {
-        print("user wanted to reset chat")
+//        print("user wanted to reset chat")
         // lookup and delete all messages where the userID = userID
         let collectionRef = self.db.collection(Constants.FStore.messageCollectionName)
         let query = collectionRef.whereField("userID", isEqualTo: userID)
         
         query.getDocuments() { (snapshot, error) in
             if let err = error {
-                print("error getting messages to delete: \(err.localizedDescription)")
+//                print("error getting messages to delete: \(err.localizedDescription)")
                 return
             }
             
             for document in snapshot!.documents {
                 document.reference.delete() { error in
                     if let e = error {
-                        print("error deleting document: \(e.localizedDescription)")
+//                        print("error deleting document: \(e.localizedDescription)")
                     } else {
-                        print("Document deleted!")
+//                        print("Document deleted!")
                     }
                 }
             }

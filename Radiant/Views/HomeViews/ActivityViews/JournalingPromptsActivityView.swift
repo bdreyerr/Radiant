@@ -12,12 +12,8 @@ struct JournalingPromptsActivityView: View {
         NavigationLink(destination: JournalingPromptsInfoView()) {
             // BG
             VStack(alignment: .leading) {
-                Text("Journaling Prompts")
-                    .foregroundColor(.black)
-                    .font(.system(size: 18, design: .serif))
-                
                 RoundedRectangle(cornerRadius: 25)
-                    .frame(minWidth: 240, maxWidth: 240, minHeight: 160, maxHeight: 160)
+                    .frame(minWidth: 200, maxWidth: 200, minHeight: 150, maxHeight: 150)
                     .foregroundColor(.blue)
                     .overlay {
                         ZStack {
@@ -26,6 +22,12 @@ struct JournalingPromptsActivityView: View {
                                 .cornerRadius(25)
                         }
                     }
+                Text("Journaling Prompts")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, design: .serif))
+                Text("2 min")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, design: .serif))
             }
             
         }

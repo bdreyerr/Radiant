@@ -20,69 +20,47 @@ struct BottomNavBar: View {
     var body: some View {
         ZStack {
             
-            Image(tabBarBackground)
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-            
-            
-
+//            Image(tabBarBackground)
+//                .resizable()
+//                .scaledToFill()
+//                .edgesIgnoringSafeArea(.all)
             
             TabView() {
-               
-                
                 Group {
                     HomeMainView()
                         .tabItem {
-                            Image(systemName: "house")
-                                .background(Color.white)
-                                .foregroundColor(Color.blue)
-                                .onAppear {
-                                    tabBarBackground = "Home_BG"
-                                }
+//                            Image(systemName: "house")
+                            Label("Home", systemImage: "house")
                         }
                     
 //                    MapMainView()
                     HistoryMainView()
                         .tabItem {
-                            Image(systemName: "clock.fill")
-                                .background(Color.white)
-                                .foregroundColor(Color.blue)
-                                .onAppear {
-                                    tabBarBackground = "Map_BG"
-                                }
+//                            Image(systemName: "clock.fill")
+                            Label("History", systemImage: "clock.fill")
                         }
                     ForumMainView()
                         .tabItem {
-                            Image(systemName: "person.3.fill")
-                                .background(Color.white)
-                                .foregroundColor(Color.blue)
-                                .onAppear {
-                                    tabBarBackground = "Forum_BG3"
-                                }
+//                            Image(systemName: "person.3.fill")
+                            Label("Forum", systemImage: "person.3.fill")
                         }
                     ChatMainView(text: "")
                         .tabItem {
-                            Image(systemName: "message")
-                                .background(Color.white)
-                                .foregroundColor(Color.blue)
-                                .onAppear {
-                                    tabBarBackground = "Home_BG"
-                                }
+//                            Image(systemName: "message")
+                            Label("Chat", systemImage: "message")
                         }
                     
                     ProfileMainView()
                         .tabItem {
-                            Image(systemName: "person.fill")
-                                .background(Color.white)
-                                .foregroundColor(Color.blue)
-                                .onAppear {
-                                    tabBarBackground = "Profile_BG"
-                                }
+//                            Image(systemName: "person.fill")
+                            Label("Profile", systemImage: "person.fill")
                         }
                 }
-                .toolbar(.visible, for: .tabBar)
-                .toolbarBackground(Color.clear, for: .tabBar)
+//                .toolbar(.visible, for: .tabBar)
+//                .toolbarBackground(Color.white, for: .tabBar)
+                .toolbarBackground(.clear, for: .tabBar)
+                .toolbarBackground(.hidden, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
                 
                 // Find a way to always show the tab bar, OR go back on the comunity forum when the tab is switched to a non-community tab bar.
             }

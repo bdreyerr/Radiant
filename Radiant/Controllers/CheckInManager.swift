@@ -29,7 +29,7 @@ class CheckInManager: ObservableObject {
     
     func checkIn(userID: String) {
         
-        print("user wanted to check in and send the goals, user: \(userID)")
+//        print("user wanted to check in and send the goals, user: \(userID)")
         
         if goalOne == "" && goalTwo == "" && goalThree == "" {
             self.isErrorInCheckIn = true
@@ -61,9 +61,9 @@ class CheckInManager: ObservableObject {
             "lastCheckinDate": formattedDate,
         ]) { err in
             if let err = err {
-                print("Error updating document: \(err)")
+//                print("Error updating document: \(err)")
             } else {
-                print("Document successfully updated")
+//                print("Document successfully updated")
             }
         }
         
@@ -79,9 +79,9 @@ class CheckInManager: ObservableObject {
             "journalEntry": self.journalEntry
         ]) { err in
             if let err = err {
-                print("Error adding checkin: \(err.localizedDescription)")
+//                print("Error adding checkin: \(err.localizedDescription)")
             } else {
-                print("Check in added successfully")
+//                print("Check in added successfully")
             }
         }
     }

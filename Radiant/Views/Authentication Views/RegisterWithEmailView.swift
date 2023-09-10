@@ -81,6 +81,7 @@ struct RegisterWithEmailView: View {
                 }.offset(y: 80)
                 
             }
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 }
