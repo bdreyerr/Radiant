@@ -70,6 +70,7 @@
 		1AF412002AA15E99003EFF16 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF411FF2AA15E99003EFF16 /* Secrets.swift */; };
 		1AF412032AA1603C003EFF16 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 1AF412022AA1603C003EFF16 /* OpenAI */; };
 		1AF412052AAE6EE0003EFF16 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF412042AAE6EE0003EFF16 /* Keyboard.swift */; };
+		1AF412092AB14C96003EFF16 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF412082AB14C96003EFF16 /* Launch Screen.storyboard */; };
 		1AF5F8DD2A365D880044571D /* ForumCreateCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +139,7 @@
 		1AE12E7D2A40D5450020F7E3 /* ChatMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMainView.swift; sourceTree = "<group>"; };
 		1AF411FF2AA15E99003EFF16 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		1AF412042AAE6EE0003EFF16 /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
+		1AF412082AB14C96003EFF16 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		1AF5F8DC2A365D880044571D /* ForumCreateCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCreateCommentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -328,6 +330,7 @@
 				1AC990682A018B1000851A14 /* Constants.swift */,
 				1A56F3D52A05C3FF0057A6D6 /* UserDefaults.swift */,
 				1AF411FF2AA15E99003EFF16 /* Secrets.swift */,
+				1AF412082AB14C96003EFF16 /* Launch Screen.storyboard */,
 			);
 			path = Radiant;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AF412092AB14C96003EFF16 /* Launch Screen.storyboard in Resources */,
 				1A98C45D2A0ABA0900BB3203 /* NotoSansTC-Thin.otf in Resources */,
 				1AC9904E2A01703C00851A14 /* Preview Assets.xcassets in Resources */,
 				1A98C45B2A0AB86C00BB3203 /* Raleway-VariableFont_wght.ttf in Resources */,
@@ -681,12 +685,13 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Radiant needs your location data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bendreyer.Radiant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -716,12 +721,13 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Radiant needs your location data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bendreyer.Radiant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
