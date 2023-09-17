@@ -185,11 +185,11 @@ struct HomeMainView: View {
                             .padding(.leading, 20)
                             
                             
-                            ActivitiesModule()
+                            ActivitiesModule(isPremiumUser: self.profileStateManager.userProfile?.isPremiumUser ?? false)
                                 .padding(.bottom, 40)
                             
                             
-                            EducationModule()
+                            EducationModule(isPremiumUser: self.profileStateManager.userProfile?.isPremiumUser ?? false)
                             
                             
                         }
@@ -272,6 +272,7 @@ struct GoalView: View {
 
 struct ActivitiesModule: View {
     var activities = ["Quiz1", "Quiz2", "Quiz3"]
+    var isPremiumUser: Bool?
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -289,9 +290,22 @@ struct ActivitiesModule: View {
                     //                    ActivityView(bg_image: "Chat_BG", completed: false, title: "Personality Quiz")
                     
                     
-                    HealthyRelationshipActivityView()
-                    CharacterAchetypeView()
-                    JournalingPromptsActivityView()
+                    if let premium = isPremiumUser {
+                        if premium == false {
+                            CharacterAchetypeView()
+                            JournalingPromptsActivityView()
+                            // Locked activity
+                            LockedActivityEducationView()
+                        } else {
+                            CharacterAchetypeView()
+                            JournalingPromptsActivityView()
+                            HealthyRelationshipActivityView()
+                        }
+                    } else {
+                        CharacterAchetypeView()
+                        JournalingPromptsActivityView()
+                        HealthyRelationshipActivityView()
+                    }
                 }
             }
             
@@ -302,6 +316,7 @@ struct ActivitiesModule: View {
 
 
 struct EducationModule: View {
+    var isPremiumUser: Bool?
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -315,12 +330,50 @@ struct EducationModule: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ThinkingErrorsView()
-                    StagesOfGriefView()
-                    ImpulsivityView()
+                    if let premium = isPremiumUser {
+                        if premium == false {
+                            ThinkingErrorsView()
+                            ImpulsivityView()
+                            LockedActivityEducationView()
+                        } else {
+                            ThinkingErrorsView()
+                            ImpulsivityView()
+                            StagesOfGriefView()
+                        }
+                    } else {
+                        ThinkingErrorsView()
+                        ImpulsivityView()
+                        StagesOfGriefView()
+                    }
+                    
+                    
+                    
                 }
             }
         }
         .padding(.leading, 20)
+    }
+}
+
+struct LockedActivityEducationView: View {
+    var body: some View {
+        // BG
+        VStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 25)
+                .frame(minWidth: 200, maxWidth: 200, minHeight: 150, maxHeight: 150)
+                .foregroundColor(.blue)
+                .overlay {
+                    ZStack {
+                        Image("lock")
+                            .resizable()
+                            .cornerRadius(25)
+                    }
+                }
+            
+            Text("Premium users enjoy more \nactivities and education pieces.")
+                .foregroundColor(.black)
+                .font(.system(size: 16, design: .serif))
+        }
+        
     }
 }

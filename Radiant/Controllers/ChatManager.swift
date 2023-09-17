@@ -24,6 +24,9 @@ class ChatManager: ObservableObject {
     @Published var responseReady: Bool = false
     @Published var messages: [Message] = []
     
+    @Published var isErrorSendingMessage: Bool = false
+    @Published var errorText: String = ""
+    
     func retrieveMessages(userID: String) {
         self.messages = []
         
@@ -47,11 +50,49 @@ class ChatManager: ObservableObject {
         }
     }
     
-    func sendMessage(userID: String, content: String) {
+    func sendMessage(userID: String, content: String, isPremiumUser: Bool?, lastMessageSendDate: Date?, numMessagesSentToday: Int?) -> Bool {
+        
+        // Free user rate limiting check
+        var newNumMessagesToday = 0
+        if let premium = isPremiumUser {
+            if premium == false {
+                if let lastMessageSendDate = lastMessageSendDate {
+                    // Get current date
+                    let currentDate = Date()
+                    // Check if last message was sent today
+                    if lastMessageSendDate > (currentDate - 86400) {
+                        if let numMessagesSentToday = numMessagesSentToday {
+                            if numMessagesSentToday >= 5 {
+                                self.isErrorSendingMessage = true
+                                self.errorText = "You've sent the max amount of messages today. Upgrate to premium to send unlimited chat messages."
+                                return false
+                            } else {
+                                newNumMessagesToday = numMessagesSentToday
+                            }
+                        }
+                    } else {
+                        newNumMessagesToday = 0
+                    }
+                }
+                // Free user hasn't reached message quota. Write to their userProfile. Don't write for premium users
+                db.collection("users").document(userID).updateData([
+                    "lastMessageSendDate": Date(),
+                    "numMessagesSentToday": newNumMessagesToday + 1
+                ]) { err in
+                    if let err = err {
+                        print("Error updating user chat fields: \(err)")
+                    } else {
+                        print("User chat fields updated successfully written!")
+                    }
+                }
+            }
+        }
         
         if content.count > 300 {
 //            print("Message length too long")
-            return
+            self.isErrorSendingMessage = true
+            self.errorText = "Message length is too long"
+            return false
         }
         
         let message = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
@@ -92,6 +133,7 @@ class ChatManager: ObservableObject {
                 break
             }
         }
+        return true
     }
     
     func clearMessages(userID: String) {

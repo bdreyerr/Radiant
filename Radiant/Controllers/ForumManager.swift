@@ -49,21 +49,58 @@ class ForumManager: ObservableObject {
     @Published var lastCommentMyComments: QueryDocumentSnapshot?
     @Published var lastPostLikedPosts: QueryDocumentSnapshot?
     
-    func publishPost(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, content: String) {
+    func publishPost(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, content: String, isPremiumUser: Bool?, lastPostDate: Date?, numPostsToday: Int?) -> Bool {
 //        print("User wanted to publish a post")
 //
 //        print("The post length is: \(content.count)")
         
+        // Free user post number check
+        var newNumPostsToday: Int = 0
+        if let premium = isPremiumUser {
+            if premium == false {
+                if let lastPostDate = lastPostDate {
+                    // Get current date
+                    let currentDate = Date()
+                    // Check if last post date is less than 24 hours ago (posted today)
+                    if lastPostDate > (currentDate - 86400) {
+                        if let numPostsToday = numPostsToday {
+                            if numPostsToday >= 2 {
+                                self.isErrorCreatingPost = true
+                                self.errorText = "You've exceeded your max number of posts for today. Upgrade to premium for unlimited posts."
+                                return false
+                            } else {
+                                newNumPostsToday = numPostsToday
+                            }
+                        }
+                    } else {
+                        newNumPostsToday = 0
+                    }
+                }
+                // Free user hasn't reached post quota. Write to their userProfile. Don't write for premium users
+                db.collection("users").document(authorID).updateData([
+                    "lastForumPostDate": Date(),
+                    "numPostsToday": newNumPostsToday + 1
+                ]) { err in
+                    if let err = err {
+                        print("Error updating user forum fields: \(err)")
+                    } else {
+                        print("User forum fields updated successfully written!")
+                    }
+                }
+            }
+        }
+        
+        
         if content == "" {
             self.isErrorCreatingPost = true
             self.errorText = "Please enter your post content"
-            return
+            return false
         }
         
         if content.count > 300 {
             self.isErrorCreatingPost = true
             self.errorText = "Your post is too long, please shorten your post"
-            return
+            return false
         } else {
             self.isErrorCreatingPost = false
             self.errorText = ""
@@ -83,6 +120,7 @@ class ForumManager: ObservableObject {
         } catch {
 //            print("error adding post to collection")
         }
+        return true
     }
     
     func deletePost(postID: String, postCategory: String, commentList: [ForumPostComment]) {
@@ -146,19 +184,56 @@ class ForumManager: ObservableObject {
         }
     }
     
-    func publishComment(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, postID: String, content: String) {
+    func publishComment(authorID: String, authorUsername: String, authorProfilePhoto: String, category: String, postID: String, content: String, isPremiumUser: Bool?, lastCommentDate: Date?, numCommentsToday: Int?) -> Bool {
 //        print("User wanted to publish a comment on a post")
+        
+        // Free user comment count check
+        var newNumCommentsToday: Int = 0
+        if let premium = isPremiumUser {
+            if premium == false {
+                if let lastCommentDate = lastCommentDate {
+                    // Get current date
+                    let currentDate = Date()
+                    // Check if last post date is less than 24 hours ago (posted today)
+                    if lastCommentDate > (currentDate - 86400) {
+                        if let numCommentsToday = numCommentsToday {
+                            if numCommentsToday >= 3 {
+                                self.isErrorCreatingComment = true
+                                self.errorText = "You've exceeded your max number of comments for today. Upgrade to premium for unlimited posts."
+                                return false
+                            } else {
+                                newNumCommentsToday = numCommentsToday
+                            }
+                        }
+                    } else {
+                        newNumCommentsToday = 0
+                    }
+                }
+                // Free user hasn't reached post quota. Write to their userProfile. Don't write for premium users
+                db.collection("users").document(authorID).updateData([
+                    "lastForumCommentDate": Date(),
+                    "numCommentsToday": newNumCommentsToday + 1
+                ]) { err in
+                    if let err = err {
+                        print("Error updating user forum fields: \(err)")
+                    } else {
+                        print("User forum fields updated successfully written!")
+                    }
+                }
+            }
+        }
+        
         
         if content == "" {
             self.isErrorCreatingComment = true
             self.errorText = "Please enter your comment"
-            return
+            return false
         }
         
         if content.count > 300 {
             self.isErrorCreatingComment = true
             self.errorText = "Your comment is too long, please shorten it"
-            return
+            return false
         } else {
             self.isErrorCreatingComment = false
             self.errorText = ""
@@ -170,10 +245,11 @@ class ForumManager: ObservableObject {
         var ref: DocumentReference? = nil
         do {
             try ref = db.collection(collectionName).addDocument(from: comment)
-//            print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
+            print("Adding comment was successful, commentID: \(ref!.documentID) saved on postID: \(postID)")
         } catch {
-//            print("Error adding comment to the post")
+            print("Error adding comment to the post")
         }
+        return true
     }
     
     func deleteComment(commentID: String, commentCategory: String, authorID: String) {

@@ -447,7 +447,8 @@ class AuthStatusManager: ObservableObject {
             "birthday": self.birthday,
             "displayName": self.displayName,
             "userPhotoNonPremium": self.userPhotoNonPremium,
-            "hasUserCompletedWelcomeSurvey": true
+            "hasUserCompletedWelcomeSurvey": true,
+            "isPremiumUser": false,
         ]) { err in
             if let err = err {
 //                print("Error writing document: \(err)")

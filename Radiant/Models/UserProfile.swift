@@ -24,7 +24,18 @@ struct UserProfile: Codable {
     var lastCheckinDate: String?
 //    var checkIns: [CheckIn]?
     
-    // login info
+    // Login Info
     var hasUserCompletedWelcomeSurvey: Bool?
     var hasUserEnteredBetaCode: Bool?
+    
+    // Premium Features
+    var isPremiumUser: Bool?
+    // Community Forum
+    var lastForumPostDate: Date?
+    var numPostsToday: Int?
+    var lastForumCommentDate: Date?
+    var numCommentsToday: Int?
+    // Chat
+    var lastMessageSendDate: Date?
+    var numMessagesSentToday: Int?
 }

@@ -49,6 +49,7 @@ class ProfileStatusManager: ObservableObject {
                 // A UserProfile value was successfully initalized from the DocumentSnapshot
                 self.userProfile = userProf
 //                print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
+                print("user premium status: ", self.userProfile?.isPremiumUser ?? "none")
                 
             case .failure(let error):
                 // A UserProfile value could not be initialized from the DocumentSnapshot

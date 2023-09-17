@@ -95,7 +95,11 @@ struct ForumCreateCommentView: View {
                                     if let rateLimit = profileStateManager.processFirestoreWrite() {
                                         print(rateLimit)
                                     } else {
-                                        forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "Selection Mix II", category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text)
+                                        if forumManager.publishComment(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "Selection Mix II", category: forumManager.focusedPostCategoryName, postID: forumManager.focusedPostID, content: text, isPremiumUser: user.isPremiumUser, lastCommentDate: user.lastForumCommentDate, numCommentsToday: user.numCommentsToday) == true {
+                                            if user.isPremiumUser == false {
+                                                profileStateManager.retrieveUserProfile(userID: user.id!)
+                                            }
+                                        }
                                         if forumManager.isErrorCreatingComment == false {
                                             forumManager.isCreateCommentPopupShowing = false
                                         }
@@ -118,6 +122,7 @@ struct ForumCreateCommentView: View {
                 if forumManager.isErrorCreatingComment {
                     Text(forumManager.errorText)
                         .foregroundColor(.red)
+                        .font(.system(size: 14, design: .serif))
                 }
                 
 //                RoundedRectangle(cornerRadius: 16)

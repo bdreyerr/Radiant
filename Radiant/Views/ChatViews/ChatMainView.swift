@@ -114,6 +114,14 @@ struct ChatMainView: View {
 //                    }
                     
                 }
+                
+                // Error Text
+                if chatManager.isErrorSendingMessage == true {
+                    Text(chatManager.errorText)
+                        .foregroundColor(.red)
+                        .font(.system(size: 14, design: .serif))
+                }
+                
                 // Message send bar
                 HStack {
                     TextField("Hi Radiant Bot!", text: $text, axis: .vertical)
@@ -149,9 +157,12 @@ struct ChatMainView: View {
                             } else {
                                 if let user = profileStateManager.userProfile {
                                     print("user pressed send message button")
-                                    chatManager.sendMessage(userID: user.id!, content: self.text)
-//                                    chatManager.generateRadiantBotResponse(prompt: self.text)
-//                                    self.retrieveMessages(userID: user.id!)
+                                    if chatManager.sendMessage(userID: user.id!, content: self.text, isPremiumUser: user.isPremiumUser, lastMessageSendDate: user.lastMessageSendDate, numMessagesSentToday: user.numMessagesSentToday) == true {
+                                        // message sent successfully
+                                        if user.isPremiumUser == false {
+                                            profileStateManager.retrieveUserProfile(userID: user.id!)
+                                        }
+                                    }
                                 }
                                 self.text = ""
                             }

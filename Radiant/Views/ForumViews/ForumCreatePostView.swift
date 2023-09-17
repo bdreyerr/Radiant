@@ -59,7 +59,12 @@ struct ForumCreatePostView: View {
                             if let rateLimit = profileStateManager.processFirestoreWrite() {
                                 print(rateLimit)
                             } else {
-                                forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "default_prof_pic", category: title!, content: text)
+                                if forumManager.publishPost(authorID: user.id!, authorUsername: user.displayName!, authorProfilePhoto: user.userPhotoNonPremium ?? "default_prof_pic", category: title!, content: text, isPremiumUser: user.isPremiumUser, lastPostDate: user.lastForumPostDate, numPostsToday: user.numPostsToday) == true {
+                                    // if posted successfully and user is nonPremium, update user profile
+                                    if user.isPremiumUser == false {
+                                        profileStateManager.retrieveUserProfile(userID: user.id!)
+                                    }
+                                }
                             }
                         }
                     }) {
@@ -77,6 +82,7 @@ struct ForumCreatePostView: View {
                 if forumManager.isErrorCreatingPost {
                     Text(forumManager.errorText)
                         .foregroundColor(.red)
+                        .font(.system(size: 14, design: .serif))
                 }
                 
 //                RoundedRectangle(cornerRadius: 16)
