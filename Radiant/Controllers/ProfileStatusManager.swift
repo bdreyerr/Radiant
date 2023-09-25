@@ -10,7 +10,9 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
-
+import FirebaseStorage
+import PhotosUI
+import _PhotosUI_SwiftUI
 
 class ProfileStatusManager: ObservableObject {
     
@@ -26,20 +28,17 @@ class ProfileStatusManager: ObservableObject {
     let db = Firestore.firestore()
     @Published var userProfile: UserProfile?
     
-    //    init() {
-    //
-    //        if let userID = Auth.auth().currentUser?.uid {
-    //            self.retrieveUserProfile(userID: userID)
-    //            if let user = self.userProfile {
-    //                self.generateAnonUsernameForForum()
-    //            } else {
-    //                print("User didn't save into ProfileStateManager")
-    //            }
-    //
-    //        }
-    //    }
+    // Firebase Storage
+    let storage = Storage.storage()
+    // Premium User Profile Picture
+    @Published var isUploadProfilePhotoPopupShowing: Bool = false
+    @Published var data: Data?
+    @Published var selectedItem: [PhotosPickerItem] = []
     
+    // Premium User
+    @Published var premiumUserProfilePicture: UIImage?
     
+
     func retrieveUserProfile(userID: String) {
         let docRef = db.collection(Constants.FStore.usersCollectionName).document(userID)
         
@@ -48,8 +47,38 @@ class ProfileStatusManager: ObservableObject {
             case .success(let userProf):
                 // A UserProfile value was successfully initalized from the DocumentSnapshot
                 self.userProfile = userProf
-//                print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
+                //                print("Successfully retrieved the user profile stored in Firestore. Access it with profileStatusManager.userProfile")
                 print("user premium status: ", self.userProfile?.isPremiumUser ?? "none")
+                
+                // if user is premium download their profile picture and save it to the profileStateManager
+                if let isPremium = self.userProfile?.isPremiumUser {
+                    if isPremium {
+                        if let hasPhoto = self.userProfile?.doesPremiumUserHaveCustomProfilePicture {
+                            if hasPhoto {
+                                // Download the photo from storage
+                                let path = "profile_pictures/"
+                                let id = self.userProfile?.id! ?? ""
+                                let fullPath = path + id
+                                
+                                let pathReference = self.storage.reference(withPath: fullPath)
+
+                                
+                                // Download in memory with a maximum allowed size of 10MB (10 * 1024 * 1024 bytes)
+                                pathReference.getData(maxSize: 10 * 1024 * 1024) { data, error in
+                                  if let error = error {
+                                    // Uh-oh, an error occurred!
+                                      print("error downloading photo from storage")
+                                      print(error.localizedDescription)
+                                  } else {
+                                      // Data for "images/island.jpg" is returned
+                                      self.premiumUserProfilePicture = UIImage(data: data!)
+                                      print("premium photo set, its accessible in profileStateManager")
+                                  }
+                                }
+                            }
+                        }
+                    }
+                }
                 
             case .failure(let error):
                 // A UserProfile value could not be initialized from the DocumentSnapshot
@@ -163,5 +192,34 @@ class ProfileStatusManager: ObservableObject {
         }
         
         return errorText
+    }
+    
+    func uploadPremiumUserProfilePhoto(userID: String) {
+        let storageRef = storage.reference()
+        // points to 'profile_pictures/userID'
+        let url = "profile_pictures/" + userID
+        print(url)
+        let imageRef = storageRef.child(url)
+        
+        // Add metadata for the image being uploaded
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        
+        
+        imageRef.putData(self.data!, metadata: metadata) { (metadata, error) in
+            guard let metadata = metadata else { return }
+            
+            self.retrieveUserProfile(userID: userID)
+        }
+        
+        // Write to firestore editing user profile photo
+        let docRef = db.collection(Constants.FStore.usersCollectionName).document(userID)
+        
+        userProfile?.doesPremiumUserHaveCustomProfilePicture = true
+        do {
+            try docRef.setData(from: userProfile)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

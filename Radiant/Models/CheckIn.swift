@@ -17,4 +17,6 @@ public struct CheckIn: Codable {
     var depressionScore: Double?
     var anxietyScore: Double?
     var journalEntry: String?
+    // Premium Only
+    var isPremiumCheckInPhoto: Bool?
 }

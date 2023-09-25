@@ -9,6 +9,7 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import SwiftUI
 
 
 struct UserProfile: Codable {
@@ -30,6 +31,7 @@ struct UserProfile: Codable {
     
     // Premium Features
     var isPremiumUser: Bool?
+    var doesPremiumUserHaveCustomProfilePicture: Bool?
     // Community Forum
     var lastForumPostDate: Date?
     var numPostsToday: Int?

@@ -7,6 +7,8 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseStorage
+import _PhotosUI_SwiftUI
 
 
 class CheckInManager: ObservableObject {
@@ -24,6 +26,14 @@ class CheckInManager: ObservableObject {
     
     @Published var isErrorInCheckIn: Bool = false
     @Published var errorText: String = ""
+    
+    // Firebase Storage
+    let storage = Storage.storage()
+    
+    // Premium CheckIn Picture
+    @Published var isUploadCheckInPhotoShowing: Bool = false
+    @Published var data: Data?
+    @Published var selectedItem: [PhotosPickerItem] = []
     
     let db = Firestore.firestore()
     
@@ -67,6 +77,13 @@ class CheckInManager: ObservableObject {
             }
         }
         
+        // Check for premium check-in photo
+        var isPremiumPhoto: Bool = false
+        if self.data != nil {
+            isPremiumPhoto = true
+            self.uploadPremiumCheckInPhoto(userID: userID)
+        }
+        
         let checkInsRef = db.collection("checkIns")
         checkInsRef.addDocument(data: [
             "userId": userID,
@@ -76,7 +93,8 @@ class CheckInManager: ObservableObject {
             "happinessScore": self.happinessSliderVal,
             "depressionScore": self.depressionSliderVal,
             "anxietyScore": self.anxeitySliderVal,
-            "journalEntry": self.journalEntry
+            "journalEntry": self.journalEntry,
+            "isPremiumCheckInPhoto": isPremiumPhoto
         ]) { err in
             if let err = err {
 //                print("Error adding checkin: \(err.localizedDescription)")
@@ -85,4 +103,33 @@ class CheckInManager: ObservableObject {
             }
         }
     }
+    
+    func uploadPremiumCheckInPhoto(userID: String) {
+        let storageRef = storage.reference()
+        // points to 'profile_pictures/userIDDate'
+        let date = Date().formatted(date: .abbreviated, time: .omitted)
+        let url = "checkin_photos/" + userID + date.description
+        print(url)
+        let imageRef = storageRef.child(url)
+        
+        // Add metadata for the image being uploaded
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        
+        imageRef.putData(self.data!, metadata: metadata) { (metadata, error) in
+            guard let metadata = metadata else { return }
+        }
+        
+        // Write to firestore editing user profile photo
+//        let docRef = db.collection(Constants.FStore.usersCollectionName).document(userID)
+//
+//        userProfile?.doesPremiumUserHaveCustomProfilePicture = true
+//        do {
+//            try docRef.setData(from: userProfile)
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+    }
 }
+
+

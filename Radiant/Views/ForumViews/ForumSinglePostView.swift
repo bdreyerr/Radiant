@@ -47,6 +47,7 @@ struct ForumSinglePostView: View {
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {
                             // Author profile picture
+                            // TODO If the current user is the author and they have a custom profile photo, display it
                             Image(post.userPhoto)
                                 .resizable()
                                 .frame(width: 40, height: 40)
@@ -128,7 +129,6 @@ struct ForumSinglePostView: View {
                                 
                                 
                                 Button(action: {
-                                    
                                     // Rate Limiting check
                                     if let rateLimit = profileStateManager.processFirestoreWrite() {
                                         print(rateLimit)

@@ -36,13 +36,34 @@ struct HomeMainView: View {
                     
                     HStack {
                         // User Image
-                        Image(homeManager.userProfilePhoto)
-                            .resizable()
-                            .frame(width: 60, height: 60, alignment: .leading)
-                            .clipShape(Circle())
-                            .padding(.trailing, 10)
-                        
-                        
+                        if let isPremiumUser = profileStateManager.userProfile?.isPremiumUser {
+                            if !isPremiumUser {
+                                Image(homeManager.userProfilePhoto)
+                                    .resizable()
+                                    .frame(width: 60, height: 60, alignment: .leading)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 10)
+                            } else {
+                                if let userHasCustomPhoto = self.profileStateManager.userProfile?.doesPremiumUserHaveCustomProfilePicture {
+                                    if userHasCustomPhoto {
+                                        if let image = profileStateManager.premiumUserProfilePicture {
+                                            Image(uiImage: image)
+                                                .resizable()
+                                                .frame(width: 60, height: 60, alignment: .leading)
+                                                .clipShape(Circle())
+                                                .padding(.trailing, 10)
+                                        }
+                                    } else {
+                                        Image(homeManager.userProfilePhoto)
+                                            .resizable()
+                                            .frame(width: 60, height: 60, alignment: .leading)
+                                            .clipShape(Circle())
+                                            .padding(.trailing, 10)
+                                    }
+                                }
+                            }
+                        }
+
                         Text ("Hi, \(homeManager.userFirstName)!")
                             .foregroundColor(.black)
                             .font(.system(size: 18, design: .serif))

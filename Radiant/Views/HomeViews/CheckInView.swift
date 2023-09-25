@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct CheckInView: View {
     @StateObject var checkInManager = CheckInManager()
@@ -248,6 +249,60 @@ struct CheckInView: View {
                             .padding(.trailing, 20)
                             .padding(.bottom, 60)
                             
+                            // Daily Photo (Premium Only)
+                            VStack {
+                                    Text("Upload a photo that represents today")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 18, design: .serif))
+                                        .bold()
+                                    
+                                ZStack {
+                                    if let data = checkInManager.data, let image = UIImage(data: data) {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .clipShape(Circle())
+                                            .frame(width: 120, height: 120)
+                                    } else {
+                                        Circle()
+                                            .frame(width: 80, height: 80)
+                                            .foregroundColor(.gray)
+                                            .opacity(0.6)
+                                    }
+                                    
+                                    if let isPremium = profileStateManager.userProfile?.isPremiumUser {
+                                        if !isPremium {
+                                            Image(systemName: "lock.circle")
+                                                .resizable()
+                                                .frame(width: 30, height: 30)
+                                                .foregroundColor(.white)
+                                                .padding(.top, 65)
+                                            
+                                            Text("Upgrade to premium to recap your day with a photo")
+                                                .foregroundColor(.white)
+                                                .font(.system(size: 16, design: .serif))
+                                                .padding(.top, 130)
+                                        } else {
+                                            Button(action: {
+                                                print("user wanted to added a photo to their check-in")
+                                                checkInManager.isUploadCheckInPhotoShowing = true
+                                            }) {
+                                                Image(systemName: "plus.circle.fill")
+                                                    .resizable()
+                                                    .frame(width: 30, height: 30)
+                                                    .foregroundColor(.white)
+                                                    .padding(.top, 75)
+                                            }
+                                            .sheet(isPresented: $checkInManager.isUploadCheckInPhotoShowing) {
+                                                UploadCheckInPhotoPopup()
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            .padding(.bottom, 40)
+                            
                             
                             if checkInManager.isErrorInCheckIn {
                                 Text(checkInManager.errorText)
@@ -297,6 +352,9 @@ struct CheckInView: View {
 struct CheckInView_Previews: PreviewProvider {
     static var previews: some View {
         CheckInView()
+            .environmentObject(ProfileStatusManager())
+            .environmentObject(CheckInManager())
+            .environmentObject(HomeManager())
     }
 }
 
@@ -480,3 +538,53 @@ struct GratitudeView: View {
         }
     }
 }
+
+struct UploadCheckInPhotoPopup: View {
+    @EnvironmentObject var checkInManager: CheckInManager
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    
+    var body: some View {
+        Form {
+            Section {
+                PhotosPicker(selection: $checkInManager.selectedItem, maxSelectionCount: 1, selectionBehavior: .default, matching: .images, preferredItemEncoding: .automatic) {
+                    if let data = checkInManager.data, let image = UIImage(data: data) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame( maxHeight: 300)
+                    } else {
+                        Label("Select a picture", systemImage: "photo.on.rectangle.angled")
+                            .foregroundColor(.blue)
+                    }
+                }.onChange(of: checkInManager.selectedItem) { newValue in
+                    guard let item = checkInManager.selectedItem.first else {
+                        return
+                    }
+                    item.loadTransferable(type: Data.self) { result in
+                        switch result {
+                        case .success(let data):
+                            if let data = data {
+                                checkInManager.data = data
+                            }
+                        case .failure(let failure):
+                            print("Error: \(failure.localizedDescription)")
+                        }
+                    }
+                }
+            }
+            Section {
+                Button("Confirm") {
+                    // Function to post data to Firebase Storage
+                    if let user = profileStateManager.userProfile {
+//                        checkInManager.uploadPremiumCheckInPhoto(userID: user.id!)
+                        checkInManager.isUploadCheckInPhotoShowing = false
+                    }
+                }.disabled(checkInManager.data == nil)
+                    .foregroundColor(checkInManager.data == nil ? .gray : .blue)
+                
+            }
+        }
+    }
+}
+

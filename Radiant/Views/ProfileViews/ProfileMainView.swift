@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct ProfileMainView: View {
     
@@ -53,34 +54,80 @@ struct ProfileMainView: View {
                 .padding(.bottom, 40)
                 
                 HStack {
-                    if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
-                        Image(profPic)
-                            .resizable()
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                            .padding(.trailing, 30)
-                    } else {
-                        Image("default_prof_pic")
-                            .resizable()
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                            .padding(.trailing, 30)
-                    }
                     
+                    // Non premium
+                    if let isPremiumUser = profileStateManager.userProfile?.isPremiumUser {
+                        if !isPremiumUser {
+                            if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                Image(profPic)
+                                    .resizable()
+                                    .frame(width: 80, height: 80, alignment: .leading)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 10)
+                            }
+                        } else {
+                            if let hasPremiumPhoto = profileStateManager.userProfile?.doesPremiumUserHaveCustomProfilePicture {
+                                if hasPremiumPhoto {
+                                    if let image = profileStateManager.premiumUserProfilePicture {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .frame(width: 80, height: 80, alignment: .leading)
+                                            .clipShape(Circle())
+                                            .padding(.trailing, 10)
+                                            .overlay(alignment: .topTrailing) {
+                                                // upload user premium button
+                                                Button(action: {
+                                                    profileStateManager.isUploadProfilePhotoPopupShowing = true
+                                                }) {
+                                                    Image(systemName: "pencil.circle.fill")
+                                                        .symbolRenderingMode(.multicolor)
+                                                        .font(.system(size: 30))
+                                                        .foregroundColor(.accentColor)
+                                                }.sheet(isPresented: $profileStateManager.isUploadProfilePhotoPopupShowing) {
+                                                    UploadProfilePhotoPopup()
+                                                }
+                                            }
+                                    }
+                                } else {
+                                    if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                        Image(profPic)
+                                            .resizable()
+                                            .frame(width: 80, height: 80, alignment: .leading)
+                                            .clipShape(Circle())
+                                            .padding(.trailing, 10)
+                                            .overlay(alignment: .topTrailing) {
+                                                // upload user premium button
+                                                Button(action: {
+                                                    profileStateManager.isUploadProfilePhotoPopupShowing = true
+                                                }) {
+                                                    Image(systemName: "pencil.circle.fill")
+                                                        .symbolRenderingMode(.multicolor)
+                                                        .font(.system(size: 30))
+                                                        .foregroundColor(.accentColor)
+                                                }.sheet(isPresented: $profileStateManager.isUploadProfilePhotoPopupShowing) {
+                                                    UploadProfilePhotoPopup()
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     
                     if let name = profileStateManager.userProfile?.name {
                         Text(name)
                             .foregroundColor(.white)
                             .font(.system(size: 20, design: .serif))
+                            .padding(.leading, 20)
                     } else {
                         Text("User")
                             .padding(.trailing, 30)
                             .foregroundColor(.white)
                             .font(.system(size: 20, design: .serif))
+                            .padding(.leading, 20)
                     }
                 }
                 .padding(.bottom, 20)
-                
                 
                 VStack {
                     if let displayName = profileStateManager.userProfile?.displayName {
@@ -161,5 +208,51 @@ struct ProfileMainView_Previews: PreviewProvider {
         ProfileMainView()
             .environmentObject(AuthStatusManager())
             .environmentObject(ProfileStatusManager())
+    }
+}
+
+
+struct UploadProfilePhotoPopup: View {
+    @EnvironmentObject var profileStateManager: ProfileStatusManager
+    
+    var body: some View {
+        Form {
+            Section {
+                PhotosPicker(selection: $profileStateManager.selectedItem, maxSelectionCount: 1, selectionBehavior: .default, matching: .images, preferredItemEncoding: .automatic) {
+                    if let data = profileStateManager.data, let image = UIImage(data: data) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame( maxHeight: 300)
+                    } else {
+                        Label("Select a picture", systemImage: "photo.on.rectangle.angled")
+                    }
+                }.onChange(of: profileStateManager.selectedItem) { newValue in
+                    guard let item = profileStateManager.selectedItem.first else {
+                        return
+                    }
+                    item.loadTransferable(type: Data.self) { result in
+                        switch result {
+                        case .success(let data):
+                            if let data = data {
+                                profileStateManager.data = data
+                            }
+                        case .failure(let failure):
+                            print("Error: \(failure.localizedDescription)")
+                        }
+                    }
+                }
+            }
+            Section {
+                Button("Confirm") {
+                    // Function to post data to Firebase Storage
+                    if let user = profileStateManager.userProfile {
+                        profileStateManager.uploadPremiumUserProfilePhoto(userID: user.id!)
+                        profileStateManager.isUploadProfilePhotoPopupShowing = false
+                    }
+                }.disabled(profileStateManager.data == nil)
+            }
+        }
     }
 }

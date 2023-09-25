@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseStorage
 
 
 struct HistoryMainView: View {
@@ -46,7 +47,7 @@ struct HistoryMainView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(historyManager.days) { day in
-                                DayBubble(day: day.self, dayOfMonth: day.dayOfMonth, isComplete: day.doesCheckInExist)
+                                DayBubble(day: day.self, dayOfMonth: day.dayOfMonth, isComplete: day.doesCheckInExist, doesCheckInPhotoExist: day.doesCheckInPhotoExist)
                             }
                         }
                     }
@@ -163,6 +164,24 @@ struct HistoryMainView: View {
                         if let journalEntry = historyManager.focusedDay?.checkIn?.journalEntry {
                             JournalEntry(journalText: journalEntry)
                         }
+                        
+                        
+                        // Todo: Find a better way to display the photo of the day
+//                        HStack {
+//                            Text("Photo of the day")
+//                                .font(.system(size: 20, design: .serif))
+//                                .foregroundColor(.white)
+//
+//                            Spacer()
+//                            // Display the photo
+//                            if historyManager.focusedDay!.doesCheckInPhotoExist == true {
+//                                Image(uiImage: historyManager.checkInPremiumPhotos[self.historyManager.focusedDay!.formattedDateForFirestore] ?? UIImage())
+//                                    .resizable()
+//                                    .frame(width: 100, height: 100)
+//                                    .clipShape(Circle())
+//                                    .padding(.top, 40)
+//                            }
+//                        }
                     } else {
                         // add something to indicate no check-in was logged
                     }
@@ -175,9 +194,20 @@ struct HistoryMainView: View {
             .onAppear {
                 if let user = Auth.auth().currentUser?.uid {
                     historyManager.crossCheckDaysWithCheckInsFromFirstore(userId: user)
+                    let seconds = 2.0
+                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                    //                        for i in 0...historyManager.days.count - 1  {
+                    //                            print(historyManager.days[i].formattedDateForFirestore)
+                    //                            print(historyManager.days[i].checkInPremiumPhoto != nil)
+                    //                        }
+                    //                        historyManager.attatchPremiumCheckInPhotos(userId: user)
+                    //                    }
+                    
                 } else {
                     print("no user yet")
                 }
+                
+                
             }
             
         }
@@ -201,6 +231,9 @@ struct DayBubble: View {
     let isComplete: Bool?
     let isFocused: Bool = false
     
+    let doesCheckInPhotoExist: Bool?
+    @State var customImage: UIImage?
+    
     var body: some View {
         
         Button(action: {
@@ -214,9 +247,26 @@ struct DayBubble: View {
                         .foregroundColor(.black)
                     
                     if isComplete! {
-                        Circle()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.green)
+                        ZStack {
+                            Circle()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.green)
+//                            if let isPhoto = self.doesCheckInPhotoExist {
+//                                if isPhoto {
+//                                    Image(uiImage: self.day!.checkInPremiumPhoto)
+//                                        .resizable()
+//                                        .frame(width: 40, height: 40)
+//                                        .clipShape(Circle())
+//                                }
+//                            }
+                            if self.day!.doesCheckInPhotoExist == true {
+                                Image(uiImage: historyManager.checkInPremiumPhotos[self.day!.formattedDateForFirestore] ?? UIImage())
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            }
+                        }
+                        
                     } else {
                         Circle()
                             .frame(width: 40, height: 40)
@@ -226,15 +276,28 @@ struct DayBubble: View {
                 }
                 .padding(.trailing, 10)
             } else {
+                
                 VStack {
                     Text("\(dayOfMonth!)")
                         .font(.system(size: 16, design: .serif))
                         .foregroundColor(.black)
                     
+                    
+                    
                     if isComplete! {
-                        Circle()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.green)
+                        // check for a custom check-in photo
+                        ZStack {
+                            Circle()
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.green)
+                            if self.day!.doesCheckInPhotoExist == true {
+                                Image(uiImage: historyManager.checkInPremiumPhotos[self.day!.formattedDateForFirestore] ?? UIImage())
+                                    .resizable()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                            }
+                        }
+                        
                     } else {
                         Circle()
                             .frame(width: 50, height: 50)
@@ -245,7 +308,6 @@ struct DayBubble: View {
                 .padding(.trailing, 10)
             }
         }.animation(.easeInOut(duration: 0.2))
-        
     }
 }
 
@@ -296,27 +358,27 @@ struct JournalEntry: View {
     let backgroundImage = Image("notebook_paper")
     
     var body: some View {
-//        backgroundImage
-//            .resizable()
-//            .frame(width: 360, height: 140)
-//            .cornerRadius(20)
-//            .blur(radius: 2)
-//            .overlay {
-//                VStack {
-//                    HStack() {
-//                        Text(journalText)
-//                            .font(.system(size: 15, design: .serif))
-//                            .foregroundColor(.black)
-//                        Spacer()
-//                    }
-//
-//                    Spacer()
-//                }
-//                .padding(.leading, 30)
-//                .padding(.top, 18)
-//                .padding(.bottom, 10)
-//                .padding(.trailing, 10)
-//            }
+        //        backgroundImage
+        //            .resizable()
+        //            .frame(width: 360, height: 140)
+        //            .cornerRadius(20)
+        //            .blur(radius: 2)
+        //            .overlay {
+        //                VStack {
+        //                    HStack() {
+        //                        Text(journalText)
+        //                            .font(.system(size: 15, design: .serif))
+        //                            .foregroundColor(.black)
+        //                        Spacer()
+        //                    }
+        //
+        //                    Spacer()
+        //                }
+        //                .padding(.leading, 30)
+        //                .padding(.top, 18)
+        //                .padding(.bottom, 10)
+        //                .padding(.trailing, 10)
+        //            }
         
         GoalCapsule(keyword: journalText, symbol: "pencil.circle", color: "white")
     }

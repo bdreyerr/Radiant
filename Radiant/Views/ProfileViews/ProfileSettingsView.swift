@@ -48,19 +48,63 @@ struct ProfileSettingsView: View {
                     HStack(alignment: .center) {
                         
                         ZStack {
-                            
-                            if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
-                                Image(profPic)
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(Circle())
-                                    .padding(.horizontal, (UIScreen.main.bounds.width / 2))
-                            } else {
-                                Image("default_prof_pic")
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(Circle())
-                                    .padding(.horizontal, (UIScreen.main.bounds.width / 2))
+                            // Profile Photo
+                            if let isPremiumUser = profileStateManager.userProfile?.isPremiumUser {
+                                if !isPremiumUser {
+                                    if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                        Image(profPic)
+                                            .resizable()
+                                            .frame(width: 80, height: 80, alignment: .leading)
+                                            .clipShape(Circle())
+                                            .padding(.trailing, 10)
+                                    }
+                                } else {
+                                    if let hasPremiumPhoto = profileStateManager.userProfile?.doesPremiumUserHaveCustomProfilePicture {
+                                        if hasPremiumPhoto {
+                                            if let image = profileStateManager.premiumUserProfilePicture {
+                                                Image(uiImage: image)
+                                                    .resizable()
+                                                    .frame(width: 80, height: 80, alignment: .leading)
+                                                    .clipShape(Circle())
+                                                    .padding(.trailing, 10)
+                                                    .overlay(alignment: .topTrailing) {
+                                                        // upload user premium button
+                                                        Button(action: {
+                                                            profileStateManager.isUploadProfilePhotoPopupShowing = true
+                                                        }) {
+                                                            Image(systemName: "pencil.circle.fill")
+                                                                .symbolRenderingMode(.multicolor)
+                                                                .font(.system(size: 30))
+                                                                .foregroundColor(.accentColor)
+                                                        }.sheet(isPresented: $profileStateManager.isUploadProfilePhotoPopupShowing) {
+                                                            UploadProfilePhotoPopup()
+                                                        }
+                                                    }
+                                            }
+                                        } else {
+                                            if let profPic = profileStateManager.userProfile?.userPhotoNonPremium {
+                                                Image(profPic)
+                                                    .resizable()
+                                                    .frame(width: 80, height: 80, alignment: .leading)
+                                                    .clipShape(Circle())
+                                                    .padding(.trailing, 10)
+                                                    .overlay(alignment: .topTrailing) {
+                                                        // upload user premium button
+                                                        Button(action: {
+                                                            profileStateManager.isUploadProfilePhotoPopupShowing = true
+                                                        }) {
+                                                            Image(systemName: "pencil.circle.fill")
+                                                                .symbolRenderingMode(.multicolor)
+                                                                .font(.system(size: 30))
+                                                                .foregroundColor(.accentColor)
+                                                        }.sheet(isPresented: $profileStateManager.isUploadProfilePhotoPopupShowing) {
+                                                            UploadProfilePhotoPopup()
+                                                        }
+                                                    }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                                 
                         }
