@@ -13,7 +13,7 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-
+import GoogleMobileAds
 
 class ForumManager: ObservableObject {
         

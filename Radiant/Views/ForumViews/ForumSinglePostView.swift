@@ -47,12 +47,35 @@ struct ForumSinglePostView: View {
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {
                             // Author profile picture
-                            // TODO If the current user is the author and they have a custom profile photo, display it
-                            Image(post.userPhoto)
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                                .padding(.trailing, 10)
+                            // If the current user is the author and they have a custom profile photo, display it
+                            
+                            ZStack {
+                                Image(post.userPhoto)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 10)
+                                
+                                if let user = Auth.auth().currentUser?.uid {
+                                    if user == self.post?.authorID {
+                                        if let user = profileStateManager.userProfile {
+                                            if let isPremium = user.isPremiumUser {
+                                                if isPremium {
+                                                    if let customPhoto = profileStateManager.premiumUserProfilePicture {
+                                                        Image(uiImage: customPhoto)
+                                                            .resizable()
+                                                            .frame(width: 40, height: 40)
+                                                            .clipShape(Circle())
+                                                            .padding(.trailing, 10)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
                             
                             VStack(alignment: .leading) {
                                 
@@ -409,11 +432,33 @@ struct Comment: View {
         VStack(alignment: .leading) {
             HStack {
                 // Author profile picture
-                Image(userPhoto ?? "Selection Mix II")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .padding(.trailing, 10)
+                // If the current user is the comment author and has a premium custom photo, display it
+                ZStack {
+                    Image(userPhoto ?? "Selection Mix II")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .padding(.trailing, 10)
+                    
+                    if let user = Auth.auth().currentUser?.uid {
+                        if user == self.authorID {
+                            if let user = profileStateManager.userProfile {
+                                if let isPremium = user.isPremiumUser {
+                                    if isPremium {
+                                        if let customPhoto = profileStateManager.premiumUserProfilePicture {
+                                            Image(uiImage: customPhoto)
+                                                .resizable()
+                                                .frame(width: 40, height: 40)
+                                                .clipShape(Circle())
+                                                .padding(.trailing, 10)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 
                 VStack(alignment: .leading) {
                     // Author Name

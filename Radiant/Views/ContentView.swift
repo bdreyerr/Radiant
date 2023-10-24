@@ -70,13 +70,6 @@ struct ContentView: View {
 //                            }
 //                        }
 //                    }
-                    
-                    // Check code for the closed beta
-                    if let betaStatus = UserDefaults.standard.object(forKey: isUserValidForBetaKey) as? Bool {
-                        if betaStatus == false {
-                            BetaTestValidationView()
-                        }
-                    }
                 } else {
 //                    RegisterView()
                 }

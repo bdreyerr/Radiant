@@ -21,11 +21,19 @@ class ChatManager: ObservableObject {
     
     let openAI = OpenAI(apiToken: Secrets.openAiAPIKey)
     
-    @Published var responseReady: Bool = false
+    @Published var displayLoadingMessage: Bool = false
     @Published var messages: [Message] = []
+    @Published var currentId = 0
     
     @Published var isErrorSendingMessage: Bool = false
     @Published var errorText: String = ""
+    
+    
+    init() {
+        if let user = Auth.auth().currentUser?.uid {
+            retrieveMessages(userID: user)
+        }
+    }
     
     func retrieveMessages(userID: String) {
         self.messages = []
@@ -95,14 +103,18 @@ class ChatManager: ObservableObject {
             return false
         }
         
-        let message = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
+        let message = Message(id: "\(self.currentId)", userID: userID, isMessageFromUser: true, content: content, date: Date.now)
+        self.currentId += 1
+        // Firebase will assign it's own id
+        let messageForFirebase = Message(userID: userID, isMessageFromUser: true, content: content, date: Date.now)
         self.messages.append(message)
+        self.displayLoadingMessage = true
         
         let collectionName = Constants.FStore.messageCollectionName
         
         var ref: DocumentReference? = nil
         do {
-            try ref = db.collection(collectionName).addDocument(from: message)
+            try ref = db.collection(collectionName).addDocument(from: messageForFirebase)
 //            print("successfully saved message to db")
         } catch {
 //            print("Error saving message to firestore")
@@ -117,11 +129,15 @@ class ChatManager: ObservableObject {
             case .success(let result):
                 if let response = result.choices[0].message.content {
 //                    print("OPENAI RESPONSE: \(response)")
-                    let responseMessage = Message(userID: userID, isMessageFromUser: false, content: response, date: Date.now)
+                    let responseMessage = Message(id: "\(self.currentId)", userID: userID, isMessageFromUser: false, content: response, date: Date.now)
+                    self.currentId += 1
+                    let responseMessageForFirebase = Message(userID: userID, isMessageFromUser: false, content: response, date: Date.now)
                     do {
-                        try ref = self.db.collection(collectionName).addDocument(from: responseMessage)
+                        try ref = self.db.collection(collectionName).addDocument(from: responseMessageForFirebase)
 //                        print("successfully saved response message to db")
-                        self.retrieveMessages(userID: userID)
+//                        self.retrieveMessages(userID: userID)
+                        self.displayLoadingMessage = false
+                        self.messages.append(responseMessage)
                     } catch {
 //                        print("Error saving response message to firestore")
                     }

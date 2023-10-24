@@ -43,6 +43,10 @@ struct Constants {
         static let messageCollectionName = "messages"
     }
     
+    struct GoogleMobileAds {
+        static let testOnlyAdUnitId = "ca-app-pub-3940256099942544/3986624511"
+    }
+    
     struct AppleIDs {
         static let appleSignInServiceID = "com.bendreyer.radiant-applesigninid"
         static let appleSignInPrivateKeyName = "RadiantAppleSignInKey"

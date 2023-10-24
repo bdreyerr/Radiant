@@ -13,14 +13,15 @@ import FirebaseFirestoreSwift
 struct ChatMainView: View {
     
 //    @ObservedObject private var kGuardian = KeyboardGuardian(textFieldCount: 1)
-
-    
-    
     @EnvironmentObject var authStateManager: AuthStatusManager
     @EnvironmentObject var profileStateManager: ProfileStatusManager
     @StateObject var chatManager = ChatManager()
     
     @State var text: String
+    
+    // vars for the loading response animation
+    @State var textForLoadingResponse: String = ""
+    let finalText: String = "....."
     
     let db = Firestore.firestore()
     
@@ -101,6 +102,13 @@ struct ChatMainView: View {
                                 } else {
                                     Text("")
                                 }
+                            }
+                            if chatManager.displayLoadingMessage {
+                                MessageFromBot(text: textForLoadingResponse)
+                                    .id(chatManager.messages.count - 1)
+                                    .onAppear {
+                                        typeWriter()
+                                    }
                             }
                         }
                     }
@@ -187,12 +195,23 @@ struct ChatMainView: View {
 //        .ignoresSafeArea(.keyboard)
         .environmentObject(chatManager)
         .onAppear {
-            if let user = profileStateManager.userProfile {
-                chatManager.retrieveMessages(userID: user.id!)
-            }
+//            if let user = profileStateManager.userProfile {
+//                chatManager.retrieveMessages(userID: user.id!)
+//            }
         }
     }
     
+    func typeWriter(at position: Int = 0) {
+        if position == 0 {
+            textForLoadingResponse = ""
+        }
+        if position < finalText.count {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                textForLoadingResponse.append(finalText[position])
+                typeWriter(at: position + 1)
+            }
+        }
+    }
     
 //    func retrieveMessages(userID: String) {
 //        self.messages = []
@@ -217,6 +236,12 @@ struct ChatMainView: View {
 //        }
 //    }
     
+}
+
+extension String {
+    subscript(offset: Int) -> Character {
+        self[index(startIndex, offsetBy: offset)]
+    }
 }
 
 struct ChatMainView_Previews: PreviewProvider {

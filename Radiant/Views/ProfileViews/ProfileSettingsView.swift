@@ -10,6 +10,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import StoreKit
 
 struct ProfileSettingsView: View {
     
@@ -108,6 +109,13 @@ struct ProfileSettingsView: View {
                             }
                                 
                         }
+                    }
+                    
+                    Section(header: Text("Radiant")) {
+                        Link("Terms of Use (EULA)", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                        
+                        
+                        Link("Privacy Policy", destination: URL(string: "https://sites.google.com/view/radiant-privacy-policy/home")!)
                     }
                     
                     Section(header: Text("Account Details")) {
@@ -235,6 +243,17 @@ struct ProfileSettingsView: View {
                     }
                     
                     Section(header: Text("Account")) {
+                        Button {
+                            Task {
+                                do {
+                                    try await AppStore.sync()
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        } label: {
+                            Text("Restore Purchases")
+                        }
                         Button(action: {
                             // Sign out of account
                             authStateManager.logOut()
@@ -247,7 +266,7 @@ struct ProfileSettingsView: View {
                             print("delete account")
                             self.presentDeleteAccountAlert = true
                         }) {
-                            Text("Delete account")
+                            Text("Delete Account")
                                 .foregroundColor(.red)
                         }
                         .alert("Are you sure you want to delete your account?", isPresented: self.$presentDeleteAccountAlert) {

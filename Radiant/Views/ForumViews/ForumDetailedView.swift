@@ -60,6 +60,8 @@ struct ForumDetailedView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading) {
+                        // Google Mobile Ad
+                        
                         // look up the username with their id
                         ForEach(posts, id: \.id) { post in
                             if post.id != nil {
@@ -218,11 +220,33 @@ struct Post: View {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
                         // User profile picture
-                        Image(userPhoto)
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                            .padding(.trailing, 10)
+                        // If the current user is the author and has a premium custom photo, display that
+                        ZStack {
+                            Image(userPhoto)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                                .padding(.trailing, 10)
+                            
+                            if let user = Auth.auth().currentUser?.uid {
+                                if user == self.authorID {
+                                    if let user = profileStateManager.userProfile {
+                                        if let isPremium = user.isPremiumUser {
+                                            if isPremium {
+                                                if let customPhoto = profileStateManager.premiumUserProfilePicture {
+                                                    Image(uiImage: customPhoto)
+                                                        .resizable()
+                                                        .frame(width: 40, height: 40)
+                                                        .clipShape(Circle())
+                                                        .padding(.trailing, 10)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
                         VStack(alignment: .leading) {
                             // username
                             Text(username)

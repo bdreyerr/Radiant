@@ -7,11 +7,14 @@
 
 import SwiftUI
 import _PhotosUI_SwiftUI
+import StoreKit
 
 struct ProfileMainView: View {
     
     @EnvironmentObject var authStateManager: AuthStatusManager
     @EnvironmentObject var profileStateManager: ProfileStatusManager
+    
+    @State var isChangePlanPopupShowing: Bool = false
     
     var body: some View {
         
@@ -38,7 +41,7 @@ struct ProfileMainView: View {
                     
                     Spacer()
                     
-
+                    
                     Button(action: {
                         profileStateManager.isProfileSettingsPopupShowing = true
                     }) {
@@ -168,25 +171,46 @@ struct ProfileMainView: View {
                             .bold()
                             .font(.system(size: 20, design: .serif))
                         
-                        Text("Basic")
-                            .foregroundColor(.white)
-                            .font(.system(size: 18, design: .serif))
                         
-                        Button(action: {
-                            //                            authStateManager.logOut()
-                        }) {
-                            RoundedRectangle(cornerRadius: 30)
-                                .foregroundColor(.blue)
-                                .frame(width: 120, height: 40)
-                                .overlay {
-                                    Text("Change Plan")
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 16, design: .serif))
-                                }
-                            
+                        if let isPremium = profileStateManager.userProfile?.isPremiumUser {
+                            if isPremium {
+                                Text("Premium")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .serif))
+                            } else {
+                                Text("Basic")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, design: .serif))
+                            }
+                        } else {
+                            Text("Basic")
+                                .foregroundColor(.white)
+                                .font(.system(size: 18, design: .serif))
                         }
-                        .padding(.trailing, 20)
-                        .padding(.leading, 20)
+                        
+                        
+                        if let isPremiumUser = profileStateManager.userProfile?.isPremiumUser {
+                            if !isPremiumUser {
+                                Button(action: {
+                                    //                            authStateManager.logOut()
+                                    isChangePlanPopupShowing = true
+                                }) {
+                                    RoundedRectangle(cornerRadius: 30)
+                                        .foregroundColor(.blue)
+                                        .frame(width: 120, height: 40)
+                                        .overlay {
+                                            Text("Change Plan")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 16, design: .serif))
+                                        }
+                                    
+                                }
+                                .sheet(isPresented: $isChangePlanPopupShowing) {
+                                    UpgradeToPremiumPopup()
+                                }
+                            }
+                        }
+                        
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 40)
@@ -252,6 +276,264 @@ struct UploadProfilePhotoPopup: View {
                         profileStateManager.isUploadProfilePhotoPopupShowing = false
                     }
                 }.disabled(profileStateManager.data == nil)
+            }
+        }
+    }
+}
+
+struct UpgradeToPremiumPopup: View {
+    
+    @State var isYearlySelected: Bool = true
+    
+    
+    
+    @EnvironmentObject
+    private var entitlementManager: EntitlementManager
+
+    @EnvironmentObject
+    private var purchaseManager: PurchaseManager
+    
+    var body: some View {
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            
+            VStack(alignment: .center) {
+                
+                if entitlementManager.hasPro {
+                    Text("Thank you for purchasing pro! You may need to restart the app to access the premium features")
+                        .padding(.leading, 20)
+                        .padding(.trailing, 20)
+                        .foregroundColor(.black)
+                } else {
+                    Rectangle()
+                        .frame(width: 500, height: 60)
+                        .foregroundColor(.blue)
+                        .overlay {
+                            Text("Upgrade to Premium")
+                                .foregroundColor(.white)
+                                .font(.system(size: 16, design: .serif))
+                        }
+                    
+                    Text("Premium Membership")
+                        .foregroundColor(.black)
+                        .font(.system(size: 20, design: .serif))
+                        .bold()
+                        .padding(.top, 35)
+                    
+                    Text("Unlock full feature access and customizability")
+                        .foregroundColor(.black)
+                        .font(.system(size: 16, design: .serif))
+                        .padding(.top, 6)
+                    
+                    Image("upgrade_lotus")
+                        .resizable()
+                        .frame(width: 160, height: 160)
+                    Group {
+                        Text("Features included:")
+                            .foregroundColor(.black)
+                            .font(.system(size: 20, design: .serif))
+                        Text("- Unlimited access to the community form")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, design: .serif))
+                        Text("- Unlimited access to Radiant Chat Bot")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, design: .serif))
+                        Text("- Full access to education pieces and activities")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, design: .serif))
+                        Text("- Complete check-ins with photo summaries")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, design: .serif))
+                        Text("- Express yourself with custom profile pictures")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, design: .serif))
+                    }
+                    
+                    HStack {
+                        if isYearlySelected {
+                            Button(action: {
+                                isYearlySelected = false
+                            }) {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.black, lineWidth: 2)
+                                    .frame(width: 120, height: 160)
+                                //                                                .foregroundColor(.cyan)
+                                    .overlay {
+                                        VStack {
+                                            Text("Monthly")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 20, design: .serif))
+                                                .padding(.top, 10)
+                                            
+                                            Spacer()
+                                            
+                                            Text("$6.99")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                            
+                                            Text("per month")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                        }
+                                        
+                                    }
+                            }
+                        } else {
+                            Button(action: {
+                                isYearlySelected = false
+                            }) {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.blue, lineWidth: 2)
+                                    .frame(width: 140, height: 180)
+                                //                                                .foregroundColor(.cyan)
+                                    .overlay {
+                                        VStack {
+                                            Text("Monthly")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 20, design: .serif))
+                                                .padding(.top, 10)
+                                            
+                                            Spacer()
+                                            
+                                            Text("$6.99")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                            
+                                            Text("per month")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                        }
+                                        
+                                    }
+                            }
+                        }
+                        
+                        if isYearlySelected {
+                            Button(action: {
+                                isYearlySelected = true
+                            }) {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.blue, lineWidth: 2)
+                                    .frame(width: 140, height: 180)
+                                //                                                .foregroundColor(.cyan)
+                                    .overlay {
+                                        VStack {
+                                            Text("Yearly")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 20, design: .serif))
+                                                .padding(.top, 10)
+                                            
+                                            Spacer()
+                                            
+                                            Text("$59.99")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                            
+                                            Text("per year")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                            
+                                            Text("Save 30%")
+                                                .foregroundColor(.green)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                            
+                                        }
+                                        
+                                    }
+                            }
+                        } else {
+                            Button(action: {
+                                isYearlySelected = true
+                            }) {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.black, lineWidth: 2)
+                                    .frame(width: 120, height: 160)
+                                //                                                .foregroundColor(.cyan)
+                                    .overlay {
+                                        VStack {
+                                            Text("Yearly")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 20, design: .serif))
+                                                .padding(.top, 10)
+                                            
+                                            Spacer()
+                                            
+                                            Text("$59.99")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                            
+                                            Text("per year")
+                                                .foregroundColor(.black)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                            
+                                            Text("Save 30%")
+                                                .foregroundColor(.green)
+                                                .font(.system(size: 18, design: .serif))
+                                                .padding(.bottom, 10)
+                                            
+                                        }
+                                        
+                                    }
+                            }
+                        }
+                        
+                    }
+                    .padding(.top, 20)
+                    
+                    Button(action: {
+                        print("user wanted to confim premium purchase, calling purchase function")
+                        Task {
+                            var product: Product
+                            if isYearlySelected {
+                                // Hopefully this spits out yearly??
+                                product = purchaseManager.products[1]
+                                print("The product selected is: ", product.displayName)
+                                do {
+                                    try await purchaseManager.purchase(product)
+                                } catch {
+                                    print(error)
+                                }
+                            } else {
+                                // Hopefully this spits out monthly??
+                                product = purchaseManager.products[0]
+                                print("The product selected is: ", product.displayName)
+                                do {
+                                    try await purchaseManager.purchase(product)
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }
+                    }) {
+                        RoundedRectangle(cornerRadius: 40)
+                            .frame(maxWidth: 300, minHeight: 50, maxHeight: 50)
+                            .foregroundColor(.blue)
+                            .overlay {
+                                ZStack {
+                                    Text("Confirm")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 15, design: .serif))
+                                }
+                            }
+                        
+                        
+                    }
+                    .padding(.top, 20)
+                    
+                    Spacer()
+                }
+            }
+        }.task {
+            do {
+                try await purchaseManager.loadProducts()
+            } catch {
+                print(error)
             }
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ForumCreateCommentView: View {
     
@@ -30,11 +31,33 @@ struct ForumCreateCommentView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             // Author profile picture
-                            Image(post.userPhoto)
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
-                                .padding(.trailing, 10)
+                            // If the current user is the author and has a premium custom photo display it
+                            ZStack {
+                                Image(post.userPhoto)
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                                    .padding(.trailing, 10)
+                                
+                                if let user = Auth.auth().currentUser?.uid {
+                                    if user == self.post?.authorID {
+                                        if let user = profileStateManager.userProfile {
+                                            if let isPremium = user.isPremiumUser {
+                                                if isPremium {
+                                                    if let customPhoto = profileStateManager.premiumUserProfilePicture {
+                                                        Image(uiImage: customPhoto)
+                                                            .resizable()
+                                                            .frame(width: 40, height: 40)
+                                                            .clipShape(Circle())
+                                                            .padding(.trailing, 10)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
                             
                             VStack(alignment: .leading) {
                                 

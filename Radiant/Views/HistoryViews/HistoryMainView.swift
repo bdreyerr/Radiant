@@ -206,8 +206,6 @@ struct HistoryMainView: View {
                 } else {
                     print("no user yet")
                 }
-                
-                
             }
             
         }
