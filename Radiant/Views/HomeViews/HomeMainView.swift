@@ -88,7 +88,7 @@ struct HomeMainView: View {
                             .padding(.leading, 120)
                     }
                     .padding(.leading, 20)
-                    .padding(.top, 10)
+                    .padding(.top, 50)
                     
                     
                     

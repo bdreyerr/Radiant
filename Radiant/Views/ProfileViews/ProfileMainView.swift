@@ -54,6 +54,7 @@ struct ProfileMainView: View {
                     }
                     .padding(.trailing, 20)
                 }
+                .padding(.top, 40)
                 .padding(.bottom, 40)
                 
                 HStack {
@@ -307,7 +308,7 @@ struct UpgradeToPremiumPopup: View {
                         .foregroundColor(.black)
                 } else {
                     Rectangle()
-                        .frame(width: 500, height: 60)
+                        .frame(width: 500, height: 40)
                         .foregroundColor(.blue)
                         .overlay {
                             Text("Upgrade to Premium")
@@ -317,37 +318,37 @@ struct UpgradeToPremiumPopup: View {
                     
                     Text("Premium Membership")
                         .foregroundColor(.black)
-                        .font(.system(size: 20, design: .serif))
+                        .font(.system(size: 18, design: .serif))
                         .bold()
-                        .padding(.top, 35)
+                        .padding(.top, 20)
                     
                     Text("Unlock full feature access and customizability")
                         .foregroundColor(.black)
-                        .font(.system(size: 16, design: .serif))
+                        .font(.system(size: 14, design: .serif))
                         .padding(.top, 6)
                     
                     Image("upgrade_lotus")
                         .resizable()
-                        .frame(width: 160, height: 160)
+                        .frame(width: 100, height: 100)
                     Group {
                         Text("Features included:")
                             .foregroundColor(.black)
-                            .font(.system(size: 20, design: .serif))
+                            .font(.system(size: 18, design: .serif))
                         Text("- Unlimited access to the community form")
                             .foregroundColor(.black)
-                            .font(.system(size: 16, design: .serif))
+                            .font(.system(size: 14, design: .serif))
                         Text("- Unlimited access to Radiant Chat Bot")
                             .foregroundColor(.black)
-                            .font(.system(size: 16, design: .serif))
+                            .font(.system(size: 14, design: .serif))
                         Text("- Full access to education pieces and activities")
                             .foregroundColor(.black)
-                            .font(.system(size: 16, design: .serif))
+                            .font(.system(size: 14, design: .serif))
                         Text("- Complete check-ins with photo summaries")
                             .foregroundColor(.black)
-                            .font(.system(size: 16, design: .serif))
+                            .font(.system(size: 14, design: .serif))
                         Text("- Express yourself with custom profile pictures")
                             .foregroundColor(.black)
-                            .font(.system(size: 16, design: .serif))
+                            .font(.system(size: 14, design: .serif))
                     }
                     
                     HStack {
@@ -363,18 +364,18 @@ struct UpgradeToPremiumPopup: View {
                                         VStack {
                                             Text("Monthly")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 20, design: .serif))
+                                                .font(.system(size: 18, design: .serif))
                                                 .padding(.top, 10)
                                             
                                             Spacer()
                                             
                                             Text("$6.99")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                             
                                             Text("per month")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                         }
                                         
@@ -392,18 +393,18 @@ struct UpgradeToPremiumPopup: View {
                                         VStack {
                                             Text("Monthly")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 20, design: .serif))
+                                                .font(.system(size: 18, design: .serif))
                                                 .padding(.top, 10)
                                             
                                             Spacer()
                                             
                                             Text("$6.99")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                             
                                             Text("per month")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                         }
                                         
@@ -423,23 +424,23 @@ struct UpgradeToPremiumPopup: View {
                                         VStack {
                                             Text("Yearly")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 20, design: .serif))
+                                                .font(.system(size: 18, design: .serif))
                                                 .padding(.top, 10)
                                             
                                             Spacer()
                                             
                                             Text("$59.99")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                             
                                             Text("per year")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                             
                                             Text("Save 30%")
                                                 .foregroundColor(.green)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                             
                                         }
@@ -458,23 +459,23 @@ struct UpgradeToPremiumPopup: View {
                                         VStack {
                                             Text("Yearly")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 20, design: .serif))
+                                                .font(.system(size: 18, design: .serif))
                                                 .padding(.top, 10)
                                             
                                             Spacer()
                                             
                                             Text("$59.99")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                             
                                             Text("per year")
                                                 .foregroundColor(.black)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                             
                                             Text("Save 30%")
                                                 .foregroundColor(.green)
-                                                .font(.system(size: 18, design: .serif))
+                                                .font(.system(size: 16, design: .serif))
                                                 .padding(.bottom, 10)
                                             
                                         }
@@ -484,7 +485,7 @@ struct UpgradeToPremiumPopup: View {
                         }
                         
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 10)
                     
                     Button(action: {
                         print("user wanted to confim premium purchase, calling purchase function")
@@ -518,13 +519,13 @@ struct UpgradeToPremiumPopup: View {
                                 ZStack {
                                     Text("Confirm")
                                         .foregroundColor(.white)
-                                        .font(.system(size: 15, design: .serif))
+                                        .font(.system(size: 13, design: .serif))
                                 }
                             }
                         
                         
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 10)
                     
                     Spacer()
                 }
