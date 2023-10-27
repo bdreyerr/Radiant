@@ -40,7 +40,7 @@ struct HomeMainView: View {
                             if !isPremiumUser {
                                 Image(homeManager.userProfilePhoto)
                                     .resizable()
-                                    .frame(width: 60, height: 60, alignment: .leading)
+                                    .frame(width: 50, height: 50, alignment: .leading)
                                     .clipShape(Circle())
                                     .padding(.trailing, 10)
                             } else {
@@ -49,14 +49,14 @@ struct HomeMainView: View {
                                         if let image = profileStateManager.premiumUserProfilePicture {
                                             Image(uiImage: image)
                                                 .resizable()
-                                                .frame(width: 60, height: 60, alignment: .leading)
+                                                .frame(width: 50, height: 50, alignment: .leading)
                                                 .clipShape(Circle())
                                                 .padding(.trailing, 10)
                                         }
                                     } else {
                                         Image(homeManager.userProfilePhoto)
                                             .resizable()
-                                            .frame(width: 60, height: 60, alignment: .leading)
+                                            .frame(width: 50, height: 50, alignment: .leading)
                                             .clipShape(Circle())
                                             .padding(.trailing, 10)
                                     }
@@ -80,15 +80,16 @@ struct HomeMainView: View {
                         //                            .frame(width: 10, height: 10)
                         //                            .foregroundColor(.red)
                         //                            .offset(x: -20, y:-10)
+                        Spacer()
                         
                         // Radiant Icon
                         Image("Radiant_App_Icon_Transparent")
                             .resizable()
-                            .frame(width: 80, height: 80)
-                            .padding(.leading, 120)
+                            .frame(width: 60, height: 60)
                     }
-                    .padding(.leading, 20)
-                    .padding(.top, 50)
+                    .padding(.top, 40)
+                    .padding(.leading, 25)
+                    .padding(.trailing, 25)
                     
                     
                     

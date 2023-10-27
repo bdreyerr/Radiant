@@ -286,8 +286,6 @@ struct UpgradeToPremiumPopup: View {
     
     @State var isYearlySelected: Bool = true
     
-    
-    
     @EnvironmentObject
     private var entitlementManager: EntitlementManager
 
@@ -489,6 +487,7 @@ struct UpgradeToPremiumPopup: View {
                     
                     Button(action: {
                         print("user wanted to confim premium purchase, calling purchase function")
+                        print("value of isYearly:  ", isYearlySelected)
                         Task {
                             var product: Product
                             if isYearlySelected {
@@ -536,6 +535,9 @@ struct UpgradeToPremiumPopup: View {
             } catch {
                 print(error)
             }
+        }
+        .onAppear {
+            isYearlySelected = true
         }
     }
 }
